@@ -327,8 +327,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
-* **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
 * **AddressBook**: The main application for managing contacts
 * **Command**: An instruction from the user to perform a specific operation (e.g., add, delete, find)
 * **Parser**: A component that interprets user input and converts it into executable commands
