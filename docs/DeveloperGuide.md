@@ -262,42 +262,58 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+**Persona: Sarah, 29-year-old Freelance Wedding Planner in Singapore**
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+* Wedding planners who need to manage multiple clients and vendors simultaneously
+* Freelance professionals who work independently but collaborate closely with vendors
+* Has a need to manage a significant number of contacts (clients, florists, caterers, photographers, musicians, venues)
+* Prefer desktop apps over other types for centralized information management
+* Can type fast and prefer typing to mouse interactions
+* Is reasonably comfortable using CLI apps
+* Currently struggles with scattered information across WhatsApp, Excel, and paper notes
+* Needs to track vendor information, quotes, and categorize them by type
+* Manages multiple weddings at different stages of planning
+* Experiences peak seasons with high stress and time pressure
+* Requires quick retrieval of vendor details and client preferences
+* Needs to track budgets with clarity and accuracy to avoid overspending
+
+**Value proposition**: KnotBook solves the problem of scattered and inconsistent information management for wedding planners. It provides a centralized, fast, and reliable contact management system that eliminates the need to search across multiple platforms (WhatsApp, Excel, paper notes). Wedding planners can store and retrieve vendor and client information instantly, track event budgets with accuracy, and easily search, sort, and update information when plans change—all faster than typical mouse/GUI driven apps. This reduces lost time, minimizes stress during peak seasons, and prevents costly mistakes like double-booking vendors or overspending on budgets.
 
 
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                     | So that I can…​                                                        |
-| -------- | ------------------------------------------ | ------------------------------ | ---------------------------------------------------------------------- |
-| `* * *`  | new user                                   | see usage instructions         | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person               |                                                                        |
-| `* * *`  | user                                       | delete a person                | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name          | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details   | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name           | locate a person easily                                                 |
-
-*{More to be added}*
+| Priority | As a …​                                    | I want to …​                                                      | So that I can…​                                                                      |
+| -------- | ------------------------------------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `* * *`  | new user                                   | see usage instructions                                            | refer to instructions when I forget how to use the App                               |
+| `* * *`  | wedding planner                            | add a new contact with their details (name, type, price, phone)  | keep track of all vendors and clients involved in wedding planning                   |
+| `* * *`  | wedding planner                            | delete a contact                                                  | remove entries that I no longer need                                                 |
+| `* * *`  | wedding planner                            | view all contacts                                                 | see a complete list of all vendors and clients I'm working with                      |
+| `* * *`  | wedding planner                            | categorize contacts by type (florist, caterer, photographer, etc.)| quickly filter and view contacts by their service category                           |
+| `* * *`  | wedding planner                            | link each client to multiple vendors                              | track which vendors are assigned to which wedding events                             |
+| `* * *`  | wedding planner                            | link each vendor to multiple clients                              | see which clients a particular vendor is serving                                     |
+| `* * *`  | wedding planner                            | unlink a client from a vendor                                     | update relationships when vendors are changed or services are cancelled              |
+| `* * *`  | wedding planner                            | find a contact by name                                            | quickly locate specific vendors or clients without scrolling through the entire list |
+| `* * *`  | wedding planner                            | exit the program                                                  | close the application when I'm done working                                          |
+| `* *`    | organized wedding planner                  | see contacts sorted alphabetically by name                        | locate contacts more easily in a predictable order                                   |
+| `* *`    | budget-conscious wedding planner           | view the price of each vendor                                     | compare costs and stay within the wedding budget                                     |
+| `* *`    | detail-oriented wedding planner            | store phone numbers for each contact                              | easily reach out to vendors and clients when needed                                  |
+| `*`      | experienced wedding planner                | prevent duplicate contact names                                   | avoid confusion between different vendors or clients                                 |
+| `*`      | wedding planner managing multiple events   | allow duplicate phone numbers and prices                          | accommodate cases where vendors share numbers or have similar pricing                |
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is `KnotBook` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: UC01 - Delete a person**
 
 **MSS**
 
 1.  User requests to list persons
-2.  AddressBook shows a list of persons
+2.  KnotBook shows a list of persons
 3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+4.  KnotBook deletes the person
 
     Use case ends.
 
@@ -309,24 +325,219 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 3a. The given index is invalid.
 
-    * 3a1. AddressBook shows an error message.
+    * 3a1. KnotBook shows an error message.
 
       Use case resumes at step 2.
 
-*{More to be added}*
+**Use case: UC02 - Link a vendor to a specific client**
+
+**MSS**
+
+1.  User requests to view all vendors
+2.  KnotBook shows a list of vendors
+3.  User searches for the specific vendor by name
+4.  KnotBook displays the vendor's details
+5.  User requests to view all clients
+6.  KnotBook shows a list of clients
+7.  User searches for the specific client by name
+8.  KnotBook displays the client's details
+9.  User requests to link the vendor to the client
+10. KnotBook confirms the link and updates both records
+
+    Use case ends.
+
+**Extensions**
+
+* 3a. The vendor name is not found.
+
+    * 3a1. KnotBook shows an error message.
+
+      Use case resumes at step 2.
+
+* 7a. The client name is not found.
+
+    * 7a1. KnotBook shows an error message.
+
+      Use case resumes at step 6.
+
+* 9a. The vendor is already linked to the client.
+
+    * 9a1. KnotBook shows a warning message and asks for confirmation.
+    * 9a2. User confirms the action.
+
+      Use case resumes at step 10.
+
+**Use case: UC03 - Categorize a vendor by type**
+
+**MSS**
+
+1.  User requests to add a new vendor
+2.  KnotBook prompts for vendor details
+3.  User enters vendor name, contact information, and category type (e.g., florist, caterer, photographer)
+4.  KnotBook validates the information
+5.  KnotBook saves the vendor with the specified category
+6.  KnotBook displays success message
+
+    Use case ends.
+
+**Extensions**
+
+* 3a. User enters invalid or incomplete information.
+
+    * 3a1. KnotBook shows an error message specifying which fields are invalid.
+
+      Use case resumes at step 2.
+
+* 3b. User enters an unknown category type.
+
+    * 3b1. KnotBook shows a list of valid category types.
+    * 3b2. User selects a valid category or creates a new one.
+
+      Use case resumes at step 4.
+
+**Use case: UC04 - Update vendor quote**
+
+**MSS**
+
+1.  User requests to view all vendors or searches for a specific vendor
+2.  KnotBook displays the list of vendors or search results
+3.  User selects a vendor to view details
+4.  KnotBook displays vendor details including current quote
+5.  User requests to update the quote with new pricing
+6.  KnotBook prompts for the new quote amount
+7.  User enters the new quote
+8.  KnotBook validates and saves the updated quote
+9.  KnotBook displays confirmation message
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. No vendors found.
+
+    * 2a1. KnotBook shows a message indicating no vendors exist.
+
+      Use case ends.
+
+* 7a. User enters invalid quote amount (e.g., negative number, non-numeric).
+
+    * 7a1. KnotBook shows an error message.
+
+      Use case resumes at step 6.
+
+
+**Use case: UC05 - Add a new contact (detailed with validation)**
+
+**MSS**
+
+1.  User enters the add command with contact details (name, type, phone, email, and type-specific fields)
+2.  KnotBook validates the name format
+3.  KnotBook validates the type is either "client" or "vendor"
+4.  KnotBook validates the phone number format (8-digit Singapore number)
+5.  KnotBook validates the email format
+6.  If type is "client", KnotBook validates the wedding date and budget
+7.  If type is "vendor", KnotBook validates the category and price
+8.  KnotBook checks for duplicate contacts (same phone or email)
+9.  KnotBook saves the new contact
+10. KnotBook displays success message
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. Invalid name format (contains special characters).
+
+    * 2a1. KnotBook shows error: "Invalid name. Names should only contain alphanumeric characters and spaces."
+
+      Use case ends.
+
+* 3a. Invalid type (not "client" or "vendor").
+
+    * 3a1. KnotBook shows error: "Invalid type. Please choose either 'client' or 'vendor'."
+
+      Use case ends.
+
+* 4a. Invalid phone number format.
+
+    * 4a1. KnotBook shows error: "Invalid phone number. Input an 8-digit SG number."
+
+      Use case ends.
+
+* 5a. Invalid email format.
+
+    * 5a1. KnotBook shows error: "Invalid email address format."
+
+      Use case ends.
+
+* 6a. Client added without wedding date.
+
+    * 6a1. KnotBook shows error: "Wedding date is required for clients. Example: date:2025-10-12"
+
+      Use case ends.
+
+* 6b. Invalid date format.
+
+    * 6b1. KnotBook shows error: "Invalid wedding date. Use DD/MM/YYYY (e.g., 12/10/2025)"
+
+      Use case ends.
+
+* 6c. Invalid budget format.
+
+    * 6c1. KnotBook shows error: "Invalid amount. Provide a number or a range like 800-1500."
+
+      Use case ends.
+
+* 7a. Invalid category format for vendor.
+
+    * 7a1. KnotBook shows error: "Invalid category. Use letters, numbers, spaces, or hyphens."
+
+      Use case ends.
+
+* 7b. Invalid price format for vendor.
+
+    * 7b1. KnotBook shows error: "Invalid amount. Provide a number or a range like 800-1500."
+
+      Use case ends.
+
+* 8a. Duplicate contact detected (same phone or email).
+
+    * 8a1. KnotBook shows error: "This contact already exists."
+
+      Use case ends.
 
 ### Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
-2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-
-*{More to be added}*
+1.  **Portability**: Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
+2.  **Performance**: Should be able to hold up to 1000 contacts without noticeable sluggishness in performance for typical usage.
+3.  **Usability**: A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+4.  **Reliability**: The system should not lose data in case of unexpected application crashes.
+5.  **Data Integrity**: The system should prevent duplicate entries (contacts with the same phone number OR email) from being added.
+6.  **Privacy**: Client and vendor information should be stored locally on the user's machine and not transmitted over any network.
+7.  **Usability**: Error messages should be clear and informative, guiding users on how to correct their input.
+8.  **Compatibility**: Should work without requiring an internet connection (offline-first design).
 
 ### Glossary
 
+* **KnotBook**: The name of this wedding planner contact management application
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Vendor**: A service provider for weddings (e.g., florist, caterer, photographer, venue, DJ, makeup artist, musician)
+* **Client**: A person or couple who is planning a wedding and has hired the wedding planner
+* **Contact**: A general term referring to either a vendor or a client in the system
+* **Quote/Price**: A pricing estimate provided by a vendor for their services; can be a single value or a range (e.g., 1000-3000)
+* **Wedding planner**: The target user of this application; a professional who manages and coordinates weddings for clients
+* **Category/Type**: A classification for contacts based on their role (client) or service they provide (florist, caterer, photographer, musician, venue, etc.)
+* **Link**: An association between a vendor and a client, indicating that the vendor has been hired for that client's wedding. Both clients and vendors can have multiple links.
+* **Unlink**: The action of removing an existing association between a vendor and a client
+* **Budget**: The total amount of money allocated by a client for their wedding; can be a single value or a range
+* **Index**: A positive integer representing the position of a contact in the currently displayed list
+* **Wedding Date**: The date when a client's wedding is scheduled to take place; required for all client contacts
+* **Task**: A to-do item or milestone in the wedding planning process (e.g., "venue booked", "deposit paid")
+* **Note**: Additional information or preferences recorded for a client or vendor
+* **Wedding status**: The current state of a wedding (e.g., upcoming, in-progress, completed)
+* **CLI**: Command Line Interface - a text-based interface where users type commands to interact with the application
+* **MSS**: Main Success Scenario - the primary flow of events in a use case when everything proceeds normally
+* **Duplicate Contact**: A contact with the same phone number OR email as an existing contact in the system
 
 --------------------------------------------------------------------------------------------------------------------
 
