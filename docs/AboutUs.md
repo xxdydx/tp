@@ -9,7 +9,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
-### Jane Doe
+### Dylan Ananda Astono
 
 <img src="images/dylandaaa.png" width="200px">
 
@@ -18,3 +18,12 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 * Role: Developer
 * Responsibilities: Testing
+
+### Josephine Celine Tjandra
+
+<img src="images/celinetj16.png" width="200px">
+
+[[github](http://github.com/CelineTj16)]
+
+* Role: Code Quality
+* Responsibilities: UI
