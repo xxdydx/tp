@@ -9,51 +9,48 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
-### John Doe
+### Clement Aditya Chendra
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/cleaach.png" width="200px">
 
-[[homepage](http://www.comp.nus.edu.sg/~damithch)]
-[[github](https://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
-
-* Role: Project Advisor
-
-### Jane Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
-
-* Role: Team Lead
-* Responsibilities: UI
-
-### Johnny Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)] [[portfolio](team/johndoe.md)]
+[[github](http://github.com/cleaach)]
 
 * Role: Developer
-* Responsibilities: Data
+* Responsibilities: Scheduling and tracking
 
-### Jean Doe
+### Arul
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/xxdydx.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[homepage](http://www.arul.me)]
+[[github](https://github.com/xxdydx)]
+
+* Role: Deliverables & Deadlines
+
+### Javier Lim
+
+<img src="images/javierlimt6.png" width="200px">
+
+[[github](http://github.com/javierlimt6)]
+[[portfolio](javier.chimera.sg)]
 
 * Role: Developer
-* Responsibilities: Dev Ops + Threading
+* Responsibilities: Documentation, Java Expert
 
-### James Doe
+### Dylan Ananda Astono
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/dylandaaa.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](http://github.com/dylandaaa)]
 
 * Role: Developer
+* Responsibilities: Testing
+
+### Josephine Celine Tjandra
+
+<img src="images/celinetj16.png" width="200px">
+
+[[github](http://github.com/CelineTj16)]
+
+* Role: Code Quality
 * Responsibilities: UI
