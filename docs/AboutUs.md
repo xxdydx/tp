@@ -9,6 +9,15 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
+### Arul
+
+<img src="images/xxdydx.png" width="200px">
+
+[[homepage](http://www.arul.me)]
+[[github](https://github.com/xxdydx)]
+
+* Role: Deliverables & Deadlines
+
 ### Javier Lim
 
 <img src="images/javierlimt6.png" width="200px">
@@ -18,7 +27,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 * Role: Developer
 * Responsibilities: Documentation, Java Expert
-=======
+
 ### Dylan Ananda Astono
 
 <img src="images/dylandaaa.png" width="200px">
