@@ -425,35 +425,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 6.
 
-**Use case: UC05 - Add notes to a client**
 
-**MSS**
-
-1.  User searches for a client by name
-2.  KnotBook displays the client's details
-3.  User requests to add a note
-4.  KnotBook prompts for note content
-5.  User enters note (e.g., "wants orchids, not roses")
-6.  KnotBook saves the note to the client's record
-7.  KnotBook displays the updated client information with the new note
-
-    Use case ends.
-
-**Extensions**
-
-* 1a. Client not found.
-
-    * 1a1. KnotBook shows an error message.
-
-      Use case ends.
-
-* 5a. Note exceeds maximum character limit.
-
-    * 5a1. KnotBook shows an error message indicating character limit.
-
-      Use case resumes at step 4.
-
-**Use case: UC06 - Add a new contact (detailed with validation)**
+**Use case: UC05 - Add a new contact (detailed with validation)**
 
 **MSS**
 
