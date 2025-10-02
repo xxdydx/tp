@@ -15,7 +15,6 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 [[homepage](http://www.arul.me)]
 [[github](https://github.com/xxdydx)]
-[[portfolio](team/xxdydx.md)]
 
 * Role: Deliverables & Deadlines
 
