@@ -9,6 +9,16 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
+### Javier Lim
+
+<img src="images/javierlimt6.png" width="200px">
+
+[[github](http://github.com/javierlimt6)]
+[[portfolio](javier.chimera.sg)]
+
+* Role: Developer
+* Responsibilities: Documentation, Java Expert
+=======
 ### Dylan Ananda Astono
 
 <img src="images/dylandaaa.png" width="200px">
