@@ -284,27 +284,23 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                 | I want to …​                                                | So that I can…​                                                                  |
-| -------- | --------------------------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `* * *`  | new user                                | receive help guides                                         | learn how to use the app smoothly                                                |
-| `* * *`  | user                                    | add new contacts                                            | store new vendors or clients quickly so I can keep all details in one place      |
-| `* * *`  | user                                    | edit my contacts' particulars                               | fix my typos                                                                     |
-| `* * *`  | user                                    | delete contacts                                             | declutter                                                                        |
-| `* * *`  | user                                    | view all contacts                                           | look at all my contacts                                                          |
-| `* * *`  | user                                    | categorize vendors by type                                  | compare florists, caterers, and photographers separately                         |
-| `* * *`  | wedding planner managing multiple weddings | link vendors to specific clients                         | know which vendor is hired for which event                                       |
-| `* *`    | user                                    | update vendor quotes                                        | always have the most current pricing                                             |
-| `* *`    | user                                    | track expenses under each wedding's budget                  | know if my clients are overspending                                              |
-| `* *`    | user                                    | add notes under each client (e.g., "wants orchids, not roses") | don't forget their preferences                                                   |
-| `* *`    | user                                    | sort weddings by date                                       | know which ones are coming up first                                              |
-| `* *`    | user                                    | mark tasks (e.g., venue booked, deposit paid) as "done"     | track progress                                                                   |
-| `* *`    | user                                    | search contacts by name                                     | quickly access their info                                                        |
-| `* *`    | user                                    | filter weddings by status (upcoming, completed)             | focus on active weddings and archive old ones                                    |
-| `*`      | user                                    | sync data across devices                                    | access client and vendor info from phone or laptop seamlessly                    |
-| `*`      | user                                    | export data to PDF or Excel                                 | share plans and budgets with clients or colleagues                               |
-| `*`      | user                                    | backup data automatically                                   | don't lose information even if my device fails                                   |
-| `*`      | user                                    | set reminders for deadlines regarding vendors               | never miss important payment or booking deadlines                                |
-| `*`      | user                                    | group vendors by price range                                | compare affordable and premium vendors easily                                    |
+| Priority | As a …​                                    | I want to …​                                                      | So that I can…​                                                                      |
+| -------- | ------------------------------------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `* * *`  | new user                                   | see usage instructions                                            | refer to instructions when I forget how to use the App                               |
+| `* * *`  | wedding planner                            | add a new contact with their details (name, type, price, phone)  | keep track of all vendors and clients involved in wedding planning                   |
+| `* * *`  | wedding planner                            | delete a contact                                                  | remove entries that I no longer need                                                 |
+| `* * *`  | wedding planner                            | view all contacts                                                 | see a complete list of all vendors and clients I'm working with                      |
+| `* * *`  | wedding planner                            | categorize contacts by type (florist, caterer, photographer, etc.)| quickly filter and view contacts by their service category                           |
+| `* * *`  | wedding planner                            | link each client to multiple vendors                              | track which vendors are assigned to which wedding events                             |
+| `* * *`  | wedding planner                            | link each vendor to multiple clients                              | see which clients a particular vendor is serving                                     |
+| `* * *`  | wedding planner                            | unlink a client from a vendor                                     | update relationships when vendors are changed or services are cancelled              |
+| `* * *`  | wedding planner                            | find a contact by name                                            | quickly locate specific vendors or clients without scrolling through the entire list |
+| `* * *`  | wedding planner                            | exit the program                                                  | close the application when I'm done working                                          |
+| `* *`    | organized wedding planner                  | see contacts sorted alphabetically by name                        | locate contacts more easily in a predictable order                                   |
+| `* *`    | budget-conscious wedding planner           | view the price of each vendor                                     | compare costs and stay within the wedding budget                                     |
+| `* *`    | detail-oriented wedding planner            | store phone numbers for each contact                              | easily reach out to vendors and clients when needed                                  |
+| `*`      | experienced wedding planner                | prevent duplicate contact names                                   | avoid confusion between different vendors or clients                                 |
+| `*`      | wedding planner managing multiple events   | allow duplicate phone numbers and prices                          | accommodate cases where vendors share numbers or have similar pricing                |
 
 ### Use cases
 
