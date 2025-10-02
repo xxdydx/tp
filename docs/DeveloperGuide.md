@@ -521,6 +521,25 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **KnotBook**: The name of this wedding planner contact management application
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+* **AddressBook**: The main application for managing contacts
+* **Command**: An instruction from the user to perform a specific operation (e.g., add, delete, find)
+* **Parser**: A component that interprets user input and converts it into executable commands
+* **Model**: The component that holds the application's data in memory
+* **UI (User Interface)**: The visual component of the application that users interact with
+* **Logic**: The component responsible for executing commands and coordinating between UI and Model
+* **Storage**: The component that handles reading from and writing to persistent storage (JSON files)
+* **Person**: An entity representing a contact with attributes like name, phone, email, address, and tags
+* **Tag**: A label that can be attached to a Person for categorization
+* **ObservableList**: A list that notifies observers when its contents change, used for UI updates
+* **JavaFX**: The UI framework used to build the graphical interface
+* **FXML**: A markup language used to define JavaFX UI layouts
+* **JSON**: JavaScript Object Notation – the file format used for data persistence
+* **Gradle**: The build automation tool used for compiling, testing, and packaging the application
+* **PlantUML**: A tool for creating UML diagrams from text descriptions
+* **JAR (Java Archive)**: A package file format used to distribute Java applications
+* **CheckStyle**: A development tool to help ensure Java code adheres to a coding standard
+* **Sequence Diagram**: A UML diagram showing how objects interact in a particular sequence
+* **Class Diagram**: A UML diagram showing the structure of classes and their relationships
 * **Vendor**: A service provider for weddings (e.g., florist, caterer, photographer, venue, DJ, makeup artist, musician)
 * **Client**: A person or couple who is planning a wedding and has hired the wedding planner
 * **Contact**: A general term referring to either a vendor or a client in the system
