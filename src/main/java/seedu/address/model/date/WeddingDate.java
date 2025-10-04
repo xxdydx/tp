@@ -28,6 +28,9 @@ public class WeddingDate {
 
     private final LocalDate value;
 
+    /**
+     * Constructs a {@code WeddingDate} from a {@link LocalDate}.
+     */
     public WeddingDate(LocalDate date) {
         requireNonNull(date);
         this.value = date;
@@ -45,10 +48,21 @@ public class WeddingDate {
     }
 
     private static LocalDate tryParse(String s) {
-        try { return LocalDate.parse(s, DMY_SLASH); } catch (Exception ignore) { }
-        try { return LocalDate.parse(s, ISO); } catch (Exception ignore) { }
+        try {
+            return LocalDate.parse(s, DMY_SLASH);
+        } catch (Exception ignore) {
+            /* try next accepted format */
+        }
+
+        try {
+            return LocalDate.parse(s, ISO);
+        } catch (Exception ignore) {
+            /* no more formats to try */
+        }
+
         return null;
     }
+
 
     public LocalDate getDate() {
         return value;

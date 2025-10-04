@@ -123,6 +123,9 @@ public class ParserUtil {
         return tagSet;
     }
 
+/**
+ * Parses a {@code String date} into a {@link WeddingDate}.
+ * */
     public static WeddingDate parseWeddingDate(String date) throws ParseException {
         requireNonNull(date);
         String trimmed = date.trim();
