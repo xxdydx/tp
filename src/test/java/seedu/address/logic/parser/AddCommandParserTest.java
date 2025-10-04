@@ -195,11 +195,11 @@ public class AddCommandParserTest {
     }
 
     private static final String TYPE_DESC_CLIENT = " type/client";
-    private static final String TYPE_DESC_VENDOR_UPPER = " type/VENDOR";
     private static final String TYPE_DESC_INVALID = " type/photographer";
+    private static final String TYPE_DESC_VENDOR_UPPER = " type/VENDOR";
 
     @Test
-    public void parse_typeClient_addsClientTag_success() {
+    public void parse_typeClient_success() {
         Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND, "client").build();
 
         assertParseSuccess(parser,
@@ -209,7 +209,7 @@ public class AddCommandParserTest {
     }
 
     @Test
-    public void parse_typeVendor_caseInsensitive_addsVendorTag_success() {
+    public void parse_typeVendor_successCaseInsensitive() {
         Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND, "vendor").build();
 
         assertParseSuccess(parser,
