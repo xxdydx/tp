@@ -9,7 +9,7 @@ import java.util.Set;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.date.WeddingDate;
+import seedu.address.model.person.WeddingDate;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -124,16 +124,18 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String date} into a {@link WeddingDate}.
-     * */
-    public static WeddingDate parseWeddingDate(String date) throws ParseException {
-        requireNonNull(date);
-        String trimmed = date.trim();
-        try {
-            return WeddingDate.parse(trimmed);
-        } catch (IllegalArgumentException ex) {
+     * Parses a {@code String weddingDate} into a {@code WeddingDate}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code weddingDate} is invalid.
+     */
+    public static WeddingDate parseWeddingDate(String weddingDate) throws ParseException {
+        requireNonNull(weddingDate);
+        String trimmedWeddingDate = weddingDate.trim();
+        if (!WeddingDate.isValidWeddingDate(trimmedWeddingDate)) {
             throw new ParseException(WeddingDate.MESSAGE_CONSTRAINTS);
         }
+        return new WeddingDate(trimmedWeddingDate);
     }
 
 }
