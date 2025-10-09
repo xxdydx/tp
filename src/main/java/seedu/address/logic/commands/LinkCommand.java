@@ -6,7 +6,6 @@ import java.util.List;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
-import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
@@ -26,8 +25,10 @@ public class LinkCommand extends Command {
 
     public static final String MESSAGE_LINK_SUCCESS = "Link made successfully!";
     public static final String MESSAGE_LINK_ALREADY_EXISTS = "This client and vendor are already linked.";
-    public static final String MESSAGE_INVALID_CLIENT_INDEX = "Invalid client index. It must be a valid number referring to an existing client.";
-    public static final String MESSAGE_INVALID_VENDOR_INDEX = "Invalid vendor index. It must be a valid number referring to an existing vendor.";
+    public static final String MESSAGE_INVALID_CLIENT_INDEX =
+            "Invalid client index. It must be a valid number referring to an existing client.";
+    public static final String MESSAGE_INVALID_VENDOR_INDEX =
+            "Invalid vendor index. It must be a valid number referring to an existing vendor.";
 
     private final Index clientIndex;
     private final Index vendorIndex;
