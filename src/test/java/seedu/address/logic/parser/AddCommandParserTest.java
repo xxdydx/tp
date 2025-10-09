@@ -46,6 +46,10 @@ import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
 
 public class AddCommandParserTest {
+    private static final String TYPE_DESC_CLIENT = " type/client";
+    private static final String TYPE_DESC_INVALID = " type/photographer";
+    private static final String TYPE_DESC_VENDOR_UPPER = " type/VENDOR";
+
     private AddCommandParser parser = new AddCommandParser();
 
     @Test
@@ -192,5 +196,33 @@ public class AddCommandParserTest {
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_typeClient_success() {
+        Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND, "client").build();
+
+        assertParseSuccess(parser,
+                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                        + TAG_DESC_FRIEND + TYPE_DESC_CLIENT,
+                new AddCommand(expected));
+    }
+
+    @Test
+    public void parse_typeVendor_successCaseInsensitive() {
+        Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND, "vendor").build();
+
+        assertParseSuccess(parser,
+                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                        + TAG_DESC_HUSBAND + TAG_DESC_FRIEND + TYPE_DESC_VENDOR_UPPER,
+                new AddCommand(expected));
+    }
+
+    @Test
+    public void parse_typeInvalid_failure() {
+        assertParseFailure(parser,
+                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                        + TAG_DESC_FRIEND + TYPE_DESC_INVALID,
+                "Invalid type. Please choose either 'client' or 'vendor'.");
     }
 }
