@@ -15,7 +15,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.WeddingDate;
+import seedu.address.model.date.WeddingDate;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -57,7 +57,7 @@ class JsonAdaptedPerson {
         phone = source.getPhone().value;
         email = source.getEmail().value;
         address = source.getAddress().value;
-        weddingDate = source.getWeddingDate().value;
+        weddingDate = source.getWeddingDate().toString();
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -112,10 +112,12 @@ class JsonAdaptedPerson {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
                     WeddingDate.class.getSimpleName()));
         }
-        if (!WeddingDate.isValidWeddingDate(weddingDate)) {
+        final WeddingDate modelWeddingDate;
+        try {
+            modelWeddingDate = WeddingDate.parse(weddingDate);
+        } catch (IllegalArgumentException e) {
             throw new IllegalValueException(WeddingDate.MESSAGE_CONSTRAINTS);
         }
-        final WeddingDate modelWeddingDate = new WeddingDate(weddingDate);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
         return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelTags);

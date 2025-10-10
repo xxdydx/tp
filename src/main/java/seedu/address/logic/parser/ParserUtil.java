@@ -13,7 +13,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.WeddingDate;
+import seedu.address.model.date.WeddingDate;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -135,11 +135,11 @@ public class ParserUtil {
      */
     public static WeddingDate parseWeddingDate(String weddingDate) throws ParseException {
         requireNonNull(weddingDate);
-        String trimmedWeddingDate = weddingDate.trim();
-        if (!WeddingDate.isValidWeddingDate(trimmedWeddingDate)) {
+        try {
+            return WeddingDate.parse(weddingDate);
+        } catch (IllegalArgumentException ex) {
             throw new ParseException(WeddingDate.MESSAGE_CONSTRAINTS);
         }
-        return new WeddingDate(trimmedWeddingDate);
     }
 
 }
