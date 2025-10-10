@@ -14,6 +14,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.date.WeddingDate;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -192,5 +193,20 @@ public class ParserUtilTest {
         Set<Tag> expectedTagSet = new HashSet<Tag>(Arrays.asList(new Tag(VALID_TAG_1), new Tag(VALID_TAG_2)));
 
         assertEquals(expectedTagSet, actualTagSet);
+    }
+
+    @Test
+    public void parseWeddingDate_valid_success() throws Exception {
+        WeddingDate wd1 = ParserUtil.parseWeddingDate("12/10/2025");
+        WeddingDate wd2 = ParserUtil.parseWeddingDate("2025-10-12");
+
+        assertEquals("2025-10-12", wd1.toString());
+        assertEquals("2025-10-12", wd2.toString());
+    }
+
+    @Test
+    public void parseWeddingDate_invalid_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseWeddingDate("12-10-2025"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseWeddingDate("not a date"));
     }
 }
