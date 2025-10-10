@@ -9,6 +9,7 @@ import java.util.Set;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.date.WeddingDate;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -121,4 +122,18 @@ public class ParserUtil {
         }
         return tagSet;
     }
+
+    /**
+     * Parses a {@code String date} into a {@link WeddingDate}.
+     * */
+    public static WeddingDate parseWeddingDate(String date) throws ParseException {
+        requireNonNull(date);
+        String trimmed = date.trim();
+        try {
+            return WeddingDate.parse(trimmed);
+        } catch (IllegalArgumentException ex) {
+            throw new ParseException(WeddingDate.MESSAGE_CONSTRAINTS);
+        }
+    }
+
 }
