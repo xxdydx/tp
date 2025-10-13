@@ -68,7 +68,20 @@ public class LogicManagerTest {
     @Test
     public void execute_validCommand_success() throws Exception {
         String listCommand = ListCommand.COMMAND_WORD;
-        assertCommandSuccess(listCommand, ListCommand.MESSAGE_SUCCESS, model);
+        Model testModel = new ModelManager();
+        testModel.addPerson(AMY);
+        Model expectedModel = new ModelManager();
+        expectedModel.addPerson(AMY);
+
+        JsonAddressBookStorage addressBookStorage =
+                new JsonAddressBookStorage(temporaryFolder.resolve("addressBook.json"));
+        JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
+        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        Logic testLogic = new LogicManager(testModel, storage);
+
+        CommandResult result = testLogic.execute(listCommand);
+        assertEquals("Listed all your contacts! (1 contact)", result.getFeedbackToUser());
+        assertEquals(expectedModel, testModel);
     }
 
     @Test
