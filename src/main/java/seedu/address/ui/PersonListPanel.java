@@ -30,8 +30,8 @@ public class PersonListPanel extends UiPart<Region> {
         personListView.setItems(personList);
         personListView.setCellFactory(listView -> new PersonListViewCell());
 
-        personListView.getSelectionModel().selectedItemProperty().addListener(
-                (obs, oldSel, newSel) -> onSelect.accept(newSel));
+        personListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel)
+                -> onSelect.accept(newSel));
     }
 
     /**
