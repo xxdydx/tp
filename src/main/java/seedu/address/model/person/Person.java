@@ -8,9 +8,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
-import seedu.address.model.tag.Tag;
-
 import seedu.address.model.date.WeddingDate;
+import seedu.address.model.tag.Tag;
 
 /**
  * Represents a Person in the address book.
