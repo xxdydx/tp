@@ -276,3 +276,14 @@
     -fx-opacity: 0.95;
     -fx-label-padding: 0 2 0 0;
 }
+
+.cell_huge_label {
+    -fx-font-size: 28px;
+    -fx-font-weight: 800;
+    -fx-text-fill: -app-ink;
+}
+
+.cell_bigger_label {
+  -fx-font-size: 19px;
+  -fx-text-fill: -app-ink;
+}

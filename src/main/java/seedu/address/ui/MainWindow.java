@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
@@ -31,8 +30,8 @@ public class MainWindow extends UiPart<Stage> {
     private Stage primaryStage;
     private Logic logic;
 
-    // Independent Ui parts residing in this Ui container
     private PersonListPanel personListPanel;
+    private PersonDetailsPanel personDetailsPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
 
@@ -114,12 +113,14 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        personListPanel = new PersonListPanel(logic.getFilteredPersonList());
+        personListPanel = new PersonListPanel(
+                logic.getFilteredPersonList(),
+                this::onPersonSelected
+        );
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
 
-        Label detailsStub = new Label("Select a contact to see details");
-        detailsStub.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        personDetailsPlaceholder.getChildren().setAll(detailsStub);
+        personDetailsPanel = new PersonDetailsPanel(null);
+        personDetailsPlaceholder.getChildren().add(personDetailsPanel.getRoot());
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -129,6 +130,10 @@ public class MainWindow extends UiPart<Stage> {
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+    }
+
+    private void onPersonSelected(seedu.address.model.person.Person person) {
+        personDetailsPanel.setPerson(person);
     }
 
     /**
