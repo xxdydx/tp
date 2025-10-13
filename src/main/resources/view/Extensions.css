@@ -5,16 +5,19 @@
 
 .list-cell:empty {
     /* Empty cells will not have alternating colours */
-    -fx-background: #383838;
+    -fx-background-color: -app-cream;
+    -fx-border-color: transparent;
 }
 
 .tag-selector {
     -fx-border-width: 1;
-    -fx-border-color: white;
+    -fx-border-color: -app-border;
     -fx-border-radius: 3;
     -fx-background-radius: 3;
+    -fx-background-color: -app-cream;
+    -fx-text-fill: -app-ink;
 }
 
 .tooltip-text {
-    -fx-text-fill: white;
+    -fx-text-fill: -app-ink;
 }
