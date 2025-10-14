@@ -26,12 +26,14 @@ public class ParserUtilTest {
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_ADDRESS = " ";
     private static final String INVALID_EMAIL = "example.com";
+    private static final String INVALID_WEDDING_DATE = "32/13/2025";
     private static final String INVALID_TAG = "#friend";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
     private static final String VALID_ADDRESS = "123 Main Street #0505";
     private static final String VALID_EMAIL = "rachel@example.com";
+    private static final String VALID_WEDDING_DATE = "15/06/2020";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
 
@@ -196,17 +198,25 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseWeddingDate_valid_success() throws Exception {
-        WeddingDate wd1 = ParserUtil.parseWeddingDate("12/10/2025");
-        WeddingDate wd2 = ParserUtil.parseWeddingDate("2025-10-12");
-
-        assertEquals("2025-10-12", wd1.toString());
-        assertEquals("2025-10-12", wd2.toString());
+    public void parseWeddingDate_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseWeddingDate((String) null));
     }
 
     @Test
-    public void parseWeddingDate_invalid_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseWeddingDate("12-10-2025"));
-        assertThrows(ParseException.class, () -> ParserUtil.parseWeddingDate("not a date"));
+    public void parseWeddingDate_invalidValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseWeddingDate(INVALID_WEDDING_DATE));
+    }
+
+    @Test
+    public void parseWeddingDate_validValueWithoutWhitespace_returnsWeddingDate() throws Exception {
+        WeddingDate expectedWeddingDate = WeddingDate.parse(VALID_WEDDING_DATE);
+        assertEquals(expectedWeddingDate, ParserUtil.parseWeddingDate(VALID_WEDDING_DATE));
+    }
+
+    @Test
+    public void parseWeddingDate_validValueWithWhitespace_returnsTrimmedWeddingDate() throws Exception {
+        String weddingDateWithWhitespace = WHITESPACE + VALID_WEDDING_DATE + WHITESPACE;
+        WeddingDate expectedWeddingDate = WeddingDate.parse(VALID_WEDDING_DATE);
+        assertEquals(expectedWeddingDate, ParserUtil.parseWeddingDate(weddingDateWithWhitespace));
     }
 }
