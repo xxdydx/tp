@@ -19,6 +19,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
@@ -56,19 +57,15 @@ public class AddCommandParser implements Parser<AddCommand> {
         WeddingDate weddingDate = ParserUtil.parseWeddingDate(argMultimap.getValue(PREFIX_WEDDING_DATE).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        if (argMultimap.getValue(PREFIX_TYPE).isPresent()) {
-            String raw = argMultimap.getValue(PREFIX_TYPE).get().trim();
-            String normalised = raw.toLowerCase();
-            if (!normalised.equals("client") && !normalised.equals("vendor")) {
-                throw new ParseException("Invalid type. Please choose either 'client' or 'vendor'.");
-            }
-            Tag typeTag = new Tag(normalised);
-            if (!tagList.contains(typeTag)) {
-                tagList.add(typeTag);
-            }
+        String rawType = argMultimap.getValue(PREFIX_TYPE).get();
+        PersonType type;
+        try {
+            type = PersonType.parse(rawType);
+        } catch (IllegalArgumentException ex) {
+            throw new ParseException("Type must be 'client' or 'vendor'.");
         }
 
-        Person person = new Person(name, phone, email, address, weddingDate, tagList);
+        Person person = new Person(name, phone, email, address, weddingDate, type, tagList);
 
         return new AddCommand(person);
     }

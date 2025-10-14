@@ -8,6 +8,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonType;
 
 /**
  * An UI component that displays information of a {@code Person}.
@@ -43,7 +44,11 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label weddingDate;
     @FXML
+    private Label type;
+    @FXML
     private FlowPane tags;
+    @FXML
+    private Label typeChip;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to
@@ -61,5 +66,16 @@ public class PersonCard extends UiPart<Region> {
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+
+        PersonType type = person.getType();
+        typeChip.setText(person.getType().display());
+
+        typeChip.getStyleClass().removeAll("type-chip", "type-client", "type-vendor");
+        typeChip.getStyleClass().add("type-chip");
+        if (type == PersonType.CLIENT) {
+            typeChip.getStyleClass().add("type-client");
+        } else if (type == PersonType.VENDOR) {
+            typeChip.getStyleClass().add("type-vendor");
+        }
     }
 }

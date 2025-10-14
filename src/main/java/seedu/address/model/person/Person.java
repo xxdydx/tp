@@ -27,17 +27,19 @@ public class Person {
     private final Address address;
     private final WeddingDate weddingDate;
     private final Set<Tag> tags = new HashSet<>();
+    private final PersonType type;
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, weddingDate, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.weddingDate = weddingDate;
+        this.type = type;
         this.tags.addAll(tags);
     }
 
@@ -60,6 +62,8 @@ public class Person {
     public WeddingDate getWeddingDate() {
         return weddingDate;
     }
+
+    public PersonType getType(){ return type; }
 
     /**
      * Returns an immutable tag set, which throws
@@ -104,13 +108,14 @@ public class Person {
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
                 && weddingDate.equals(otherPerson.weddingDate)
+                && type == otherPerson.type
                 && tags.equals(otherPerson.tags);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, weddingDate, tags);
+        return Objects.hash(name, phone, email, address, weddingDate, type, tags);
     }
 
     @Override
@@ -122,6 +127,7 @@ public class Person {
                 .add("address", address)
                 .add("weddingDate", weddingDate)
                 .add("tags", tags)
+                .add("type", type)
                 .toString();
     }
 
