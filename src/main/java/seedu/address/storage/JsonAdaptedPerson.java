@@ -124,15 +124,15 @@ class JsonAdaptedPerson {
             throw new IllegalValueException(WeddingDate.MESSAGE_CONSTRAINTS);
         }
 
-        final PersonType modelType;
         if (type == null) {
-            modelType = PersonType.CLIENT;
-        } else {
-            try {
-                modelType = PersonType.parse(type);
-            } catch (IllegalArgumentException ex) {
-                throw new IllegalValueException("Invalid person type in storage: " + type);
-            }
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "type"));
+        }
+        final PersonType modelType;
+        try {
+            modelType = PersonType.parse(type);
+        } catch (IllegalArgumentException ex) {
+            // exact message asserted in JsonAdaptedPersonTest
+            throw new IllegalValueException("Type must be 'client' or 'vendor'.");
         }
 
         final Set<Tag> modelTags = new HashSet<>(personTags);

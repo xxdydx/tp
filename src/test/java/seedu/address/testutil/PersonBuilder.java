@@ -8,6 +8,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
@@ -16,12 +17,12 @@ import seedu.address.model.util.SampleDataUtil;
  * A utility class to help with building Person objects.
  */
 public class PersonBuilder {
-
     public static final String DEFAULT_NAME = "Amy Bee";
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_WEDDING_DATE = "01/01/2020";
+    public static final PersonType DEFAULT_TYPE = PersonType.CLIENT;
 
     private Name name;
     private Phone phone;
@@ -29,6 +30,8 @@ public class PersonBuilder {
     private Address address;
     private WeddingDate weddingDate;
     private Set<Tag> tags;
+    private PersonType type;
+
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -40,6 +43,7 @@ public class PersonBuilder {
         address = new Address(DEFAULT_ADDRESS);
         weddingDate = WeddingDate.parse(DEFAULT_WEDDING_DATE);
         tags = new HashSet<>();
+        type = DEFAULT_TYPE;
     }
 
     /**
@@ -52,6 +56,7 @@ public class PersonBuilder {
         address = personToCopy.getAddress();
         weddingDate = personToCopy.getWeddingDate();
         tags = new HashSet<>(personToCopy.getTags());
+        type = personToCopy.getType();
     }
 
     /**
@@ -102,8 +107,16 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code PersonType} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withType(PersonType type) {
+        this.type = type;
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, address, weddingDate, tags);
+        return new Person(name, phone, email, address, weddingDate, type, tags);
     }
 
 }
