@@ -38,7 +38,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME,
             PREFIX_PHONE, PREFIX_EMAIL,
             PREFIX_ADDRESS, PREFIX_TYPE,
-            PREFIX_WEDDING_DATE);
+            PREFIX_WEDDING_DATE, PREFIX_TAG);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS,
             PREFIX_PHONE, PREFIX_EMAIL,
@@ -56,7 +56,6 @@ public class AddCommandParser implements Parser<AddCommand> {
         WeddingDate weddingDate = ParserUtil.parseWeddingDate(argMultimap.getValue(PREFIX_WEDDING_DATE).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        Person person = new Person(name, phone, email, address, weddingDate, tagList);
         if (argMultimap.getValue(PREFIX_TYPE).isPresent()) {
             String raw = argMultimap.getValue(PREFIX_TYPE).get().trim();
             String normalised = raw.toLowerCase();
@@ -68,6 +67,8 @@ public class AddCommandParser implements Parser<AddCommand> {
                 tagList.add(typeTag);
             }
         }
+
+        Person person = new Person(name, phone, email, address, weddingDate, tagList);
 
         return new AddCommand(person);
     }
