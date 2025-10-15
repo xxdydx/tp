@@ -4,6 +4,7 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import seedu.address.logic.commands.CatCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.CategoryMatchesPredicate;
 
 /**
  * Parses input arguments and creates a new CatCommand object
@@ -22,7 +23,7 @@ public class CatCommandParser implements Parser<CatCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, CatCommand.MESSAGE_USAGE));
         }
 
-        return new CatCommand(trimmedArgs);
+        return new CatCommand(new CategoryMatchesPredicate(trimmedArgs));
     }
 
 }

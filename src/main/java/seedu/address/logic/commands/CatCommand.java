@@ -2,34 +2,36 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.Messages;
 import seedu.address.model.Model;
+import seedu.address.model.person.CategoryMatchesPredicate;
 
 /**
- * Finds and lists all persons in address book whose category matches the specified category.
+ * Finds and lists all persons in address book whose tags contain the specified category.
  * Category matching is case insensitive.
  */
 public class CatCommand extends Command {
 
     public static final String COMMAND_WORD = "cat";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose category matches "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose tags contain "
             + "the specified category (case-insensitive) and displays them as a list with index numbers.\n"
             + "Parameters: CATEGORY\n"
             + "Example: " + COMMAND_WORD + " florist";
 
-    public static final String MESSAGE_SUCCESS = "Category filter applied: %1$s";
+    private final CategoryMatchesPredicate predicate;
 
-    private final String category;
-
-    public CatCommand(String category) {
-        this.category = category;
+    public CatCommand(CategoryMatchesPredicate predicate) {
+        this.predicate = predicate;
     }
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        // Placeholder implementation - actual filtering will be implemented when Category field is added
-        return new CommandResult(String.format(MESSAGE_SUCCESS, category));
+        model.updateFilteredPersonList(predicate);
+        return new CommandResult(
+                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
     }
 
     @Override
@@ -44,7 +46,14 @@ public class CatCommand extends Command {
         }
 
         CatCommand otherCatCommand = (CatCommand) other;
-        return category.equals(otherCatCommand.category);
+        return predicate.equals(otherCatCommand.predicate);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("predicate", predicate)
+                .toString();
     }
 }
 
