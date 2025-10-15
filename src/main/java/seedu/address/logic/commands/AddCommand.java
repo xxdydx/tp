@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
 
 import seedu.address.commons.util.ToStringBuilder;
@@ -15,28 +16,38 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
 /**
- * Adds a person to the address book.
+ * Adds a contact (vendor or client) to KnotBook.
  */
 public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a contact (vendor or client) to KnotBook. "
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
             + PREFIX_ADDRESS + "ADDRESS "
             + PREFIX_WEDDING_DATE + "WEDDING_DATE "
+            + "[" + PREFIX_TYPE + "TYPE] "
             + "[" + PREFIX_TAG + "TAG]...\n"
-            + "Example: " + COMMAND_WORD + " "
-            + PREFIX_NAME + "John Doe "
+            + "Examples:\n"
+            + "Vendor: " + COMMAND_WORD + " "
+            + PREFIX_NAME + "Rose Garden Florist "
+            + PREFIX_PHONE + "91234567 "
+            + PREFIX_EMAIL + "rose@flowers.com "
+            + PREFIX_ADDRESS + "123 Orchard Road "
+            + PREFIX_WEDDING_DATE + "01/01/2025 "
+            + PREFIX_TYPE + "vendor "
+            + PREFIX_TAG + "florist "
+            + PREFIX_TAG + "premium\n"
+            + "Client: " + COMMAND_WORD + " "
+            + PREFIX_NAME + "Sarah Tan "
             + PREFIX_PHONE + "98765432 "
-            + PREFIX_EMAIL + "johnd@example.com "
-            + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
-            + PREFIX_WEDDING_DATE + "15-06-2020 "
-            + PREFIX_TAG + "friends "
-            + PREFIX_TAG + "owesMoney";
+            + PREFIX_EMAIL + "sarah@client.com "
+            + PREFIX_ADDRESS + "311 Clementi Ave 2 "
+            + PREFIX_WEDDING_DATE + "15/06/2025 "
+            + PREFIX_TYPE + "client";
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
