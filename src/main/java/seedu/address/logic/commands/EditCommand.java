@@ -222,9 +222,13 @@ public class EditCommand extends Command {
             return Optional.ofNullable(weddingDate);
         }
 
-        public void setType(PersonType type) { this.type = type; }
+        public void setType(PersonType type) {
+            this.type = type;
+        }
 
-        public Optional<PersonType> getType() { return Optional.ofNullable(type); }
+        public Optional<PersonType> getType() {
+            return Optional.ofNullable(type);
+        }
 
         public void setPrice(Price price) {
             this.price = price;

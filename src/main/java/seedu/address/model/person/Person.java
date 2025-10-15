@@ -5,13 +5,14 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.date.WeddingDate;
 import seedu.address.model.tag.Tag;
 
-import java.util.Optional;
+
 
 /**
  * Represents a Person in the address book.
@@ -68,7 +69,9 @@ public class Person {
         return weddingDate;
     }
 
-    public PersonType getType() { return type; }
+    public PersonType getType() {
+        return type;
+    }
 
     public Optional<Price> getPrice() {
         return Optional.ofNullable(price);
