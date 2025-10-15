@@ -18,8 +18,8 @@ import seedu.address.model.date.WeddingDate;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
-import seedu.address.model.person.Phone;
 import seedu.address.model.person.PersonType;
+import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 public class ParserUtilTest {
@@ -229,8 +229,8 @@ public class ParserUtilTest {
     @Test
     public void parsePersonType_invalidValue_throwsParseException() {
         assertThrows(ParseException.class, () -> ParserUtil.parsePersonType("partner"));
-        assertThrows(ParseException.class, () -> ParserUtil.parsePersonType(""));         // empty
-        assertThrows(ParseException.class, () -> ParserUtil.parsePersonType(" ven dor ")); // spaces inside
+        assertThrows(ParseException.class, () -> ParserUtil.parsePersonType(""));
+        assertThrows(ParseException.class, () -> ParserUtil.parsePersonType(" ven dor "));
     }
 
     @Test
