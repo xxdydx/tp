@@ -13,6 +13,7 @@ import seedu.address.model.date.WeddingDate;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
@@ -139,6 +140,18 @@ public class ParserUtil {
             return WeddingDate.parse(weddingDate);
         } catch (IllegalArgumentException ex) {
             throw new ParseException(WeddingDate.MESSAGE_CONSTRAINTS);
+        }
+    }
+
+    /**
+     * Parses a {@link String} into a {@link PersonType}.
+     * */
+    public static PersonType parsePersonType(String s) throws ParseException {
+        requireNonNull(s);
+        switch (s.trim().toLowerCase()) {
+        case "client": return PersonType.CLIENT;
+        case "vendor": return PersonType.VENDOR;
+        default: throw new ParseException("Type must be 'client' or 'vendor'.");
         }
     }
 

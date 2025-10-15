@@ -18,6 +18,7 @@ import seedu.address.model.date.WeddingDate;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
@@ -218,5 +219,29 @@ public class ParserUtilTest {
         String weddingDateWithWhitespace = WHITESPACE + VALID_WEDDING_DATE + WHITESPACE;
         WeddingDate expectedWeddingDate = WeddingDate.parse(VALID_WEDDING_DATE);
         assertEquals(expectedWeddingDate, ParserUtil.parseWeddingDate(weddingDateWithWhitespace));
+    }
+
+    @Test
+    public void parsePersonType_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parsePersonType(null));
+    }
+
+    @Test
+    public void parsePersonType_invalidValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parsePersonType("partner"));
+        assertThrows(ParseException.class, () -> ParserUtil.parsePersonType(""));
+        assertThrows(ParseException.class, () -> ParserUtil.parsePersonType(" ven dor "));
+    }
+
+    @Test
+    public void parsePersonType_validValueWithoutWhitespace_returnsEnum() throws Exception {
+        assertEquals(PersonType.CLIENT, ParserUtil.parsePersonType("client"));
+        assertEquals(PersonType.VENDOR, ParserUtil.parsePersonType("vendor"));
+    }
+
+    @Test
+    public void parsePersonType_validValueWithWhitespaceAndCase_returnsEnum() throws Exception {
+        assertEquals(PersonType.CLIENT, ParserUtil.parsePersonType("  Client  "));
+        assertEquals(PersonType.VENDOR, ParserUtil.parsePersonType("\nVeNdOr\t"));
     }
 }
