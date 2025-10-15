@@ -37,19 +37,10 @@ public class PersonUtil {
         sb.append(PREFIX_EMAIL + person.getEmail().value + " ");
         sb.append(PREFIX_ADDRESS + person.getAddress().value + " ");
         sb.append(PREFIX_WEDDING_DATE + person.getWeddingDate().toString() + " ");
+        sb.append(PREFIX_TYPE).append(person.getType().toString());
 
-        // Add type if person has client or vendor tag
-        for (Tag tag : person.getTags()) {
-            if (tag.tagName.equals("client") || tag.tagName.equals("vendor")) {
-                sb.append(PREFIX_TYPE + tag.tagName + " ");
-                break;
-            }
-        }
+        person.getTags().forEach(tag -> sb.append(PREFIX_TAG).append(tag.tagName).append(" "));
 
-        // Add other tags
-        person.getTags().stream()
-            .filter(s -> !s.tagName.equals("client") && !s.tagName.equals("vendor"))
-            .forEach(s -> sb.append(PREFIX_TAG + s.tagName + " "));
         return sb.toString();
     }
 

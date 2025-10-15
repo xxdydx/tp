@@ -1,8 +1,10 @@
 package seedu.address.ui;
 
+import java.util.Comparator;
+import java.util.stream.Collectors;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import seedu.address.model.person.Person;
 
@@ -15,7 +17,9 @@ public class PersonDetailsPanel extends UiPart<Region> {
     @FXML private Label name;
     @FXML private Label phone;
     @FXML private Label email;
-    @FXML private FlowPane tags;
+    @FXML private Label type;
+    @FXML private Label weddingDate;
+    @FXML private Label tagsLine;
 
     /**
      * Creates a new details panel bound to the given {@link Person}.
@@ -41,15 +45,39 @@ public class PersonDetailsPanel extends UiPart<Region> {
             name.setText("No contact selected");
             phone.setText("");
             email.setText("");
-            tags.getChildren().clear();
+            type.setText("");
+            weddingDate.setText("");
+            if (tagsLine != null) {
+                tagsLine.setText("");
+                tagsLine.setVisible(false);
+                tagsLine.setManaged(false);
+            }
             return;
         }
 
         name.setText(person.getName().fullName);
-        phone.setText(person.getPhone().value);
-        email.setText(person.getEmail().value);
+        phone.setText("Phone       : " + person.getPhone().value);
+        email.setText("Email         : " + person.getEmail().value);
+        String typeText = person.getType().display();
+        type.setText("Type          : " + typeText);
 
-        tags.getChildren().clear();
-        person.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        String wdText = (person.getWeddingDate() != null)
+                ? person.getWeddingDate().toString()
+                : "-";
+        weddingDate.setText("Wedding  : " + wdText);
+
+        if (person.getTags().isEmpty()) {
+            tagsLine.setText("");
+            tagsLine.setVisible(false);
+            tagsLine.setManaged(false); // remove its layout space
+        } else {
+            String tagsCsv = person.getTags().stream()
+                    .sorted(Comparator.comparing(t -> t.tagName))
+                    .map(t -> t.tagName)
+                    .collect(Collectors.joining(", "));
+            tagsLine.setText("Tags          : " + tagsCsv);
+            tagsLine.setVisible(true);
+            tagsLine.setManaged(true);
+        }
     }
 }

@@ -15,6 +15,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
@@ -30,6 +31,7 @@ class JsonAdaptedPerson {
     private final String email;
     private final String address;
     private final String weddingDate;
+    private final String type;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -38,12 +40,14 @@ class JsonAdaptedPerson {
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email, @JsonProperty("address") String address,
-            @JsonProperty("weddingDate") String weddingDate, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("weddingDate") String weddingDate, @JsonProperty("type") String type,
+            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.weddingDate = weddingDate;
+        this.type = type;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -58,6 +62,7 @@ class JsonAdaptedPerson {
         email = source.getEmail().value;
         address = source.getAddress().value;
         weddingDate = source.getWeddingDate().toString();
+        type = source.getType().toString();
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -119,8 +124,19 @@ class JsonAdaptedPerson {
             throw new IllegalValueException(WeddingDate.MESSAGE_CONSTRAINTS);
         }
 
+        if (type == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "type"));
+        }
+        final PersonType modelType;
+        try {
+            modelType = PersonType.parse(type);
+        } catch (IllegalArgumentException ex) {
+            // exact message asserted in JsonAdaptedPersonTest
+            throw new IllegalValueException("Type must be 'client' or 'vendor'.");
+        }
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelTags);
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelType, modelTags);
     }
 
 }

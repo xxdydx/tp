@@ -47,6 +47,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
@@ -60,7 +61,7 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_allFieldsPresent_success() {
-        Person expectedPerson = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND, "client").build();
+        Person expectedPerson = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND).withType(PersonType.CLIENT).build();
 
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
@@ -69,7 +70,7 @@ public class AddCommandParserTest {
 
         // multiple tags - all accepted
         Person expectedPersonMultipleTags = new PersonBuilder(BOB)
-                .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND, "client").build();
+                .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND).withType(PersonType.CLIENT).build();
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + WEDDING_DATE_DESC_BOB
                         + TYPE_DESC_CLIENT + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
@@ -156,7 +157,7 @@ public class AddCommandParserTest {
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero tags
-        Person expectedPerson = new PersonBuilder(AMY).withTags("client").build();
+        Person expectedPerson = new PersonBuilder(AMY).withTags().withType(PersonType.CLIENT).build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
                         + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT,
                 new AddCommand(expectedPerson));
@@ -239,7 +240,7 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_typeClient_success() {
-        Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND, "client").build();
+        Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND).withType(PersonType.CLIENT).build();
 
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
@@ -249,7 +250,8 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_typeVendor_successCaseInsensitive() {
-        Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND, "vendor").build();
+        Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND)
+                .withType(PersonType.VENDOR).build();
 
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB

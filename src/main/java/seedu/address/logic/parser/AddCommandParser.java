@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
@@ -19,6 +20,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
@@ -35,20 +37,21 @@ public class AddCommandParser implements Parser<AddCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME,
-            PREFIX_PHONE, PREFIX_EMAIL,
-            PREFIX_ADDRESS, PREFIX_TYPE,
-            PREFIX_WEDDING_DATE, PREFIX_TAG);
+        requireNonNull(args);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS,
-            PREFIX_PHONE, PREFIX_EMAIL,
-            PREFIX_TYPE, PREFIX_WEDDING_DATE)
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
+                PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_WEDDING_DATE,
+                PREFIX_TAG, PREFIX_TYPE);
+
+        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
+                PREFIX_WEDDING_DATE)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
-            PREFIX_ADDRESS, PREFIX_TYPE, PREFIX_WEDDING_DATE);
+        argMultimap.verifyNoDuplicatePrefixesFor(
+                PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_WEDDING_DATE, PREFIX_TYPE);
+
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
@@ -56,20 +59,20 @@ public class AddCommandParser implements Parser<AddCommand> {
         WeddingDate weddingDate = ParserUtil.parseWeddingDate(argMultimap.getValue(PREFIX_WEDDING_DATE).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
+        PersonType type = PersonType.CLIENT;
+
         if (argMultimap.getValue(PREFIX_TYPE).isPresent()) {
             String raw = argMultimap.getValue(PREFIX_TYPE).get().trim();
             String normalised = raw.toLowerCase();
+
+            // Exact message expected by AddCommandParserTest.parse_typeInvalid_failure
             if (!normalised.equals("client") && !normalised.equals("vendor")) {
                 throw new ParseException("Invalid type. Please choose either 'client' or 'vendor'.");
             }
-            Tag typeTag = new Tag(normalised);
-            if (!tagList.contains(typeTag)) {
-                tagList.add(typeTag);
-            }
+            type = PersonType.parse(normalised);
         }
 
-        Person person = new Person(name, phone, email, address, weddingDate, tagList);
-
+        Person person = new Person(name, phone, email, address, weddingDate, type, tagList);
         return new AddCommand(person);
     }
 
