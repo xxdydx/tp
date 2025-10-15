@@ -17,6 +17,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Price;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -32,6 +33,7 @@ class JsonAdaptedPerson {
     private final String address;
     private final String weddingDate;
     private final String type;
+    private final String price;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -41,13 +43,14 @@ class JsonAdaptedPerson {
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email, @JsonProperty("address") String address,
             @JsonProperty("weddingDate") String weddingDate, @JsonProperty("type") String type,
-            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("price") String price, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.weddingDate = weddingDate;
         this.type = type;
+        this.price = price;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -63,6 +66,7 @@ class JsonAdaptedPerson {
         address = source.getAddress().value;
         weddingDate = source.getWeddingDate().toString();
         type = source.getType().toString();
+        price = source.getPrice().map(Price::toString).orElse(null);
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -136,7 +140,19 @@ class JsonAdaptedPerson {
         }
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelType, modelTags);
+
+        final Price modelPrice;
+        if (price != null && !price.isEmpty()) {
+            if (!Price.isValidPrice(price)) {
+                throw new IllegalValueException(Price.MESSAGE_CONSTRAINTS);
+            }
+            modelPrice = new Price(price);
+        } else {
+            modelPrice = null;
+        }
+
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelType, modelTags,
+                modelPrice);
     }
 
 }

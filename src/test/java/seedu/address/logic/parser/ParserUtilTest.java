@@ -20,6 +20,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Price;
 import seedu.address.model.tag.Tag;
 
 public class ParserUtilTest {
@@ -29,6 +30,7 @@ public class ParserUtilTest {
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_WEDDING_DATE = "32/13/2025";
     private static final String INVALID_TAG = "#friend";
+    private static final String INVALID_PRICE = "abc";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
@@ -37,6 +39,7 @@ public class ParserUtilTest {
     private static final String VALID_WEDDING_DATE = "15/06/2020";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
+    private static final String VALID_PRICE = "1000-2000";
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -243,5 +246,49 @@ public class ParserUtilTest {
     public void parsePersonType_validValueWithWhitespaceAndCase_returnsEnum() throws Exception {
         assertEquals(PersonType.CLIENT, ParserUtil.parsePersonType("  Client  "));
         assertEquals(PersonType.VENDOR, ParserUtil.parsePersonType("\nVeNdOr\t"));
+    }
+
+    @Test
+    public void parsePrice_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parsePrice((String) null));
+    }
+
+    @Test
+    public void parsePrice_invalidValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parsePrice(INVALID_PRICE));
+        assertThrows(ParseException.class, () -> ParserUtil.parsePrice("")); // empty string
+        assertThrows(ParseException.class, () -> ParserUtil.parsePrice(" ")); // spaces only
+        assertThrows(ParseException.class, () -> ParserUtil.parsePrice("12.50")); // decimal
+        assertThrows(ParseException.class, () -> ParserUtil.parsePrice("-500")); // negative
+    }
+
+    @Test
+    public void parsePrice_validValueWithoutWhitespace_returnsPrice() throws Exception {
+        Price expectedPrice = new Price(VALID_PRICE);
+        assertEquals(expectedPrice, ParserUtil.parsePrice(VALID_PRICE));
+    }
+
+    @Test
+    public void parsePrice_validValueWithWhitespace_returnsTrimmedPrice() throws Exception {
+        Price expectedPrice = new Price(VALID_PRICE);
+        assertEquals(expectedPrice, ParserUtil.parsePrice(WHITESPACE + VALID_PRICE + WHITESPACE));
+    }
+
+    @Test
+    public void parsePrice_validSingleNumber_returnsPrice() throws Exception {
+        Price expectedPrice = new Price("1000");
+        assertEquals(expectedPrice, ParserUtil.parsePrice("1000"));
+    }
+
+    @Test
+    public void parsePrice_validRange_returnsPrice() throws Exception {
+        Price expectedPrice = new Price("500-1500");
+        assertEquals(expectedPrice, ParserUtil.parsePrice("500-1500"));
+    }
+
+    @Test
+    public void parsePrice_validWithDollarSign_returnsPrice() throws Exception {
+        Price expectedPrice = new Price("$1000");
+        assertEquals(expectedPrice, ParserUtil.parsePrice("$1000"));
     }
 }
