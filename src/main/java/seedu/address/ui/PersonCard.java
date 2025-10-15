@@ -46,6 +46,8 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label type;
     @FXML
+    private Label price;
+    @FXML
     private FlowPane tags;
     @FXML
     private Label typeChip;
@@ -63,6 +65,17 @@ public class PersonCard extends UiPart<Region> {
         address.setText(person.getAddress().value);
         email.setText(person.getEmail().value);
         weddingDate.setText(person.getWeddingDate().toString());
+        
+        // Display price only for vendors with price
+        if (person.getPrice().isPresent()) {
+            price.setText("Price: " + person.getPrice().get().toString());
+            price.setVisible(true);
+            price.setManaged(true);
+        } else {
+            price.setVisible(false);
+            price.setManaged(false);
+        }
+        
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
