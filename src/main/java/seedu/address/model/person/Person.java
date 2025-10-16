@@ -5,11 +5,14 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.date.WeddingDate;
 import seedu.address.model.tag.Tag;
+
+
 
 /**
  * Represents a Person in the address book.
@@ -28,12 +31,13 @@ public class Person {
     private final WeddingDate weddingDate;
     private final Set<Tag> tags = new HashSet<>();
     private final PersonType type;
+    private final Price price; // only for vendors
 
     /**
-     * Every field must be present and not null.
+     * Every field must be present and not null, except price which is optional.
      */
     public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
-                  Set<Tag> tags) {
+                  Set<Tag> tags, Price price) {
         requireAllNonNull(name, phone, email, address, weddingDate, tags);
         this.name = name;
         this.phone = phone;
@@ -42,6 +46,7 @@ public class Person {
         this.weddingDate = weddingDate;
         this.type = type;
         this.tags.addAll(tags);
+        this.price = price;
     }
 
     public Name getName() {
@@ -64,7 +69,13 @@ public class Person {
         return weddingDate;
     }
 
-    public PersonType getType() { return type; }
+    public PersonType getType() {
+        return type;
+    }
+
+    public Optional<Price> getPrice() {
+        return Optional.ofNullable(price);
+    }
 
     /**
      * Returns an immutable tag set, which throws
@@ -110,13 +121,14 @@ public class Person {
                 && address.equals(otherPerson.address)
                 && weddingDate.equals(otherPerson.weddingDate)
                 && type == otherPerson.type
-                && tags.equals(otherPerson.tags);
+                && tags.equals(otherPerson.tags)
+                && Objects.equals(price, otherPerson.price);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, weddingDate, type, tags);
+        return Objects.hash(name, phone, email, address, weddingDate, type, tags, price);
     }
 
     @Override
@@ -129,6 +141,7 @@ public class Person {
                 .add("weddingDate", weddingDate)
                 .add("tags", tags)
                 .add("type", type)
+                .add("price", price)
                 .toString();
     }
 

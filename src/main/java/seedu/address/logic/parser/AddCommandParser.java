@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
@@ -22,6 +23,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Price;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -41,7 +43,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
                 PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_WEDDING_DATE,
-                PREFIX_TAG, PREFIX_TYPE);
+                PREFIX_TAG, PREFIX_TYPE, PREFIX_PRICE);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
                 PREFIX_WEDDING_DATE)
@@ -50,7 +52,8 @@ public class AddCommandParser implements Parser<AddCommand> {
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(
-                PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_WEDDING_DATE, PREFIX_TYPE);
+                PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_WEDDING_DATE, PREFIX_TYPE,
+                PREFIX_PRICE);
 
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
@@ -72,7 +75,17 @@ public class AddCommandParser implements Parser<AddCommand> {
             type = PersonType.parse(normalised);
         }
 
-        Person person = new Person(name, phone, email, address, weddingDate, type, tagList);
+        // Parse price if present
+        Price price = null;
+        if (argMultimap.getValue(PREFIX_PRICE).isPresent()) {
+            // Price is only applicable for vendors
+            if (type != PersonType.VENDOR) {
+                throw new ParseException("Price is only applicable for vendors.");
+            }
+            price = ParserUtil.parsePrice(argMultimap.getValue(PREFIX_PRICE).get());
+        }
+
+        Person person = new Person(name, phone, email, address, weddingDate, type, tagList, price);
         return new AddCommand(person);
     }
 

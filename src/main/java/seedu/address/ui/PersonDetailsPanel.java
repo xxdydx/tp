@@ -19,6 +19,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
     @FXML private Label email;
     @FXML private Label type;
     @FXML private Label weddingDate;
+    @FXML private Label price;
     @FXML private Label tagsLine;
 
     /**
@@ -47,6 +48,11 @@ public class PersonDetailsPanel extends UiPart<Region> {
             email.setText("");
             type.setText("");
             weddingDate.setText("");
+            if (price != null) {
+                price.setText("");
+                price.setVisible(false);
+                price.setManaged(false);
+            }
             if (tagsLine != null) {
                 tagsLine.setText("");
                 tagsLine.setVisible(false);
@@ -65,6 +71,17 @@ public class PersonDetailsPanel extends UiPart<Region> {
                 ? person.getWeddingDate().toString()
                 : "-";
         weddingDate.setText("Wedding  : " + wdText);
+
+        // Display price only for vendors with price
+        if (person.getPrice().isPresent()) {
+            price.setText("Price         : " + person.getPrice().get().toString());
+            price.setVisible(true);
+            price.setManaged(true);
+        } else {
+            price.setText("");
+            price.setVisible(false);
+            price.setManaged(false);
+        }
 
         if (person.getTags().isEmpty()) {
             tagsLine.setText("");

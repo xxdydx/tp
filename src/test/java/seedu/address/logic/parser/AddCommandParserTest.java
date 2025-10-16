@@ -9,6 +9,7 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_PRICE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_WEDDING_DATE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
@@ -17,6 +18,7 @@ import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
+import static seedu.address.logic.commands.CommandTestUtil.PRICE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
@@ -31,6 +33,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
@@ -49,11 +52,13 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Price;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
 
 public class AddCommandParserTest {
     private static final String TYPE_DESC_CLIENT = " type/client";
+    private static final String TYPE_DESC_VENDOR = " type/vendor";
     private static final String TYPE_DESC_INVALID = " type/photographer";
     private static final String TYPE_DESC_VENDOR_UPPER = " type/VENDOR";
 
@@ -275,5 +280,60 @@ public class AddCommandParserTest {
         assertParseFailure(parser,
                 validExpectedPersonString + TYPE_DESC_CLIENT + " type/vendor",
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TYPE));
+    }
+
+    @Test
+    public void parse_vendorWithPrice_success() {
+        Person expected = new PersonBuilder(BOB)
+                .withTags(VALID_TAG_FRIEND)
+                .withType(PersonType.VENDOR)
+                .withPrice("500-1500")
+                .build();
+
+        assertParseSuccess(parser,
+                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_VENDOR + PRICE_DESC_BOB + TAG_DESC_FRIEND,
+                new AddCommand(expected));
+    }
+
+    @Test
+    public void parse_vendorWithoutPrice_success() {
+        Person expected = new PersonBuilder(BOB)
+                .withTags(VALID_TAG_FRIEND)
+                .withType(PersonType.VENDOR)
+                .withoutPrice()
+                .build();
+
+        assertParseSuccess(parser,
+                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_VENDOR + TAG_DESC_FRIEND,
+                new AddCommand(expected));
+    }
+
+    @Test
+    public void parse_clientWithPrice_failure() {
+        // Price is only applicable for vendors
+        assertParseFailure(parser,
+                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + PRICE_DESC_BOB + TAG_DESC_FRIEND,
+                "Price is only applicable for vendors.");
+    }
+
+    @Test
+    public void parse_invalidPrice_failure() {
+        assertParseFailure(parser,
+                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_VENDOR + INVALID_PRICE_DESC + TAG_DESC_FRIEND,
+                Price.MESSAGE_CONSTRAINTS);
+    }
+
+    @Test
+    public void parse_repeatedPrice_failure() {
+        String validExpectedPersonString = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
+                + ADDRESS_DESC_BOB + WEDDING_DATE_DESC_BOB + TYPE_DESC_VENDOR + TAG_DESC_FRIEND;
+
+        assertParseFailure(parser,
+                validExpectedPersonString + PRICE_DESC_BOB + " price/1000",
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PRICE));
     }
 }
