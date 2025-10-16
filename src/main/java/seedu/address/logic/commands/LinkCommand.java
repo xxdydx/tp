@@ -106,7 +106,8 @@ public class LinkCommand extends Command {
                 person.getWeddingDate(),
                 person.getType(),
                 person.getTags(),
-                updatedLinks);
+                updatedLinks,
+                person.getPrice().orElse(null));
     }
 
     @Override

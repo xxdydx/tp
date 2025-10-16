@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
@@ -30,6 +31,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Price;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -49,6 +51,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_WEDDING_DATE + "WEDDING_DATE] "
             + "[" + PREFIX_TYPE + "(client|vendor)] "
+            + "[" + PREFIX_PRICE + "PRICE] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
@@ -109,9 +112,10 @@ public class EditCommand extends Command {
         PersonType updatedType =
                 editPersonDescriptor.getType().orElse(personToEdit.getType());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        Price updatedPrice = editPersonDescriptor.getPrice().orElse(personToEdit.getPrice().orElse(null));
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedWeddingDate,
-                updatedType, updatedTags);
+                updatedType, updatedTags, updatedPrice);
     }
 
     @Override
@@ -150,6 +154,7 @@ public class EditCommand extends Command {
         private Address address;
         private WeddingDate weddingDate;
         private PersonType type;
+        private Price price;
         private Set<Tag> tags;
 
         public EditPersonDescriptor() {
@@ -166,6 +171,7 @@ public class EditCommand extends Command {
             setAddress(toCopy.address);
             setWeddingDate(toCopy.weddingDate);
             setType(toCopy.type);
+            setPrice(toCopy.price);
             setTags(toCopy.tags);
         }
 
@@ -173,7 +179,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, weddingDate, type, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, weddingDate, type, price, tags);
         }
 
         public void setName(Name name) {
@@ -216,9 +222,21 @@ public class EditCommand extends Command {
             return Optional.ofNullable(weddingDate);
         }
 
-        public void setType(PersonType type) { this.type = type; }
+        public void setType(PersonType type) {
+            this.type = type;
+        }
 
-        public Optional<PersonType> getType() { return Optional.ofNullable(type); }
+        public Optional<PersonType> getType() {
+            return Optional.ofNullable(type);
+        }
+
+        public void setPrice(Price price) {
+            this.price = price;
+        }
+
+        public Optional<Price> getPrice() {
+            return Optional.ofNullable(price);
+        }
 
         /**
          * Sets {@code tags} to this object's {@code tags}.
@@ -256,6 +274,7 @@ public class EditCommand extends Command {
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(weddingDate, otherEditPersonDescriptor.weddingDate)
                     && Objects.equals(type, otherEditPersonDescriptor.type)
+                    && Objects.equals(price, otherEditPersonDescriptor.price)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 
@@ -268,6 +287,7 @@ public class EditCommand extends Command {
                     .add("address", address)
                     .add("weddingDate", weddingDate)
                     .add("type", type)
+                    .add("price", price)
                     .add("tags", tags)
                     .toString();
         }

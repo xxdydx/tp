@@ -22,7 +22,8 @@ import seedu.address.model.person.PersonType;
 import seedu.address.testutil.PersonBuilder;
 
 /**
- * Contains integration tests (interaction with the Model) and unit tests for UnlinkCommand.
+ * Contains integration tests (interaction with the Model) and unit tests for
+ * UnlinkCommand.
  */
 public class UnlinkCommandTest {
 
@@ -52,10 +53,10 @@ public class UnlinkCommandTest {
         // Create linked persons
         Person linkedClient = new Person(client.getName(), client.getPhone(), client.getEmail(),
                 client.getAddress(), client.getWeddingDate(), client.getType(), client.getTags(),
-                java.util.Set.of(vendor));
+                java.util.Set.of(vendor), null);
         Person linkedVendor = new Person(vendor.getName(), vendor.getPhone(), vendor.getEmail(),
                 vendor.getAddress(), vendor.getWeddingDate(), vendor.getType(), vendor.getTags(),
-                java.util.Set.of(client));
+                java.util.Set.of(client), null);
 
         AddressBook addressBook = new AddressBook();
         addressBook.addPerson(linkedClient);
@@ -77,10 +78,10 @@ public class UnlinkCommandTest {
         // Unlink them in expected model
         Person updatedClient = new Person(currentClient.getName(), currentClient.getPhone(),
                 currentClient.getEmail(), currentClient.getAddress(), currentClient.getWeddingDate(),
-                currentClient.getType(), currentClient.getTags(), java.util.Set.of());
+                currentClient.getType(), currentClient.getTags(), java.util.Set.of(), null);
         Person updatedVendor = new Person(currentVendor.getName(), currentVendor.getPhone(),
                 currentVendor.getEmail(), currentVendor.getAddress(), currentVendor.getWeddingDate(),
-                currentVendor.getType(), currentVendor.getTags(), java.util.Set.of());
+                currentVendor.getType(), currentVendor.getTags(), java.util.Set.of(), null);
         expectedModel.setPerson(currentClient, updatedClient);
         expectedModel.setPerson(currentVendor, updatedVendor);
 
@@ -113,10 +114,10 @@ public class UnlinkCommandTest {
 
         Person linkedVendor = new Person(vendorFirst.getName(), vendorFirst.getPhone(),
                 vendorFirst.getEmail(), vendorFirst.getAddress(), vendorFirst.getWeddingDate(),
-                vendorFirst.getType(), vendorFirst.getTags(), java.util.Set.of(clientSecond));
+                vendorFirst.getType(), vendorFirst.getTags(), java.util.Set.of(clientSecond), null);
         Person linkedClient = new Person(clientSecond.getName(), clientSecond.getPhone(),
                 clientSecond.getEmail(), clientSecond.getAddress(), clientSecond.getWeddingDate(),
-                clientSecond.getType(), clientSecond.getTags(), java.util.Set.of(vendorFirst));
+                clientSecond.getType(), clientSecond.getTags(), java.util.Set.of(vendorFirst), null);
 
         AddressBook addressBook = new AddressBook();
         addressBook.addPerson(linkedVendor);
@@ -139,10 +140,10 @@ public class UnlinkCommandTest {
 
         Person linkedClient1 = new Person(clientFirst.getName(), clientFirst.getPhone(),
                 clientFirst.getEmail(), clientFirst.getAddress(), clientFirst.getWeddingDate(),
-                clientFirst.getType(), clientFirst.getTags(), java.util.Set.of(clientSecond));
+                clientFirst.getType(), clientFirst.getTags(), java.util.Set.of(clientSecond), null);
         Person linkedClient2 = new Person(clientSecond.getName(), clientSecond.getPhone(),
                 clientSecond.getEmail(), clientSecond.getAddress(), clientSecond.getWeddingDate(),
-                clientSecond.getType(), clientSecond.getTags(), java.util.Set.of(clientFirst));
+                clientSecond.getType(), clientSecond.getTags(), java.util.Set.of(clientFirst), null);
 
         AddressBook addressBook = new AddressBook();
         addressBook.addPerson(linkedClient1);

@@ -46,8 +46,13 @@ public class Messages {
                 .append("; Address: ")
                 .append(person.getAddress())
                 .append("; Wedding Date: ")
-                .append(person.getWeddingDate())
-                .append("; Tags: ");
+                .append(person.getWeddingDate());
+
+        // Add price if present (vendors only)
+        person.getPrice().ifPresent(price ->
+                builder.append("; Price: ").append(price));
+
+        builder.append("; Tags: ");
         person.getTags().forEach(builder::append);
         return builder.toString();
     }

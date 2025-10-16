@@ -22,7 +22,8 @@ import seedu.address.model.person.PersonType;
 import seedu.address.testutil.PersonBuilder;
 
 /**
- * Contains integration tests (interaction with the Model) and unit tests for LinkCommand.
+ * Contains integration tests (interaction with the Model) and unit tests for
+ * LinkCommand.
  */
 public class LinkCommandTest {
 
@@ -69,10 +70,10 @@ public class LinkCommandTest {
         // Manually link them in expected model
         Person updatedClient = new Person(client.getName(), client.getPhone(), client.getEmail(),
                 client.getAddress(), client.getWeddingDate(), client.getType(), client.getTags(),
-                java.util.Set.of(vendor));
+                java.util.Set.of(vendor), null);
         Person updatedVendor = new Person(vendor.getName(), vendor.getPhone(), vendor.getEmail(),
                 vendor.getAddress(), vendor.getWeddingDate(), vendor.getType(), vendor.getTags(),
-                java.util.Set.of(client));
+                java.util.Set.of(client), null);
         expectedModel.setPerson(client, updatedClient);
         expectedModel.setPerson(vendor, updatedVendor);
 

@@ -5,6 +5,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
@@ -28,13 +29,14 @@ public class Person {
     private final WeddingDate weddingDate;
     private final Set<Tag> tags = new HashSet<>();
     private final PersonType type;
+    private final Price price; // only for vendors
     private final Set<Person> linkedPersons = new HashSet<>();
 
     /**
-     * Every field must be present and not null.
+     * Every field must be present and not null, except price which is optional.
      */
     public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
-            Set<Tag> tags) {
+            Set<Tag> tags, Price price) {
         requireAllNonNull(name, phone, email, address, weddingDate, tags);
         this.name = name;
         this.phone = phone;
@@ -43,14 +45,15 @@ public class Person {
         this.weddingDate = weddingDate;
         this.type = type;
         this.tags.addAll(tags);
+        this.price = price;
     }
 
     /**
      * Constructor with linked persons.
-     * Every field must be present and not null.
+     * Every field must be present and not null, except price which is optional.
      */
     public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
-            Set<Tag> tags, Set<Person> linkedPersons) {
+            Set<Tag> tags, Set<Person> linkedPersons, Price price) {
         requireAllNonNull(name, phone, email, address, weddingDate, tags, linkedPersons);
         this.name = name;
         this.phone = phone;
@@ -59,6 +62,7 @@ public class Person {
         this.weddingDate = weddingDate;
         this.type = type;
         this.tags.addAll(tags);
+        this.price = price;
         this.linkedPersons.addAll(linkedPersons);
     }
 
@@ -84,6 +88,10 @@ public class Person {
 
     public PersonType getType() {
         return type;
+    }
+
+    public Optional<Price> getPrice() {
+        return Optional.ofNullable(price);
     }
 
     /**
@@ -146,8 +154,8 @@ public class Person {
                 && address.equals(otherPerson.address)
                 && weddingDate.equals(otherPerson.weddingDate)
                 && type == otherPerson.type
-                && tags.equals(otherPerson.tags);
-        // linkedPersons intentionally excluded from equals to avoid circular references
+                && tags.equals(otherPerson.tags)
+                && Objects.equals(price, otherPerson.price);
     }
 
     @Override
@@ -155,7 +163,7 @@ public class Person {
         // use this method for custom fields hashing instead of implementing your own
         // linkedPersons intentionally excluded from hashCode to avoid circular
         // references
-        return Objects.hash(name, phone, email, address, weddingDate, type, tags);
+        return Objects.hash(name, phone, email, address, weddingDate, type, tags, price);
     }
 
     @Override
@@ -168,6 +176,7 @@ public class Person {
                 .add("weddingDate", weddingDate)
                 .add("tags", tags)
                 .add("type", type)
+                .add("price", price)
                 .add("linkedPersons", linkedPersons.size() + " link(s)")
                 .toString();
     }
