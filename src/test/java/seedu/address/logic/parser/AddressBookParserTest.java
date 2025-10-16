@@ -94,7 +94,7 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_link() throws Exception {
         LinkCommand command = (LinkCommand) parser.parseCommand(
-                LinkCommand.COMMAND_WORD + " client:1, vendor:2");
+                LinkCommand.COMMAND_WORD + " client/1 vendor/2");
         assertEquals(new LinkCommand(INDEX_FIRST_PERSON,
                 seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON), command);
     }
@@ -102,7 +102,7 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_unlink() throws Exception {
         UnlinkCommand command = (UnlinkCommand) parser.parseCommand(
-                UnlinkCommand.COMMAND_WORD + " client:1, vendor:2");
+                UnlinkCommand.COMMAND_WORD + " client/1 vendor/2");
         assertEquals(new UnlinkCommand(INDEX_FIRST_PERSON,
                 seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON), command);
     }

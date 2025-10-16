@@ -22,9 +22,9 @@ public class LinkCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Links a client to a vendor using their index numbers in the displayed person list.\n"
-            + "Parameters: client:CLIENT_INDEX, vendor:VENDOR_INDEX "
+            + "Parameters: client/CLIENT_INDEX vendor/VENDOR_INDEX "
             + "(both indexes must be positive integers)\n"
-            + "Example: " + COMMAND_WORD + " client:3, vendor:5";
+            + "Example: " + COMMAND_WORD + " client/3 vendor/5";
 
     public static final String MESSAGE_LINK_SUCCESS = "Link made successfully!";
     public static final String MESSAGE_LINK_ALREADY_EXISTS = "This client and vendor are already linked.";

@@ -22,9 +22,9 @@ public class UnlinkCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Unlinks a client from a vendor using their index numbers in the displayed person list.\n"
-            + "Parameters: client:CLIENT_INDEX, vendor:VENDOR_INDEX "
+            + "Parameters: client/CLIENT_INDEX vendor/VENDOR_INDEX "
             + "(both indexes must be positive integers)\n"
-            + "Example: " + COMMAND_WORD + " client:3, vendor:5";
+            + "Example: " + COMMAND_WORD + " client/3 vendor/5";
 
     public static final String MESSAGE_UNLINK_SUCCESS = "Unlinked successfully!";
     public static final String MESSAGE_LINK_DOES_NOT_EXIST = "This client and vendor are not linked.";
