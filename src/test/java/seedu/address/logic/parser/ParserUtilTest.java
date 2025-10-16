@@ -21,6 +21,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
+import seedu.address.model.person.Budget;
 import seedu.address.model.tag.Tag;
 
 public class ParserUtilTest {
@@ -31,6 +32,7 @@ public class ParserUtilTest {
     private static final String INVALID_WEDDING_DATE = "32/13/2025";
     private static final String INVALID_TAG = "#friend";
     private static final String INVALID_PRICE = "abc";
+    private static final String INVALID_BUDGET = "abc";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
@@ -40,6 +42,7 @@ public class ParserUtilTest {
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
     private static final String VALID_PRICE = "1000-2000";
+    private static final String VALID_BUDGET = "3000-5000";
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -290,5 +293,50 @@ public class ParserUtilTest {
     public void parsePrice_validWithDollarSign_returnsPrice() throws Exception {
         Price expectedPrice = new Price("$1000");
         assertEquals(expectedPrice, ParserUtil.parsePrice("$1000"));
+    }
+
+    @Test
+    public void parseBudget_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseBudget((String) null));
+    }
+
+    @Test
+    public void parseBudget_invalidValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseBudget(INVALID_BUDGET));
+        assertThrows(ParseException.class, () -> ParserUtil.parseBudget("")); // empty string
+        assertThrows(ParseException.class, () -> ParserUtil.parseBudget(" ")); // spaces only
+        assertThrows(ParseException.class, () -> ParserUtil.parseBudget("12.50")); // decimal
+        assertThrows(ParseException.class, () -> ParserUtil.parseBudget("-500")); // negative
+        assertThrows(ParseException.class, () -> ParserUtil.parseBudget("5000-1000")); // invalid range
+    }
+
+    @Test
+    public void parseBudget_validValueWithoutWhitespace_returnsBudget() throws Exception {
+        Budget expectedBudget = new Budget(VALID_BUDGET);
+        assertEquals(expectedBudget, ParserUtil.parseBudget(VALID_BUDGET));
+    }
+
+    @Test
+    public void parseBudget_validValueWithWhitespace_returnsTrimmedBudget() throws Exception {
+        Budget expectedBudget = new Budget(VALID_BUDGET);
+        assertEquals(expectedBudget, ParserUtil.parseBudget(WHITESPACE + VALID_BUDGET + WHITESPACE));
+    }
+
+    @Test
+    public void parseBudget_validSingleNumber_returnsBudget() throws Exception {
+        Budget expectedBudget = new Budget("5000");
+        assertEquals(expectedBudget, ParserUtil.parseBudget("5000"));
+    }
+
+    @Test
+    public void parseBudget_validRange_returnsBudget() throws Exception {
+        Budget expectedBudget = new Budget("2000-8000");
+        assertEquals(expectedBudget, ParserUtil.parseBudget("2000-8000"));
+    }
+
+    @Test
+    public void parseBudget_validWithDollarSign_returnsBudget() throws Exception {
+        Budget expectedBudget = new Budget("$5000");
+        assertEquals(expectedBudget, ParserUtil.parseBudget("$5000"));
     }
 }

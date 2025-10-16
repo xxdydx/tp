@@ -12,6 +12,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
+import seedu.address.model.person.Budget;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -40,6 +41,7 @@ public class EditPersonDescriptorBuilder {
         descriptor.setAddress(person.getAddress());
         descriptor.setWeddingDate(person.getWeddingDate());
         descriptor.setPrice(person.getPrice().orElse(null));
+        descriptor.setBudget(person.getBudget().orElse(null));
         descriptor.setTags(person.getTags());
     }
 
@@ -88,6 +90,14 @@ public class EditPersonDescriptorBuilder {
      */
     public EditPersonDescriptorBuilder withPrice(String price) {
         descriptor.setPrice(new Price(price));
+        return this;
+    }
+
+    /**
+     * Sets the {@code Budget} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withBudget(String budget) {
+        descriptor.setBudget(new Budget(budget));
         return this;
     }
 

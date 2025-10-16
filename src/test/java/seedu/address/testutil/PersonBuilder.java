@@ -11,6 +11,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
+import seedu.address.model.person.Budget;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
@@ -33,6 +34,7 @@ public class PersonBuilder {
     private Set<Tag> tags;
     private PersonType type;
     private Price price;
+    private Budget budget;
 
 
     /**
@@ -47,6 +49,7 @@ public class PersonBuilder {
         tags = new HashSet<>();
         type = DEFAULT_TYPE;
         price = null;
+        budget = null;
     }
 
     /**
@@ -61,6 +64,7 @@ public class PersonBuilder {
         tags = new HashSet<>(personToCopy.getTags());
         type = personToCopy.getType();
         price = personToCopy.getPrice().orElse(null);
+        budget = personToCopy.getBudget().orElse(null);
     }
 
     /**
@@ -135,8 +139,24 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Budget} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withBudget(String budget) {
+        this.budget = new Budget(budget);
+        return this;
+    }
+
+    /**
+     * Sets the {@code Budget} to null for the {@code Person} that we are building.
+     */
+    public PersonBuilder withoutBudget() {
+        this.budget = null;
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, address, weddingDate, type, tags, price);
+        return new Person(name, phone, email, address, weddingDate, type, tags, price, budget);
     }
 
 }
