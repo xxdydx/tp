@@ -34,10 +34,11 @@ public class Person {
     private final Budget budget; // only for clients
 
     /**
-     * Every field must be present and not null, except price and budget which are optional.
+     * Every field must be present and not null, except price and budget which are
+     * optional.
      */
     public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
-                  Set<Tag> tags, Price price, Budget budget) {
+            Set<Tag> tags, Price price, Budget budget) {
         requireAllNonNull(name, phone, email, address, weddingDate, tags);
         this.name = name;
         this.phone = phone;
@@ -66,6 +67,7 @@ public class Person {
         this.tags.addAll(tags);
         this.price = price;
         this.linkedPersons.addAll(linkedPersons);
+        this.budget = null;
     }
 
     public Name getName() {
