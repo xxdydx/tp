@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -24,6 +25,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
+import seedu.address.model.person.Budget;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -43,7 +45,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
                 PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_WEDDING_DATE,
-                PREFIX_TAG, PREFIX_TYPE, PREFIX_PRICE);
+                PREFIX_TAG, PREFIX_TYPE, PREFIX_PRICE, PREFIX_BUDGET);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
                 PREFIX_WEDDING_DATE)
@@ -53,7 +55,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         argMultimap.verifyNoDuplicatePrefixesFor(
                 PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_WEDDING_DATE, PREFIX_TYPE,
-                PREFIX_PRICE);
+                PREFIX_PRICE, PREFIX_BUDGET);
 
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
@@ -85,7 +87,17 @@ public class AddCommandParser implements Parser<AddCommand> {
             price = ParserUtil.parsePrice(argMultimap.getValue(PREFIX_PRICE).get());
         }
 
-        Person person = new Person(name, phone, email, address, weddingDate, type, tagList, price);
+        // Parse budget if present
+        Budget budget = null;
+        if (argMultimap.getValue(PREFIX_BUDGET).isPresent()) {
+            // Budget is only applicable for clients
+            if (type != PersonType.CLIENT) {
+                throw new ParseException("Budget is only applicable for clients.");
+            }
+            budget = ParserUtil.parseBudget(argMultimap.getValue(PREFIX_BUDGET).get());
+        }
+
+        Person person = new Person(name, phone, email, address, weddingDate, type, tagList, price, budget);
         return new AddCommand(person);
     }
 

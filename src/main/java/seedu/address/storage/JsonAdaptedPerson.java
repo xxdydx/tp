@@ -18,6 +18,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
+import seedu.address.model.person.Budget;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -34,6 +35,7 @@ class JsonAdaptedPerson {
     private final String weddingDate;
     private final String type;
     private final String price;
+    private final String budget;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -43,7 +45,8 @@ class JsonAdaptedPerson {
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email, @JsonProperty("address") String address,
             @JsonProperty("weddingDate") String weddingDate, @JsonProperty("type") String type,
-            @JsonProperty("price") String price, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("price") String price, @JsonProperty("budget") String budget,
+            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -51,6 +54,7 @@ class JsonAdaptedPerson {
         this.weddingDate = weddingDate;
         this.type = type;
         this.price = price;
+        this.budget = budget;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -67,6 +71,7 @@ class JsonAdaptedPerson {
         weddingDate = source.getWeddingDate().toString();
         type = source.getType().toString();
         price = source.getPrice().map(Price::toString).orElse(null);
+        budget = source.getBudget().map(Budget::toString).orElse(null);
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -151,8 +156,18 @@ class JsonAdaptedPerson {
             modelPrice = null;
         }
 
+        final Budget modelBudget;
+        if (budget != null && !budget.isEmpty()) {
+            if (!Budget.isValidBudget(budget)) {
+                throw new IllegalValueException(Budget.MESSAGE_CONSTRAINTS);
+            }
+            modelBudget = new Budget(budget);
+        } else {
+            modelBudget = null;
+        }
+
         return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelType, modelTags,
-                modelPrice);
+                modelPrice, modelBudget);
     }
 
 }

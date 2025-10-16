@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
@@ -32,6 +33,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
+import seedu.address.model.person.Budget;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -52,6 +54,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_WEDDING_DATE + "WEDDING_DATE] "
             + "[" + PREFIX_TYPE + "(client|vendor)] "
             + "[" + PREFIX_PRICE + "PRICE] "
+            + "[" + PREFIX_BUDGET + "BUDGET] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
@@ -113,9 +116,10 @@ public class EditCommand extends Command {
                 editPersonDescriptor.getType().orElse(personToEdit.getType());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Price updatedPrice = editPersonDescriptor.getPrice().orElse(personToEdit.getPrice().orElse(null));
+        Budget updatedBudget = editPersonDescriptor.getBudget().orElse(personToEdit.getBudget().orElse(null));
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedWeddingDate,
-                updatedType, updatedTags, updatedPrice);
+                updatedType, updatedTags, updatedPrice, updatedBudget);
     }
 
     @Override
@@ -155,6 +159,7 @@ public class EditCommand extends Command {
         private WeddingDate weddingDate;
         private PersonType type;
         private Price price;
+        private Budget budget;
         private Set<Tag> tags;
 
         public EditPersonDescriptor() {
@@ -172,6 +177,7 @@ public class EditCommand extends Command {
             setWeddingDate(toCopy.weddingDate);
             setType(toCopy.type);
             setPrice(toCopy.price);
+            setBudget(toCopy.budget);
             setTags(toCopy.tags);
         }
 
@@ -179,7 +185,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, weddingDate, type, price, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, weddingDate, type, price, budget, tags);
         }
 
         public void setName(Name name) {
@@ -238,6 +244,14 @@ public class EditCommand extends Command {
             return Optional.ofNullable(price);
         }
 
+        public void setBudget(Budget budget) {
+            this.budget = budget;
+        }
+
+        public Optional<Budget> getBudget() {
+            return Optional.ofNullable(budget);
+        }
+
         /**
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
@@ -275,6 +289,7 @@ public class EditCommand extends Command {
                     && Objects.equals(weddingDate, otherEditPersonDescriptor.weddingDate)
                     && Objects.equals(type, otherEditPersonDescriptor.type)
                     && Objects.equals(price, otherEditPersonDescriptor.price)
+                    && Objects.equals(budget, otherEditPersonDescriptor.budget)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 
@@ -288,6 +303,7 @@ public class EditCommand extends Command {
                     .add("weddingDate", weddingDate)
                     .add("type", type)
                     .add("price", price)
+                    .add("budget", budget)
                     .add("tags", tags)
                     .toString();
         }
