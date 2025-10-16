@@ -244,15 +244,15 @@ The Link and Unlink features allow wedding planners to create and remove associa
 
 **Usage:**
 ```
-link client:1, vendor:3
-unlink client:1, vendor:3
+link client/1, vendor/3
+unlink client/1, vendor/3
 ```
 
 **Sequence Diagram for Link Command:**
 
 The following sequence diagram shows how the link operation works:
 
-1. User enters `link client:1, vendor:3`
+1. User enters `link client/1, vendor/3`
 2. `AddressBookParser` creates a `LinkCommandParser`
 3. `LinkCommandParser` parses the indices and creates a `LinkCommand`
 4. `LinkCommand` is executed by `LogicManager`
@@ -804,16 +804,16 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. At least 2 persons in the list.
 
-   1. Test case: `link client:1, vendor:2`<br>
+   1. Test case: `link client/1, vendor/2`<br>
       Expected: Success message indicating the link was created.
 
-   1. Test case: `link client:0, vendor:1`<br>
+   1. Test case: `link client/0, vendor/1`<br>
       Expected: Error message indicating invalid client index.
 
-   1. Test case: `link client:1, vendor:999`<br>
+   1. Test case: `link client/1, vendor/999`<br>
       Expected: Error message indicating invalid vendor index (assuming list has fewer than 999 contacts).
 
-   1. Test case: `link client:1`<br>
+   1. Test case: `link client/1`<br>
       Expected: Error message indicating incorrect command format.
 
 ### Unlinking a client from a vendor
@@ -822,13 +822,13 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. At least 2 persons in the list.
 
-   1. Test case: `unlink client:1, vendor:2`<br>
+   1. Test case: `unlink client/1, vendor/2`<br>
       Expected: Success message indicating the unlink was successful.
 
-   1. Test case: `unlink client:0, vendor:1`<br>
+   1. Test case: `unlink client/0, vendor/1`<br>
       Expected: Error message indicating invalid client index.
 
-   1. Test case: `unlink client:1, vendor:999`<br>
+   1. Test case: `unlink client/1, vendor/999`<br>
       Expected: Error message indicating invalid vendor index.
 
 ### Viewing help information
