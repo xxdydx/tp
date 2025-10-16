@@ -21,7 +21,7 @@ public class UnlinkCommandParser implements Parser<UnlinkCommand> {
      * Parses the given {@code String} of arguments in the context of the
      * UnlinkCommand
      * and returns an UnlinkCommand object for execution.
-     * 
+     *
      * @throws ParseException if the user input does not conform the expected format
      */
     public UnlinkCommand parse(String args) throws ParseException {

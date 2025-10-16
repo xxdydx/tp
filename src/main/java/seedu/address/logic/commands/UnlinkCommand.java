@@ -28,8 +28,10 @@ public class UnlinkCommand extends Command {
 
     public static final String MESSAGE_UNLINK_SUCCESS = "Unlinked successfully!";
     public static final String MESSAGE_LINK_DOES_NOT_EXIST = "This client and vendor are not linked.";
-    public static final String MESSAGE_INVALID_CLIENT_INDEX = "Invalid client index. It must be a valid number referring to an existing client.";
-    public static final String MESSAGE_INVALID_VENDOR_INDEX = "Invalid vendor index. It must be a valid number referring to an existing vendor.";
+    public static final String MESSAGE_INVALID_CLIENT_INDEX = "Invalid client index. "
+            + "It must be a valid number referring to an existing client.";
+    public static final String MESSAGE_INVALID_VENDOR_INDEX = "Invalid vendor index. "
+            + "It must be a valid number referring to an existing vendor.";
 
     private final Index clientIndex;
     private final Index vendorIndex;

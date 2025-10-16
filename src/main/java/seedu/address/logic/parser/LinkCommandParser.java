@@ -21,7 +21,7 @@ public class LinkCommandParser implements Parser<LinkCommand> {
      * Parses the given {@code String} of arguments in the context of the
      * LinkCommand
      * and returns a LinkCommand object for execution.
-     * 
+     *
      * @throws ParseException if the user input does not conform the expected format
      */
     public LinkCommand parse(String args) throws ParseException {
