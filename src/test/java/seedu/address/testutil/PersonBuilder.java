@@ -5,13 +5,13 @@ import java.util.Set;
 
 import seedu.address.model.date.WeddingDate;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Budget;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
-import seedu.address.model.person.Budget;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
