@@ -34,7 +34,7 @@ public class Person {
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
-                  Set<Tag> tags) {
+            Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, weddingDate, tags);
         this.name = name;
         this.phone = phone;
@@ -50,7 +50,7 @@ public class Person {
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
-                  Set<Tag> tags, Set<Person> linkedPersons) {
+            Set<Tag> tags, Set<Person> linkedPersons) {
         requireAllNonNull(name, phone, email, address, weddingDate, tags, linkedPersons);
         this.name = name;
         this.phone = phone;
@@ -153,7 +153,8 @@ public class Person {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        // linkedPersons intentionally excluded from hashCode to avoid circular references
+        // linkedPersons intentionally excluded from hashCode to avoid circular
+        // references
         return Objects.hash(name, phone, email, address, weddingDate, type, tags);
     }
 

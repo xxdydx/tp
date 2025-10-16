@@ -28,10 +28,8 @@ public class LinkCommand extends Command {
 
     public static final String MESSAGE_LINK_SUCCESS = "Link made successfully!";
     public static final String MESSAGE_LINK_ALREADY_EXISTS = "This client and vendor are already linked.";
-    public static final String MESSAGE_INVALID_CLIENT_INDEX =
-            "Invalid client index. It must be a valid number referring to an existing client.";
-    public static final String MESSAGE_INVALID_VENDOR_INDEX =
-            "Invalid vendor index. It must be a valid number referring to an existing vendor.";
+    public static final String MESSAGE_INVALID_CLIENT_INDEX = "Invalid client index. It must be a valid number referring to an existing client.";
+    public static final String MESSAGE_INVALID_VENDOR_INDEX = "Invalid vendor index. It must be a valid number referring to an existing vendor.";
 
     private final Index clientIndex;
     private final Index vendorIndex;
@@ -106,8 +104,7 @@ public class LinkCommand extends Command {
                 person.getWeddingDate(),
                 person.getType(),
                 person.getTags(),
-                updatedLinks
-        );
+                updatedLinks);
     }
 
     @Override
