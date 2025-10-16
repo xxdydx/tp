@@ -11,12 +11,12 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.date.WeddingDate;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Budget;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
-import seedu.address.model.person.Budget;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -147,13 +147,16 @@ public class ParserUtil {
 
     /**
      * Parses a {@link String} into a {@link PersonType}.
-     * */
+     */
     public static PersonType parsePersonType(String s) throws ParseException {
         requireNonNull(s);
         switch (s.trim().toLowerCase()) {
-        case "client": return PersonType.CLIENT;
-        case "vendor": return PersonType.VENDOR;
-        default: throw new ParseException("Type must be 'client' or 'vendor'.");
+        case "client":
+            return PersonType.CLIENT;
+        case "vendor":
+            return PersonType.VENDOR;
+        default:
+            throw new ParseException("Type must be 'client' or 'vendor'.");
         }
     }
 
