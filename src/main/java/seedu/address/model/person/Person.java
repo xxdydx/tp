@@ -28,6 +28,7 @@ public class Person {
     private final WeddingDate weddingDate;
     private final Set<Tag> tags = new HashSet<>();
     private final PersonType type;
+    private final Set<Person> linkedPersons = new HashSet<>();
 
     /**
      * Every field must be present and not null.
@@ -42,6 +43,23 @@ public class Person {
         this.weddingDate = weddingDate;
         this.type = type;
         this.tags.addAll(tags);
+    }
+
+    /**
+     * Constructor with linked persons.
+     * Every field must be present and not null.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
+                  Set<Tag> tags, Set<Person> linkedPersons) {
+        requireAllNonNull(name, phone, email, address, weddingDate, tags, linkedPersons);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.weddingDate = weddingDate;
+        this.type = type;
+        this.tags.addAll(tags);
+        this.linkedPersons.addAll(linkedPersons);
     }
 
     public Name getName() {
@@ -64,7 +82,25 @@ public class Person {
         return weddingDate;
     }
 
-    public PersonType getType() { return type; }
+    public PersonType getType() {
+        return type;
+    }
+
+    /**
+     * Returns an immutable set of linked persons, which throws
+     * {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<Person> getLinkedPersons() {
+        return Collections.unmodifiableSet(linkedPersons);
+    }
+
+    /**
+     * Returns true if this person is linked to the specified person.
+     */
+    public boolean isLinkedTo(Person other) {
+        return linkedPersons.contains(other);
+    }
 
     /**
      * Returns an immutable tag set, which throws
@@ -111,11 +147,13 @@ public class Person {
                 && weddingDate.equals(otherPerson.weddingDate)
                 && type == otherPerson.type
                 && tags.equals(otherPerson.tags);
+        // linkedPersons intentionally excluded from equals to avoid circular references
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
+        // linkedPersons intentionally excluded from hashCode to avoid circular references
         return Objects.hash(name, phone, email, address, weddingDate, type, tags);
     }
 
@@ -129,6 +167,7 @@ public class Person {
                 .add("weddingDate", weddingDate)
                 .add("tags", tags)
                 .add("type", type)
+                .add("linkedPersons", linkedPersons.size() + " link(s)")
                 .toString();
     }
 

@@ -2,13 +2,16 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonType;
 
 /**
  * Links a client to a vendor in the address book.
@@ -62,12 +65,49 @@ public class LinkCommand extends Command {
         Person client = lastShownList.get(clientIndex.getZeroBased());
         Person vendor = lastShownList.get(vendorIndex.getZeroBased());
 
-        // TODO: Implement actual linking logic once Person class supports links
-        // For now, just return success message
-        // Future implementation will check if link already exists and add link to both
-        // persons
+        // Validate that the person at clientIndex is actually a client
+        if (client.getType() != PersonType.CLIENT) {
+            throw new CommandException(MESSAGE_INVALID_CLIENT_INDEX);
+        }
+
+        // Validate that the person at vendorIndex is actually a vendor
+        if (vendor.getType() != PersonType.VENDOR) {
+            throw new CommandException(MESSAGE_INVALID_VENDOR_INDEX);
+        }
+
+        // Check if already linked
+        if (client.isLinkedTo(vendor)) {
+            throw new CommandException(MESSAGE_LINK_ALREADY_EXISTS);
+        }
+
+        // Create updated persons with the new links
+        Person updatedClient = createPersonWithLink(client, vendor);
+        Person updatedVendor = createPersonWithLink(vendor, client);
+
+        // Update both persons in the model
+        model.setPerson(client, updatedClient);
+        model.setPerson(vendor, updatedVendor);
 
         return new CommandResult(MESSAGE_LINK_SUCCESS);
+    }
+
+    /**
+     * Creates a new Person with an additional link to the specified person.
+     */
+    private Person createPersonWithLink(Person person, Person linkedPerson) {
+        Set<Person> updatedLinks = new HashSet<>(person.getLinkedPersons());
+        updatedLinks.add(linkedPerson);
+
+        return new Person(
+                person.getName(),
+                person.getPhone(),
+                person.getEmail(),
+                person.getAddress(),
+                person.getWeddingDate(),
+                person.getType(),
+                person.getTags(),
+                updatedLinks
+        );
     }
 
     @Override
