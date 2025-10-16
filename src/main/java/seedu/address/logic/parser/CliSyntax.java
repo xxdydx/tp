@@ -15,5 +15,6 @@ public class CliSyntax {
     public static final Prefix PREFIX_TAG = new Prefix("t/");
     public static final Prefix PREFIX_TYPE = new Prefix("type/");
     public static final Prefix PREFIX_PRICE = new Prefix("price/");
+    public static final Prefix PREFIX_BUDGET = new Prefix("budget/");
 
 }
