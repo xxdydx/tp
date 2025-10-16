@@ -12,8 +12,6 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.date.WeddingDate;
 import seedu.address.model.tag.Tag;
 
-
-
 /**
  * Represents a Person in the address book.
  * Guarantees: details are present and not null, field values are validated,
@@ -32,12 +30,13 @@ public class Person {
     private final Set<Tag> tags = new HashSet<>();
     private final PersonType type;
     private final Price price; // only for vendors
+    private final Set<Person> linkedPersons = new HashSet<>();
 
     /**
      * Every field must be present and not null, except price which is optional.
      */
     public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
-                  Set<Tag> tags, Price price) {
+            Set<Tag> tags, Price price) {
         requireAllNonNull(name, phone, email, address, weddingDate, tags);
         this.name = name;
         this.phone = phone;
@@ -47,6 +46,24 @@ public class Person {
         this.type = type;
         this.tags.addAll(tags);
         this.price = price;
+    }
+
+    /**
+     * Constructor with linked persons.
+     * Every field must be present and not null, except price which is optional.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
+            Set<Tag> tags, Set<Person> linkedPersons, Price price) {
+        requireAllNonNull(name, phone, email, address, weddingDate, tags, linkedPersons);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.weddingDate = weddingDate;
+        this.type = type;
+        this.tags.addAll(tags);
+        this.price = price;
+        this.linkedPersons.addAll(linkedPersons);
     }
 
     public Name getName() {
@@ -75,6 +92,22 @@ public class Person {
 
     public Optional<Price> getPrice() {
         return Optional.ofNullable(price);
+    }
+
+    /**
+     * Returns an immutable set of linked persons, which throws
+     * {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<Person> getLinkedPersons() {
+        return Collections.unmodifiableSet(linkedPersons);
+    }
+
+    /**
+     * Returns true if this person is linked to the specified person.
+     */
+    public boolean isLinkedTo(Person other) {
+        return linkedPersons.contains(other);
     }
 
     /**
@@ -128,6 +161,8 @@ public class Person {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
+        // linkedPersons intentionally excluded from hashCode to avoid circular
+        // references
         return Objects.hash(name, phone, email, address, weddingDate, type, tags, price);
     }
 
@@ -142,6 +177,7 @@ public class Person {
                 .add("tags", tags)
                 .add("type", type)
                 .add("price", price)
+                .add("linkedPersons", linkedPersons.size() + " link(s)")
                 .toString();
     }
 
