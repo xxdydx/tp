@@ -26,7 +26,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
     private Label weddingDate;
     @FXML
     private Label price;
-    @FXML 
+    @FXML
     private Label budget;
     @FXML
     private Label tagsLine;
