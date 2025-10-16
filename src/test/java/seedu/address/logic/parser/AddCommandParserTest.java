@@ -3,9 +3,12 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.BUDGET_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.BUDGET_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_BUDGET_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
@@ -47,6 +50,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.model.date.WeddingDate;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Budget;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -328,7 +332,52 @@ public class AddCommandParserTest {
     }
 
     @Test
-    public void parse_repeatedPrice_failure() {
+    public void parse_clientWithBudget_success() {
+        Person expected = new PersonBuilder(AMY)
+                .withTags(VALID_TAG_FRIEND)
+                .withType(PersonType.CLIENT)
+                .withBudget("5000-10000")
+                .build();
+
+        assertParseSuccess(parser,
+                NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                        + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT + BUDGET_DESC_AMY + TAG_DESC_FRIEND,
+                new AddCommand(expected));
+    }
+
+    @Test
+    public void parse_clientWithoutBudget_success() {
+        Person expected = new PersonBuilder(AMY)
+                .withTags(VALID_TAG_FRIEND)
+                .withType(PersonType.CLIENT)
+                .withoutBudget()
+                .build();
+
+        assertParseSuccess(parser,
+                NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                        + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT + TAG_DESC_FRIEND,
+                new AddCommand(expected));
+    }
+
+    @Test
+    public void parse_vendorWithBudget_failure() {
+        // Budget is only applicable for clients
+        assertParseFailure(parser,
+                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_VENDOR + BUDGET_DESC_BOB + TAG_DESC_FRIEND,
+                "Budget is only applicable for clients.");
+    }
+
+    @Test
+    public void parse_invalidBudget_failure() {
+        assertParseFailure(parser,
+                NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                        + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT + INVALID_BUDGET_DESC + TAG_DESC_FRIEND,
+                Budget.MESSAGE_CONSTRAINTS);
+    }
+
+    @Test
+    public void parse_duplicatePrice_failure() {
         String validExpectedPersonString = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB + WEDDING_DATE_DESC_BOB + TYPE_DESC_VENDOR + TAG_DESC_FRIEND;
 

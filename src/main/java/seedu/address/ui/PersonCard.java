@@ -48,6 +48,8 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label price;
     @FXML
+    private Label budget;
+    @FXML
     private FlowPane tags;
     @FXML
     private Label typeChip;
@@ -74,6 +76,16 @@ public class PersonCard extends UiPart<Region> {
         } else {
             price.setVisible(false);
             price.setManaged(false);
+        }
+
+        // Display budget only for clients with budget
+        if (person.getBudget().isPresent()) {
+            budget.setText("Budget: " + person.getBudget().get().toString());
+            budget.setVisible(true);
+            budget.setManaged(true);
+        } else {
+            budget.setVisible(false);
+            budget.setManaged(false);
         }
 
         person.getTags().stream()

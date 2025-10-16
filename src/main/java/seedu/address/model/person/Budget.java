@@ -4,10 +4,10 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Vendor's price in the address book.
- * Guarantees: immutable; is valid as declared in {@link #isValidPrice(String)}
+ * Represents a Client's budget in the address book.
+ * Guarantees: immutable; is valid as declared in {@link #isValidBudget(String)}
  */
-public class Price {
+public class Budget {
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid amount. Provide a number or a range like 800-1500.";
 
@@ -24,21 +24,21 @@ public class Price {
     public final String value;
 
     /**
-     * Constructs a {@code Price}.
+     * Constructs a {@code Budget}.
      *
-     * @param price A valid price.
+     * @param budget A valid budget.
      */
-    public Price(String price) {
-        requireNonNull(price);
-        String trimmed = price.trim();
-        checkArgument(isValidPrice(trimmed), MESSAGE_CONSTRAINTS);
+    public Budget(String budget) {
+        requireNonNull(budget);
+        String trimmed = budget.trim();
+        checkArgument(isValidBudget(trimmed), MESSAGE_CONSTRAINTS);
         value = trimmed;
     }
 
     /**
-     * Returns true if a given string is a valid price.
+     * Returns true if a given string is a valid budget.
      */
-    public static boolean isValidPrice(String test) {
+    public static boolean isValidBudget(String test) {
         if (!test.matches(VALIDATION_REGEX)) {
             return false;
         }
@@ -73,12 +73,12 @@ public class Price {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof Price)) {
+        if (!(other instanceof Budget)) {
             return false;
         }
 
-        Price otherPrice = (Price) other;
-        return value.equals(otherPrice.value);
+        Budget otherBudget = (Budget) other;
+        return value.equals(otherBudget.value);
     }
 
     @Override

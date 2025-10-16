@@ -52,6 +52,10 @@ public class Messages {
         person.getPrice().ifPresent(price ->
                 builder.append("; Price: ").append(price));
 
+        // Add budget if present (clients only)
+        person.getBudget().ifPresent(budget ->
+                builder.append("; Budget: ").append(budget));
+
         builder.append("; Tags: ");
         person.getTags().forEach(builder::append);
         return builder.toString();

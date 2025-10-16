@@ -31,12 +31,14 @@ public class Person {
     private final PersonType type;
     private final Price price; // only for vendors
     private final Set<Person> linkedPersons = new HashSet<>();
+    private final Budget budget; // only for clients
 
     /**
-     * Every field must be present and not null, except price which is optional.
+     * Every field must be present and not null, except price and budget which are
+     * optional.
      */
     public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
-            Set<Tag> tags, Price price) {
+            Set<Tag> tags, Price price, Budget budget) {
         requireAllNonNull(name, phone, email, address, weddingDate, tags);
         this.name = name;
         this.phone = phone;
@@ -46,6 +48,7 @@ public class Person {
         this.type = type;
         this.tags.addAll(tags);
         this.price = price;
+        this.budget = budget;
     }
 
     /**
@@ -64,6 +67,7 @@ public class Person {
         this.tags.addAll(tags);
         this.price = price;
         this.linkedPersons.addAll(linkedPersons);
+        this.budget = null;
     }
 
     public Name getName() {
@@ -92,6 +96,10 @@ public class Person {
 
     public Optional<Price> getPrice() {
         return Optional.ofNullable(price);
+    }
+
+    public Optional<Budget> getBudget() {
+        return Optional.ofNullable(budget);
     }
 
     /**
@@ -155,7 +163,8 @@ public class Person {
                 && weddingDate.equals(otherPerson.weddingDate)
                 && type == otherPerson.type
                 && tags.equals(otherPerson.tags)
-                && Objects.equals(price, otherPerson.price);
+                && Objects.equals(price, otherPerson.price)
+                && Objects.equals(budget, otherPerson.budget);
     }
 
     @Override
@@ -163,7 +172,7 @@ public class Person {
         // use this method for custom fields hashing instead of implementing your own
         // linkedPersons intentionally excluded from hashCode to avoid circular
         // references
-        return Objects.hash(name, phone, email, address, weddingDate, type, tags, price);
+        return Objects.hash(name, phone, email, address, weddingDate, type, tags, price, budget);
     }
 
     @Override

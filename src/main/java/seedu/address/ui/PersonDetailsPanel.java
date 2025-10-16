@@ -27,6 +27,8 @@ public class PersonDetailsPanel extends UiPart<Region> {
     @FXML
     private Label price;
     @FXML
+    private Label budget;
+    @FXML
     private Label tagsLine;
     @FXML
     private Label linkedPersonsLine;
@@ -64,6 +66,11 @@ public class PersonDetailsPanel extends UiPart<Region> {
                 price.setVisible(false);
                 price.setManaged(false);
             }
+            if (budget != null) {
+                budget.setText("");
+                budget.setVisible(false);
+                budget.setManaged(false);
+            }
             if (tagsLine != null) {
                 tagsLine.setText("");
                 tagsLine.setVisible(false);
@@ -97,6 +104,17 @@ public class PersonDetailsPanel extends UiPart<Region> {
             price.setText("");
             price.setVisible(false);
             price.setManaged(false);
+        }
+
+        // Display budget only for clients with budget
+        if (person.getBudget().isPresent()) {
+            budget.setText("Budget      : " + person.getBudget().get().toString());
+            budget.setVisible(true);
+            budget.setManaged(true);
+        } else {
+            budget.setText("");
+            budget.setVisible(false);
+            budget.setManaged(false);
         }
 
         if (person.getTags().isEmpty()) {
