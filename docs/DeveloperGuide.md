@@ -164,7 +164,7 @@ The Person Type feature allows KnotBook to distinguish between clients and vendo
 **Key Components:**
 * `PersonType` enum - Defines two types: `CLIENT` and `VENDOR`
 * `Person` class - Contains a `PersonType` field to categorize each contact
-* `AddCommandParser` - Parses the `type:` prefix to determine the person type
+* `AddCommandParser` - Parses the `type/` prefix to determine the person type
 
 **Design Considerations:**
 
@@ -848,18 +848,18 @@ testers are expected to do more *exploratory* testing.
 
 1. Adding a client contact
 
-   1. Test case: `add n/John Doe p/98765432 e/john@example.com a/123 Street date:12-10-2025 type:client t/friends`<br>
+   1. Test case: `add n/John Doe p/98765432 e/john@example.com a/123 Street date:12-10-2025 type/client t/friends`<br>
       Expected: New client contact is added with wedding date. Success message shows the contact details.
 
-   1. Test case: `add n/Jane Smith p/87654321 e/jane@example.com a/456 Avenue type:client`<br>
+   1. Test case: `add n/Jane Smith p/87654321 e/jane@example.com a/456 Avenue type/client`<br>
       Expected: Error message indicating wedding date is required for clients.
 
 2. Adding a vendor contact
 
-   1. Test case: `add n/Flower Shop p/91234567 e/flowers@example.com a/789 Road type:vendor t/florist`<br>
+   1. Test case: `add n/Flower Shop p/91234567 e/flowers@example.com a/789 Road type/vendor t/florist`<br>
       Expected: New vendor contact is added. Success message shows the contact details.
 
-   1. Test case: `add n/Caterer Co p/92345678 e/cater@example.com a/321 Lane type:invalid`<br>
+   1. Test case: `add n/Caterer Co p/92345678 e/cater@example.com a/321 Lane type/invalid`<br>
       Expected: Error message indicating type must be either 'client' or 'vendor'.
 
 ### Saving data
