@@ -187,7 +187,6 @@ public class Person {
                 .add("type", type)
                 .add("price", price)
                 .add("linkedPersons", linkedPersons.size() + " link(s)")
-                .add("budget", budget)
                 .toString();
     }
 
