@@ -23,7 +23,7 @@ public class CatCommand extends Command {
     private final CategoryMatchesPredicate predicate;
 
     public CatCommand(CategoryMatchesPredicate predicate) {
-        this.predicate = predicate;
+        this.predicate = requireNonNull(predicate);
     }
 
     @Override
