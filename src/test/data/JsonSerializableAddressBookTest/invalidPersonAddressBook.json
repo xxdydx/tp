@@ -5,6 +5,7 @@
     "email": "invalid@email!3e",
     "address": "4th street",
     "weddingDate": "2024-01-01",
-    "type": "client"
+    "type": "client",
+    "remark": ""
   } ]
 }

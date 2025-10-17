@@ -5,11 +5,14 @@ import java.util.Set;
 
 import seedu.address.model.date.WeddingDate;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Budget;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Price;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
@@ -31,6 +34,9 @@ public class PersonBuilder {
     private WeddingDate weddingDate;
     private Set<Tag> tags;
     private PersonType type;
+    private Price price;
+    private Budget budget;
+    private Remark remark;
 
 
     /**
@@ -44,6 +50,9 @@ public class PersonBuilder {
         weddingDate = WeddingDate.parse(DEFAULT_WEDDING_DATE);
         tags = new HashSet<>();
         type = DEFAULT_TYPE;
+        price = null;
+        budget = null;
+        remark = new Remark("");
     }
 
     /**
@@ -57,6 +66,9 @@ public class PersonBuilder {
         weddingDate = personToCopy.getWeddingDate();
         tags = new HashSet<>(personToCopy.getTags());
         type = personToCopy.getType();
+        price = personToCopy.getPrice().orElse(null);
+        budget = personToCopy.getBudget().orElse(null);
+        remark = personToCopy.getRemark();
     }
 
     /**
@@ -115,8 +127,48 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Price} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withPrice(String price) {
+        this.price = new Price(price);
+        return this;
+    }
+
+    /**
+     * Sets the {@code Price} to null for the {@code Person} that we are building.
+     */
+    public PersonBuilder withoutPrice() {
+        this.price = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@code Budget} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withBudget(String budget) {
+        this.budget = new Budget(budget);
+        return this;
+    }
+
+    /**
+     * Sets the {@code Budget} to null for the {@code Person} that we are building.
+     */
+    public PersonBuilder withoutBudget() {
+        this.budget = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@code Remark} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withRemark(String remark) {
+        this.remark = new Remark(remark);
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, address, weddingDate, type, tags);
+        return new Person(name, phone, email, address, weddingDate, type, tags, price, budget, remark);
     }
 
 }

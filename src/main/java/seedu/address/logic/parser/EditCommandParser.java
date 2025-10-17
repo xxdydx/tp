@@ -3,10 +3,13 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
 
 import java.util.Collection;
@@ -35,7 +38,7 @@ public class EditCommandParser implements Parser<EditCommand> {
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
-                PREFIX_ADDRESS,
+                PREFIX_ADDRESS, PREFIX_TYPE, PREFIX_PRICE, PREFIX_BUDGET,
                 PREFIX_WEDDING_DATE, PREFIX_TAG);
 
         Index index;
@@ -47,7 +50,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                PREFIX_WEDDING_DATE);
+                PREFIX_WEDDING_DATE, PREFIX_TYPE, PREFIX_PRICE, PREFIX_BUDGET);
 
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
 
@@ -66,6 +69,16 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (argMultimap.getValue(PREFIX_WEDDING_DATE).isPresent()) {
             editPersonDescriptor.setWeddingDate(ParserUtil.parseWeddingDate(argMultimap.getValue(
                     PREFIX_WEDDING_DATE).get()));
+        }
+        if (argMultimap.getValue(PREFIX_TYPE).isPresent()) {
+            editPersonDescriptor.setType(ParserUtil.parsePersonType(argMultimap.getValue(
+                    PREFIX_TYPE).get()));
+        }
+        if (argMultimap.getValue(PREFIX_PRICE).isPresent()) {
+            editPersonDescriptor.setPrice(ParserUtil.parsePrice(argMultimap.getValue(PREFIX_PRICE).get()));
+        }
+        if (argMultimap.getValue(PREFIX_BUDGET).isPresent()) {
+            editPersonDescriptor.setBudget(ParserUtil.parseBudget(argMultimap.getValue(PREFIX_BUDGET).get()));
         }
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
 

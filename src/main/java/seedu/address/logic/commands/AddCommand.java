@@ -2,9 +2,11 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
@@ -29,25 +31,29 @@ public class AddCommand extends Command {
             + PREFIX_EMAIL + "EMAIL "
             + PREFIX_ADDRESS + "ADDRESS "
             + PREFIX_WEDDING_DATE + "WEDDING_DATE "
-            + "[" + PREFIX_TYPE + "TYPE] "
+            + PREFIX_TYPE + "TYPE "
+            + "[" + PREFIX_PRICE + "PRICE] "
+            + "[" + PREFIX_BUDGET + "BUDGET] "
             + "[" + PREFIX_TAG + "TAG]...\n"
-            + "Examples:\n"
-            + "Vendor: " + COMMAND_WORD + " "
-            + PREFIX_NAME + "Rose Garden Florist "
-            + PREFIX_PHONE + "91234567 "
-            + PREFIX_EMAIL + "rose@flowers.com "
-            + PREFIX_ADDRESS + "123 Orchard Road "
-            + PREFIX_WEDDING_DATE + "01/01/2025 "
-            + PREFIX_TYPE + "vendor "
-            + PREFIX_TAG + "florist "
-            + PREFIX_TAG + "premium\n"
-            + "Client: " + COMMAND_WORD + " "
-            + PREFIX_NAME + "Sarah Tan "
+            + "Example 1 (Client): " + COMMAND_WORD + " "
+            + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
-            + PREFIX_EMAIL + "sarah@client.com "
-            + PREFIX_ADDRESS + "311 Clementi Ave 2 "
-            + PREFIX_WEDDING_DATE + "15/06/2025 "
-            + PREFIX_TYPE + "client";
+            + PREFIX_EMAIL + "johnd@example.com "
+            + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
+            + PREFIX_WEDDING_DATE + "15-06-2020 "
+            + PREFIX_TYPE + "client "
+            + PREFIX_BUDGET + "5000-10000 "
+            + PREFIX_TAG + "friends"
+            + "\n"
+            + "Example 2 (Vendor): " + COMMAND_WORD + " "
+            + PREFIX_NAME + "Jane Smith "
+            + PREFIX_PHONE + "91234567 "
+            + PREFIX_EMAIL + "jane@example.com "
+            + PREFIX_ADDRESS + "123 Orchard Road, #03-45 "
+            + PREFIX_WEDDING_DATE + "20-07-2020 "
+            + PREFIX_TYPE + "vendor "
+            + PREFIX_PRICE + "1000-2000 "
+            + PREFIX_TAG + "photographer";
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";

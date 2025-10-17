@@ -14,19 +14,33 @@ import seedu.address.model.person.Person;
 public class PersonDetailsPanel extends UiPart<Region> {
     private static final String FXML = "PersonDetailsPanel.fxml";
 
-    @FXML private Label name;
-    @FXML private Label phone;
-    @FXML private Label email;
-    @FXML private Label type;
-    @FXML private Label weddingDate;
-    @FXML private Label tagsLine;
+    @FXML
+    private Label name;
+    @FXML
+    private Label phone;
+    @FXML
+    private Label email;
+    @FXML
+    private Label type;
+    @FXML
+    private Label weddingDate;
+    @FXML
+    private Label price;
+    @FXML
+    private Label budget;
+    @FXML
+    private Label tagsLine;
+    @FXML
+    private Label linkedPersonsLine;
 
     /**
      * Creates a new details panel bound to the given {@link Person}.
      * <p>
-     * If {@code person} is {@code null}, the panel enters an empty state (no selection).
+     * If {@code person} is {@code null}, the panel enters an empty state (no
+     * selection).
      *
-     * @param person The initial person to display; may be {@code null} to show the empty state.
+     * @param person The initial person to display; may be {@code null} to show the
+     *               empty state.
      */
     public PersonDetailsPanel(Person person) {
         super(FXML);
@@ -47,10 +61,25 @@ public class PersonDetailsPanel extends UiPart<Region> {
             email.setText("");
             type.setText("");
             weddingDate.setText("");
+            if (price != null) {
+                price.setText("");
+                price.setVisible(false);
+                price.setManaged(false);
+            }
+            if (budget != null) {
+                budget.setText("");
+                budget.setVisible(false);
+                budget.setManaged(false);
+            }
             if (tagsLine != null) {
                 tagsLine.setText("");
                 tagsLine.setVisible(false);
                 tagsLine.setManaged(false);
+            }
+            if (linkedPersonsLine != null) {
+                linkedPersonsLine.setText("");
+                linkedPersonsLine.setVisible(false);
+                linkedPersonsLine.setManaged(false);
             }
             return;
         }
@@ -66,6 +95,28 @@ public class PersonDetailsPanel extends UiPart<Region> {
                 : "-";
         weddingDate.setText("Wedding  : " + wdText);
 
+        // Display price only for vendors with price
+        if (person.getPrice().isPresent()) {
+            price.setText("Price         : " + person.getPrice().get().toString());
+            price.setVisible(true);
+            price.setManaged(true);
+        } else {
+            price.setText("");
+            price.setVisible(false);
+            price.setManaged(false);
+        }
+
+        // Display budget only for clients with budget
+        if (person.getBudget().isPresent()) {
+            budget.setText("Budget      : " + person.getBudget().get().toString());
+            budget.setVisible(true);
+            budget.setManaged(true);
+        } else {
+            budget.setText("");
+            budget.setVisible(false);
+            budget.setManaged(false);
+        }
+
         if (person.getTags().isEmpty()) {
             tagsLine.setText("");
             tagsLine.setVisible(false);
@@ -78,6 +129,21 @@ public class PersonDetailsPanel extends UiPart<Region> {
             tagsLine.setText("Tags          : " + tagsCsv);
             tagsLine.setVisible(true);
             tagsLine.setManaged(true);
+        }
+
+        // Display linked persons with their type (CLIENT/VENDOR)
+        if (person.getLinkedPersons().isEmpty()) {
+            linkedPersonsLine.setText("");
+            linkedPersonsLine.setVisible(false);
+            linkedPersonsLine.setManaged(false);
+        } else {
+            String linkedPersonsText = person.getLinkedPersons().stream()
+                    .sorted(Comparator.comparing(p -> p.getName().fullName))
+                    .map(p -> p.getType().display() + ": " + p.getName().fullName)
+                    .collect(Collectors.joining(", "));
+            linkedPersonsLine.setText("Linked      : " + linkedPersonsText);
+            linkedPersonsLine.setVisible(true);
+            linkedPersonsLine.setManaged(true);
         }
     }
 }

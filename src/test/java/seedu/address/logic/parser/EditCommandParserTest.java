@@ -26,6 +26,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
@@ -41,6 +42,7 @@ import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
@@ -51,6 +53,12 @@ public class EditCommandParserTest {
 
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
+
+    private static final String TYPE_DESC_CLIENT = " " + PREFIX_TYPE + "client";
+    private static final String TYPE_DESC_VENDOR = " " + PREFIX_TYPE + "vendor";
+    private static final String INVALID_TYPE_DESC = " " + PREFIX_TYPE + "partner";
+    private static final String INVALID_TYPE_MESSAGE = "Type must be 'client' or 'vendor'.";
+
 
     private EditCommandParser parser = new EditCommandParser();
 
@@ -205,4 +213,84 @@ public class EditCommandParserTest {
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
+
+    @Test
+    public void parse_typeOnlySpecified_success() {
+        Index targetIndex = INDEX_FIRST_PERSON;
+        String userInput = targetIndex.getOneBased() + TYPE_DESC_VENDOR;
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+        descriptor.setType(PersonType.VENDOR);
+
+        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_typeAlongsideOtherFields_success() {
+        Index targetIndex = INDEX_SECOND_PERSON;
+        String userInput = targetIndex.getOneBased()
+                + PHONE_DESC_BOB
+                + EMAIL_DESC_AMY
+                + ADDRESS_DESC_AMY
+                + NAME_DESC_AMY
+                + TAG_DESC_FRIEND
+                + TYPE_DESC_CLIENT;
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withName(VALID_NAME_AMY)
+                .withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_AMY)
+                .withAddress(VALID_ADDRESS_AMY)
+                .withTags(VALID_TAG_FRIEND)
+                .build();
+        descriptor.setType(PersonType.CLIENT);
+
+        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_invalidType_failure() {
+        Index targetIndex = INDEX_FIRST_PERSON;
+        String userInput = targetIndex.getOneBased() + INVALID_TYPE_DESC;
+
+        assertParseFailure(parser, userInput, INVALID_TYPE_MESSAGE);
+    }
+
+    @Test
+    public void parse_duplicateType_failure() {
+        Index targetIndex = INDEX_FIRST_PERSON;
+        String userInput = targetIndex.getOneBased() + TYPE_DESC_CLIENT + TYPE_DESC_VENDOR;
+
+        assertParseFailure(parser, userInput,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TYPE));
+    }
+
+    @Test
+    public void parse_typeAndTags_success() {
+        Index targetIndex = INDEX_THIRD_PERSON;
+        String userInput = targetIndex.getOneBased() + TAG_DESC_FRIEND + TYPE_DESC_VENDOR;
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withTags(VALID_TAG_FRIEND)
+                .build();
+        descriptor.setType(PersonType.VENDOR);
+
+        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_typeWithWhitespaceAndCase_success() {
+        Index targetIndex = INDEX_FIRST_PERSON;
+        String userInput = targetIndex.getOneBased() + " " + PREFIX_TYPE + "  VeNdOr  ";
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+        descriptor.setType(PersonType.VENDOR);
+
+        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
 }

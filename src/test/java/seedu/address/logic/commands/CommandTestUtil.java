@@ -3,9 +3,11 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
@@ -40,6 +42,10 @@ public class CommandTestUtil {
     public static final String VALID_WEDDING_DATE_BOB = "02/02/2024";
     public static final String VALID_TYPE_CLIENT = "client";
     public static final String VALID_TYPE_VENDOR = "vendor";
+    public static final String VALID_PRICE_AMY = "1000-2000";
+    public static final String VALID_PRICE_BOB = "500-1500";
+    public static final String VALID_BUDGET_AMY = "5000-10000";
+    public static final String VALID_BUDGET_BOB = "3000-8000";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
 
@@ -55,6 +61,10 @@ public class CommandTestUtil {
     public static final String WEDDING_DATE_DESC_BOB = " " + PREFIX_WEDDING_DATE + VALID_WEDDING_DATE_BOB;
     public static final String TYPE_DESC_CLIENT = " " + PREFIX_TYPE + VALID_TYPE_CLIENT;
     public static final String TYPE_DESC_VENDOR = " " + PREFIX_TYPE + VALID_TYPE_VENDOR;
+    public static final String PRICE_DESC_AMY = " " + PREFIX_PRICE + VALID_PRICE_AMY;
+    public static final String PRICE_DESC_BOB = " " + PREFIX_PRICE + VALID_PRICE_BOB;
+    public static final String BUDGET_DESC_AMY = " " + PREFIX_BUDGET + VALID_BUDGET_AMY;
+    public static final String BUDGET_DESC_BOB = " " + PREFIX_BUDGET + VALID_BUDGET_BOB;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
 
@@ -64,6 +74,8 @@ public class CommandTestUtil {
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
     public static final String INVALID_WEDDING_DATE_DESC = " " + PREFIX_WEDDING_DATE + "32/13/2025"; // invalid date
     public static final String INVALID_TYPE_DESC = " " + PREFIX_TYPE + "supplier"; // only client or vendor allowed
+    public static final String INVALID_PRICE_DESC = " " + PREFIX_PRICE + "abc"; // non-numeric not allowed
+    public static final String INVALID_BUDGET_DESC = " " + PREFIX_BUDGET + "abc"; // non-numeric not allowed
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";

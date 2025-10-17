@@ -14,6 +14,9 @@
             <Label fx:id="phone" styleClass="cell_bigger_label" />
             <Label fx:id="email" styleClass="cell_bigger_label" />
             <Label fx:id="weddingDate" styleClass="cell_bigger_label" />
+            <Label fx:id="price" styleClass="cell_bigger_label" />
+            <Label fx:id="linkedPersonsLine" styleClass="cell_bigger_label" wrapText="true" maxWidth="Infinity"/>
+            <Label fx:id="budget" styleClass="cell_bigger_label" />
         </VBox>
     </children>
 </AnchorPane>

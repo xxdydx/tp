@@ -127,7 +127,7 @@ The `Model` component,
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
+<div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. Note that `Tag` and `Category` is interchangeable. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
 <img src="images/BetterModelClassDiagram.png" width="450" />
 
@@ -154,6 +154,153 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
+
+### Person Type Feature
+
+#### Implementation
+
+The Person Type feature allows KnotBook to distinguish between clients and vendors. This is implemented through the `PersonType` enum class.
+
+**Key Components:**
+* `PersonType` enum - Defines two types: `CLIENT` and `VENDOR`
+* `Person` class - Contains a `PersonType` field to categorize each contact
+* `AddCommandParser` - Parses the `type/` prefix to determine the person type
+
+**Design Considerations:**
+
+* **Alternative 1 (Current choice):** Use an enum for PersonType
+  * Pros: Type-safe, prevents invalid values, easy to extend
+  * Cons: Requires code changes to add new types
+  
+* **Alternative 2:** Use a String field for type
+  * Pros: More flexible, can add types dynamically
+  * Cons: No compile-time type checking, prone to typos and inconsistencies
+
+The enum approach was chosen for better type safety and to ensure data consistency across the application.
+
+### Wedding Date Feature
+
+#### Implementation
+
+The Wedding Date feature stores the date of a client's wedding event. This is implemented through the `WeddingDate` class in the `seedu.address.model.date` package.
+
+**Key Components:**
+* `WeddingDate` class - Validates and stores wedding dates
+* `Person` class - Contains a `WeddingDate` field
+* `AddCommandParser` - Parses the `date:` prefix to extract wedding dates
+
+**Design Considerations:**
+
+* **Alternative 1 (Current choice):** Create a dedicated `WeddingDate` class
+  * Pros: Encapsulates validation logic, can add date-specific methods
+  * Cons: Additional class to maintain
+  
+* **Alternative 2:** Use Java's `LocalDate` directly
+  * Pros: Simpler, uses standard library
+  * Cons: Less control over validation and formatting
+
+The dedicated class approach provides better encapsulation and allows for custom validation rules specific to wedding planning.
+
+### Category Filter (Cat Command) Feature
+
+#### Implementation
+
+The Cat Command allows users to filter contacts by their category/type. This is implemented through the `CatCommand` class.
+
+**Key Components:**
+* `CatCommand` - Executes the category filtering
+* `CatCommandParser` - Parses the category parameter
+* `Model` - Updates the filtered person list based on category
+
+**Usage:**
+```
+cat florist
+```
+
+This command filters and displays all contacts categorized as "florist".
+
+**Design Considerations:**
+
+* **Alternative 1 (Current choice):** Case-insensitive matching
+  * Pros: More user-friendly, reduces errors
+  * Cons: Slightly more complex comparison logic
+  
+* **Alternative 2:** Case-sensitive matching
+  * Pros: Simpler implementation
+  * Cons: Less forgiving for users
+
+Case-insensitive matching was chosen to improve user experience and reduce input errors.
+
+### Link/Unlink Feature
+
+#### Implementation
+
+The Link and Unlink features allow wedding planners to create and remove associations between clients and vendors.
+
+**Key Components:**
+* `LinkCommand` - Creates a link between a client and vendor
+* `UnlinkCommand` - Removes a link between a client and vendor
+* `LinkCommandParser` / `UnlinkCommandParser` - Parse client and vendor indices
+
+**Usage:**
+```
+link client/1, vendor/3
+unlink client/1, vendor/3
+```
+
+**Sequence Diagram for Link Command:**
+
+The following sequence diagram shows how the link operation works:
+
+1. User enters `link client/1, vendor/3`
+2. `AddressBookParser` creates a `LinkCommandParser`
+3. `LinkCommandParser` parses the indices and creates a `LinkCommand`
+4. `LinkCommand` is executed by `LogicManager`
+5. `LinkCommand` retrieves the client and vendor from the filtered list
+6. `LinkCommand` validates the indices
+7. Link is created (future implementation will update Person objects)
+8. Success message is returned
+
+**Design Considerations:**
+
+* **Alternative 1 (Current choice):** Use indices from the displayed list
+  * Pros: Intuitive, works with filtered lists
+  * Cons: Indices change when list is filtered
+  
+* **Alternative 2:** Use unique IDs or names
+  * Pros: More stable references
+  * Cons: Requires users to remember/type full names or IDs
+
+Index-based linking was chosen for consistency with other commands (delete, edit) and ease of use.
+
+### Enhanced Help Window Feature
+
+#### Implementation
+
+The Help Window has been enhanced to display all command formats in an accordion-style interface with collapsible dropdowns.
+
+**Key Components:**
+* `HelpWindow` - JavaFX controller for the help window
+* `HelpWindow.fxml` - FXML layout with ScrollPane and VBox
+* `Accordion` and `TitledPane` - JavaFX components for collapsible sections
+
+**Key Changes:**
+1. Removed hardcoded help URL and copy button
+2. Added dynamic help message builder that pulls from each command's `MESSAGE_USAGE` constant
+3. Implemented accordion UI with one `TitledPane` per command
+4. Made window resizable with scrollable content
+
+**Design Considerations:**
+
+* **Alternative 1 (Current choice):** Accordion with collapsible panes
+  * Pros: Clean interface, only shows relevant information, easy to navigate
+  * Cons: Requires more clicks to view all commands
+  
+* **Alternative 2:** Single scrollable text area with all commands
+  * Pros: All information visible at once
+  * Cons: Cluttered, overwhelming for new users
+
+The accordion approach was chosen to reduce visual clutter and improve user experience, especially for new users who may be overwhelmed by seeing all commands at once.
 
 ### \[Proposed\] Undo/redo feature
 
@@ -295,8 +442,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | wedding planner                            | link each vendor to multiple clients                              | see which clients a particular vendor is serving                                     |
 | `* * *`  | wedding planner                            | unlink a client from a vendor                                     | update relationships when vendors are changed or services are cancelled              |
 | `* * *`  | wedding planner                            | find a contact by name                                            | quickly locate specific vendors or clients without scrolling through the entire list |
+| `* * *`  | wedding planner                            | filter contacts by category                                       | view only vendors of a specific type (e.g., all florists)                            |
 | `* * *`  | wedding planner                            | exit the program                                                  | close the application when I'm done working                                          |
+| `* * *`  | wedding planner                            | view help information for all commands                            | learn how to use the application effectively                                         |
 | `* *`    | organized wedding planner                  | see contacts sorted alphabetically by name                        | locate contacts more easily in a predictable order                                   |
+| `* *`    | wedding planner managing multiple events   | store wedding dates for clients                                   | keep track of when each wedding is scheduled                                         |
 | `* *`    | budget-conscious wedding planner           | view the price of each vendor                                     | compare costs and stay within the wedding budget                                     |
 | `* *`    | detail-oriented wedding planner            | store phone numbers for each contact                              | easily reach out to vendors and clients when needed                                  |
 | `*`      | experienced wedding planner                | prevent duplicate contact names                                   | avoid confusion between different vendors or clients                                 |
@@ -425,8 +575,32 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 6.
 
+**Use case: UC05 - Filter contacts by category**
 
-**Use case: UC05 - Add a new contact (detailed with validation)**
+**MSS**
+
+1.  User requests to filter contacts by a specific category (e.g., "florist")
+2.  KnotBook validates the category input
+3.  KnotBook filters the contact list to show only contacts matching the category
+4.  KnotBook displays the filtered list with a success message
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. User enters an empty category.
+
+    * 1a1. KnotBook shows an error message: "Category cannot be empty."
+
+      Use case ends.
+
+* 3a. No contacts match the specified category.
+
+    * 3a1. KnotBook displays an empty list with message: "No contacts found for category: [category]"
+
+      Use case ends.
+
+**Use case: UC06 - Add a new contact (detailed with validation)**
 
 **MSS**
 
@@ -546,8 +720,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Quote/Price**: A pricing estimate provided by a vendor for their services; can be a single value or a range (e.g., 1000-3000)
 * **Wedding planner**: The target user of this application; a professional who manages and coordinates weddings for clients
 * **Category/Type**: A classification for contacts based on their role (client) or service they provide (florist, caterer, photographer, musician, venue, etc.)
+* **PersonType**: An enum that categorizes each contact as either CLIENT or VENDOR
 * **Link**: An association between a vendor and a client, indicating that the vendor has been hired for that client's wedding. Both clients and vendors can have multiple links.
 * **Unlink**: The action of removing an existing association between a vendor and a client
+* **Cat Command**: A command to filter and display contacts by their category (e.g., "cat florist" shows all florists)
+* **Accordion**: A UI component that displays collapsible sections, used in the Help Window to organize command information
 * **Budget**: The total amount of money allocated by a client for their wedding; can be a single value or a range
 * **Index**: A positive integer representing the position of a contact in the currently displayed list
 * **Wedding Date**: The date when a client's wedding is scheduled to take place; required for all client contacts
@@ -602,6 +779,88 @@ testers are expected to do more *exploratory* testing.
       Expected: Similar to previous.
 
 1. _{ more test cases …​ }_
+
+### Filtering contacts by category
+
+1. Filtering contacts while all persons are being shown
+
+   1. Prerequisites: List all persons using the `list` command. Multiple persons with different categories in the list.
+
+   1. Test case: `cat florist`<br>
+      Expected: Only contacts categorized as "florist" are displayed. Success message shows the category filter applied.
+
+   1. Test case: `cat PHOTOGRAPHER`<br>
+      Expected: Only contacts categorized as "photographer" are displayed (case-insensitive matching).
+
+   1. Test case: `cat`<br>
+      Expected: Error message indicating that category cannot be empty.
+
+   1. Test case: `cat nonexistent`<br>
+      Expected: Empty list displayed with message indicating no contacts found for that category.
+
+### Linking a client to a vendor
+
+1. Linking contacts while all persons are being shown
+
+   1. Prerequisites: List all persons using the `list` command. At least 2 persons in the list.
+
+   1. Test case: `link client/1, vendor/2`<br>
+      Expected: Success message indicating the link was created.
+
+   1. Test case: `link client/0, vendor/1`<br>
+      Expected: Error message indicating invalid client index.
+
+   1. Test case: `link client/1, vendor/999`<br>
+      Expected: Error message indicating invalid vendor index (assuming list has fewer than 999 contacts).
+
+   1. Test case: `link client/1`<br>
+      Expected: Error message indicating incorrect command format.
+
+### Unlinking a client from a vendor
+
+1. Unlinking contacts while all persons are being shown
+
+   1. Prerequisites: List all persons using the `list` command. At least 2 persons in the list.
+
+   1. Test case: `unlink client/1, vendor/2`<br>
+      Expected: Success message indicating the unlink was successful.
+
+   1. Test case: `unlink client/0, vendor/1`<br>
+      Expected: Error message indicating invalid client index.
+
+   1. Test case: `unlink client/1, vendor/999`<br>
+      Expected: Error message indicating invalid vendor index.
+
+### Viewing help information
+
+1. Opening the help window
+
+   1. Test case: Type `help` command<br>
+      Expected: Help window opens displaying all commands in an accordion-style interface.
+
+   1. Test case: Click "Help" menu → "Help" menu item<br>
+      Expected: Help window opens with collapsible sections for each command.
+
+   1. Test case: Click on any command name in the help window<br>
+      Expected: The section expands to show the full command usage and examples.
+
+### Adding a contact with person type
+
+1. Adding a client contact
+
+   1. Test case: `add n/John Doe p/98765432 e/john@example.com a/123 Street date:12-10-2025 type/client t/friends`<br>
+      Expected: New client contact is added with wedding date. Success message shows the contact details.
+
+   1. Test case: `add n/Jane Smith p/87654321 e/jane@example.com a/456 Avenue type/client`<br>
+      Expected: Error message indicating wedding date is required for clients.
+
+2. Adding a vendor contact
+
+   1. Test case: `add n/Flower Shop p/91234567 e/flowers@example.com a/789 Road type/vendor t/florist`<br>
+      Expected: New vendor contact is added. Success message shows the contact details.
+
+   1. Test case: `add n/Caterer Co p/92345678 e/cater@example.com a/321 Lane type/invalid`<br>
+      Expected: Error message indicating type must be either 'client' or 'vendor'.
 
 ### Saving data
 
