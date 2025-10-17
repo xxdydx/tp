@@ -12,6 +12,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
@@ -35,6 +36,7 @@ public class PersonBuilder {
     private PersonType type;
     private Price price;
     private Budget budget;
+    private Remark remark;
 
 
     /**
@@ -50,6 +52,7 @@ public class PersonBuilder {
         type = DEFAULT_TYPE;
         price = null;
         budget = null;
+        remark = new Remark("");
     }
 
     /**
@@ -65,6 +68,7 @@ public class PersonBuilder {
         type = personToCopy.getType();
         price = personToCopy.getPrice().orElse(null);
         budget = personToCopy.getBudget().orElse(null);
+        remark = personToCopy.getRemark();
     }
 
     /**
@@ -155,8 +159,16 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Remark} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withRemark(String remark) {
+        this.remark = new Remark(remark);
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, address, weddingDate, type, tags, price, budget);
+        return new Person(name, phone, email, address, weddingDate, type, tags, price, budget, remark);
     }
 
 }

@@ -107,7 +107,8 @@ public class UnlinkCommand extends Command {
                 person.getType(),
                 person.getTags(),
                 updatedLinks,
-                person.getPrice().orElse(null));
+                person.getPrice().orElse(null),
+                person.getRemark());
     }
 
     @Override

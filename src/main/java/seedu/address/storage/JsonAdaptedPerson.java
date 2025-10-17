@@ -19,6 +19,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -36,6 +37,7 @@ class JsonAdaptedPerson {
     private final String type;
     private final String price;
     private final String budget;
+    private final String remark;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -46,6 +48,7 @@ class JsonAdaptedPerson {
             @JsonProperty("email") String email, @JsonProperty("address") String address,
             @JsonProperty("weddingDate") String weddingDate, @JsonProperty("type") String type,
             @JsonProperty("price") String price, @JsonProperty("budget") String budget,
+            @JsonProperty("remark") String remark,
             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
@@ -55,6 +58,7 @@ class JsonAdaptedPerson {
         this.type = type;
         this.price = price;
         this.budget = budget;
+        this.remark = remark;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -72,6 +76,7 @@ class JsonAdaptedPerson {
         type = source.getType().toString();
         price = source.getPrice().map(Price::toString).orElse(null);
         budget = source.getBudget().map(Budget::toString).orElse(null);
+        remark = source.getRemark().value;
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -166,8 +171,10 @@ class JsonAdaptedPerson {
             modelBudget = null;
         }
 
+        final Remark modelRemark = new Remark(remark == null ? "" : remark);
+
         return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelType, modelTags,
-                modelPrice, modelBudget);
+                modelPrice, modelBudget, modelRemark);
     }
 
 }

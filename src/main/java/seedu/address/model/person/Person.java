@@ -32,6 +32,7 @@ public class Person {
     private final Price price; // only for vendors
     private final Set<Person> linkedPersons = new HashSet<>();
     private final Budget budget; // only for clients
+    private final Remark remark;
 
     /**
      * Every field must be present and not null, except price and budget which are
@@ -49,6 +50,26 @@ public class Person {
         this.tags.addAll(tags);
         this.price = price;
         this.budget = budget;
+        this.remark = new Remark(""); // default empty remark
+    }
+
+    /**
+     * Every field must be present and not null, except price, budget and remark which are
+     * optional.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
+            Set<Tag> tags, Price price, Budget budget, Remark remark) {
+        requireAllNonNull(name, phone, email, address, weddingDate, tags, remark);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.weddingDate = weddingDate;
+        this.type = type;
+        this.tags.addAll(tags);
+        this.price = price;
+        this.budget = budget;
+        this.remark = remark;
     }
 
     /**
@@ -68,6 +89,27 @@ public class Person {
         this.price = price;
         this.linkedPersons.addAll(linkedPersons);
         this.budget = null;
+        this.remark = new Remark(""); // default empty remark
+    }
+
+    /**
+     * Constructor with linked persons and remark.
+     * Every field must be present and not null, except price and remark which are optional.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
+            Set<Tag> tags, Set<Person> linkedPersons, Price price, Remark remark) {
+        requireAllNonNull(name, phone, email, address, weddingDate, tags, linkedPersons, remark);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.weddingDate = weddingDate;
+        this.type = type;
+        this.tags.addAll(tags);
+        this.price = price;
+        this.linkedPersons.addAll(linkedPersons);
+        this.budget = null;
+        this.remark = remark;
     }
 
     public Name getName() {
@@ -100,6 +142,10 @@ public class Person {
 
     public Optional<Budget> getBudget() {
         return Optional.ofNullable(budget);
+    }
+
+    public Remark getRemark() {
+        return remark;
     }
 
     /**
@@ -164,7 +210,8 @@ public class Person {
                 && type == otherPerson.type
                 && tags.equals(otherPerson.tags)
                 && Objects.equals(price, otherPerson.price)
-                && Objects.equals(budget, otherPerson.budget);
+                && Objects.equals(budget, otherPerson.budget)
+                && remark.equals(otherPerson.remark);
     }
 
     @Override
@@ -172,7 +219,7 @@ public class Person {
         // use this method for custom fields hashing instead of implementing your own
         // linkedPersons intentionally excluded from hashCode to avoid circular
         // references
-        return Objects.hash(name, phone, email, address, weddingDate, type, tags, price, budget);
+        return Objects.hash(name, phone, email, address, weddingDate, type, tags, price, budget, remark);
     }
 
     @Override
@@ -187,6 +234,7 @@ public class Person {
                 .add("type", type)
                 .add("price", price)
                 .add("linkedPersons", linkedPersons.size() + " link(s)")
+                .add("remark", remark)
                 .toString();
     }
 

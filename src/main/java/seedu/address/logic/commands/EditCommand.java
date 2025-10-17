@@ -118,7 +118,7 @@ public class EditCommand extends Command {
         Budget updatedBudget = editPersonDescriptor.getBudget().orElse(personToEdit.getBudget().orElse(null));
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedWeddingDate,
-                updatedType, updatedTags, updatedPrice, updatedBudget);
+                updatedType, updatedTags, updatedPrice, updatedBudget, personToEdit.getRemark());
     }
 
     @Override

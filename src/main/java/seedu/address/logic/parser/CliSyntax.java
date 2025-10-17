@@ -18,5 +18,6 @@ public class CliSyntax {
     public static final Prefix PREFIX_BUDGET = new Prefix("budget/");
     public static final Prefix PREFIX_CLIENT = new Prefix("client/");
     public static final Prefix PREFIX_VENDOR = new Prefix("vendor/");
+    public static final Prefix PREFIX_REMARK = new Prefix("r/");
 
 }

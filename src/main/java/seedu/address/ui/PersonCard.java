@@ -50,6 +50,8 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label budget;
     @FXML
+    private Label remark;
+    @FXML
     private FlowPane tags;
     @FXML
     private Label typeChip;
@@ -87,6 +89,8 @@ public class PersonCard extends UiPart<Region> {
             budget.setVisible(false);
             budget.setManaged(false);
         }
+
+        remark.setText(person.getRemark().value);
 
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
