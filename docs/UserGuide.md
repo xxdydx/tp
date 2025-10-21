@@ -3,7 +3,7 @@ layout: page
 title: User Guide
 ---
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+KnotBook is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, Knotbook can get your wedding contact management tasks done faster than traditional GUI apps.
 
 * Table of Contents
 {:toc}
@@ -15,9 +15,9 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+1. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-T16-3/tp/releases/tag/v1.3).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+1. Copy the file to the folder you want to use as the _home folder_ for your KnotBook.
 
 1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
@@ -185,15 +185,15 @@ Format: `exit`
 
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+KnotBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### Editing the data file
 
-AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+KnotBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
-If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+If your changes to the data file makes its format invalid, KnotBook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
+Furthermore, certain edits can cause the KnotBook to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
 
 ### Archiving data files `[coming in v2.0]`
@@ -205,7 +205,7 @@ _Details coming soon ..._
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous KnotBook home folder.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -218,16 +218,66 @@ _Details coming soon ..._
 
 ## Command summary
 
-Action | Format, Examples
---------|------------------
-**Add** | `add [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/(client|vendor)] [price/PRICE] [budget/BUDGET] [t/TAG]…` <br>
-e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd w/15-06-2020 type/client budget/5000-10000 t/friend t/colleague`
-**Clear** | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/(client|vendor)] [price/PRICE] [budget/BUDGET] [t/TAG]…`<br>
- e.g., `edit 2 n/James Lee e/jameslee@example.com` or `edit 2 type/vendor price/1500-2500`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List** | `list`
-**Help** | `help`
-**Link** | `link [client/CLIENT_INDEX] [vendor/VENDOR_INDEX]`<br> e.g., `link client/3 vendor/5`
-**Unlink** | `unlink [client/CLIENT_INDEX] [vendor/VENDOR_INDEX]`<br> e.g., `unlink client/3 vendor/5`
+<table>
+  <thead>
+    <tr>
+      <th>Action</th>
+      <th>Format, Examples</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Add</strong></td>
+      <td>
+        <code>add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS w/WEDDING_DATE type/(client|vendor) [price/PRICE] [budget/BUDGET] [t/TAG]…</code>
+        <br>
+        <pre><code>add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd w/15-06-2020 type/client budget/5000-10000 t/friend t/colleague</code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Clear</strong></td>
+      <td><code>clear</code></td>
+    </tr>
+    <tr>
+      <td><strong>Delete</strong></td>
+      <td><code>delete INDEX</code><br>e.g., <code>delete 3</code></td>
+    </tr>
+    <tr>
+      <td><strong>Edit</strong></td>
+      <td>
+        <code>edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/(client|vendor)] [price/PRICE] [budget/BUDGET] [t/TAG]…</code>
+        <br>
+        <pre><code>edit 2 n/James Lee e/jameslee@example.com
+edit 2 type/vendor price/1500-2500</code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Find</strong></td>
+      <td><code>find KEYWORD [MORE_KEYWORDS]</code><br>e.g., <code>find James Jake</code></td>
+    </tr>
+    <tr>
+      <td><strong>List</strong></td>
+      <td><code>list</code></td>
+    </tr>
+    <tr>
+      <td><strong>Help</strong></td>
+      <td><code>help</code></td>
+    </tr>
+    <tr>
+      <td><strong>Link</strong></td>
+      <td>
+        <code>link client/CLIENT_INDEX vendor/VENDOR_INDEX</code>
+        <br>
+        <pre><code>link client/3 vendor/5</code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Unlink</strong></td>
+      <td>
+        <code>unlink client/CLIENT_INDEX vendor/VENDOR_INDEX</code>
+        <br>
+        <pre><code>unlink client/3 vendor/5</code></pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
