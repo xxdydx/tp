@@ -66,7 +66,17 @@ public class PersonCard extends UiPart<Region> {
         phone.setText(person.getPhone().value);
         address.setText(person.getAddress().value);
         email.setText(person.getEmail().value);
-        weddingDate.setText(person.getWeddingDate().toString());
+        if (person.getType() == PersonType.VENDOR) {
+            weddingDate.setVisible(false);
+            weddingDate.setManaged(false);
+        } else {
+            String wdText = person.getWeddingDate().isPresent()
+                    ? person.getWeddingDate().get().toString()
+                    : "-";
+            weddingDate.setText(wdText);
+            weddingDate.setVisible(true);
+            weddingDate.setManaged(true);
+        }
 
         // Display price only for vendors with price
         if (person.getPrice().isPresent()) {

@@ -21,6 +21,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.PersonType;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -81,6 +82,13 @@ public class EditCommandParser implements Parser<EditCommand> {
             editPersonDescriptor.setBudget(ParserUtil.parseBudget(argMultimap.getValue(PREFIX_BUDGET).get()));
         }
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
+
+        // Validate that wedding date is not provided for vendors
+        if (argMultimap.getValue(PREFIX_WEDDING_DATE).isPresent() && editPersonDescriptor.getType().isPresent()) {
+            if (editPersonDescriptor.getType().get() == PersonType.VENDOR) {
+                throw new ParseException("Wedding date is only applicable for clients.");
+            }
+        }
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);

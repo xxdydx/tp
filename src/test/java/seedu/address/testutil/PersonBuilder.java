@@ -60,7 +60,7 @@ public class PersonBuilder {
         phone = personToCopy.getPhone();
         email = personToCopy.getEmail();
         address = personToCopy.getAddress();
-        weddingDate = personToCopy.getWeddingDate();
+        weddingDate = personToCopy.getWeddingDate().orElse(null);
         tags = new HashSet<>(personToCopy.getTags());
         type = personToCopy.getType();
         price = personToCopy.getPrice().orElse(null);
@@ -116,6 +116,14 @@ public class PersonBuilder {
     }
 
     /**
+     * Sets the {@code WeddingDate} of the {@code Person} that we are building to null.
+     */
+    public PersonBuilder withWeddingDate(WeddingDate weddingDate) {
+        this.weddingDate = weddingDate;
+        return this;
+    }
+
+    /**
      * Sets the {@code PersonType} of the {@code Person} that we are building.
      */
     public PersonBuilder withType(PersonType type) {
@@ -156,7 +164,11 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(name, phone, email, address, weddingDate, type, tags, price, budget);
+        if (type == PersonType.VENDOR) {
+            return new Person(name, phone, email, address, type, tags, price);
+        } else {
+            return new Person(name, phone, email, address, weddingDate, type, tags, price, budget);
+        }
     }
 
 }

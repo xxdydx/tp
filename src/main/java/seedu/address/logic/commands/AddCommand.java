@@ -30,7 +30,7 @@ public class AddCommand extends Command {
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
             + PREFIX_ADDRESS + "ADDRESS "
-            + PREFIX_WEDDING_DATE + "WEDDING_DATE "
+            + "[" + PREFIX_WEDDING_DATE + "WEDDING_DATE] "
             + PREFIX_TYPE + "TYPE "
             + "[" + PREFIX_PRICE + "PRICE] "
             + "[" + PREFIX_BUDGET + "BUDGET] "
@@ -50,7 +50,6 @@ public class AddCommand extends Command {
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "jane@example.com "
             + PREFIX_ADDRESS + "123 Orchard Road, #03-45 "
-            + PREFIX_WEDDING_DATE + "20-07-2020 "
             + PREFIX_TYPE + "vendor "
             + PREFIX_PRICE + "1000-2000 "
             + PREFIX_TAG + "photographer";

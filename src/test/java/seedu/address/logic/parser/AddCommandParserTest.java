@@ -28,6 +28,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PRICE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.WEDDING_DATE_DESC_AMY;
@@ -200,9 +201,9 @@ public class AddCommandParserTest {
         assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_EMAIL_BOB + VALID_ADDRESS_BOB,
                 expectedMessage);
 
-        // missing wedding date prefix
+        // missing wedding date prefix (defaults to client, so wedding date required)
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB,
-                expectedMessage);
+                "Wedding date is required for clients.");
     }
 
     @Test
@@ -264,7 +265,7 @@ public class AddCommandParserTest {
 
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + WEDDING_DATE_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND + TYPE_DESC_VENDOR_UPPER,
+                        + TAG_DESC_HUSBAND + TAG_DESC_FRIEND + TYPE_DESC_VENDOR_UPPER,
                 new AddCommand(expected));
     }
 
@@ -296,7 +297,7 @@ public class AddCommandParserTest {
 
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_VENDOR + PRICE_DESC_BOB + TAG_DESC_FRIEND,
+                        + TYPE_DESC_VENDOR + PRICE_DESC_BOB + TAG_DESC_FRIEND,
                 new AddCommand(expected));
     }
 
@@ -310,7 +311,7 @@ public class AddCommandParserTest {
 
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_VENDOR + TAG_DESC_FRIEND,
+                        + TYPE_DESC_VENDOR + TAG_DESC_FRIEND,
                 new AddCommand(expected));
     }
 
@@ -327,7 +328,7 @@ public class AddCommandParserTest {
     public void parse_invalidPrice_failure() {
         assertParseFailure(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_VENDOR + INVALID_PRICE_DESC + TAG_DESC_FRIEND,
+                        + TYPE_DESC_VENDOR + INVALID_PRICE_DESC + TAG_DESC_FRIEND,
                 Price.MESSAGE_CONSTRAINTS);
     }
 
@@ -364,8 +365,17 @@ public class AddCommandParserTest {
         // Budget is only applicable for clients
         assertParseFailure(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_VENDOR + BUDGET_DESC_BOB + TAG_DESC_FRIEND,
+                        + TYPE_DESC_VENDOR + BUDGET_DESC_BOB + TAG_DESC_FRIEND,
                 "Budget is only applicable for clients.");
+    }
+
+    @Test
+    public void parse_vendorWithWeddingDate_failure() {
+        // Wedding date is only applicable for clients
+        assertParseFailure(parser,
+                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_VENDOR + TAG_DESC_FRIEND,
+                "Wedding date is only applicable for clients.");
     }
 
     @Test
@@ -384,5 +394,24 @@ public class AddCommandParserTest {
         assertParseFailure(parser,
                 validExpectedPersonString + PRICE_DESC_BOB + " price/1000",
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PRICE));
+    }
+
+    @Test
+    public void parse_vendorWithoutWeddingDate_success() {
+        String userInput = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + TYPE_DESC_VENDOR + PRICE_DESC_BOB + TAG_DESC_FRIEND;
+
+        Person expectedPerson = new PersonBuilder(BOB).withType(PersonType.VENDOR)
+                .withWeddingDate((WeddingDate) null).withPrice(VALID_PRICE_BOB).withTags(VALID_TAG_FRIEND).build();
+
+        assertParseSuccess(parser, userInput, new AddCommand(expectedPerson));
+    }
+
+    @Test
+    public void parse_clientWithoutWeddingDate_failure() {
+        String userInput = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + TYPE_DESC_CLIENT + BUDGET_DESC_BOB + TAG_DESC_FRIEND;
+
+        assertParseFailure(parser, userInput, "Wedding date is required for clients.");
     }
 }

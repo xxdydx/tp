@@ -19,6 +19,7 @@ import java.util.List;
 
 import seedu.address.model.AddressBook;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonType;
 
 /**
  * A utility class containing a list of {@code Person} objects to be used in tests.
@@ -58,6 +59,14 @@ public class TypicalPersons {
     public static final Person BOB = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
             .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withWeddingDate(VALID_WEDDING_DATE_BOB)
             .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
+
+    // Vendor test data
+    public static final Person VENDOR_ALICE = new PersonBuilder().withName("Alice Photographer")
+            .withPhone("91234567").withEmail("alice@photography.com").withAddress("123 Studio St")
+            .withType(PersonType.VENDOR).withPrice("1000-2000").withTags("photographer").build();
+    public static final Person VENDOR_BOB = new PersonBuilder().withName("Bob Caterer")
+            .withPhone("92345678").withEmail("bob@catering.com").withAddress("456 Food Ave")
+            .withType(PersonType.VENDOR).withPrice("500-1500").withTags("caterer").build();
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
 
