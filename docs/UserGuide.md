@@ -28,7 +28,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+  * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 w/15-06-2020 type/client budget/5000-10000` : Adds a client named `John Doe` to the Address Book (clients can have a budget).
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -75,17 +75,23 @@ Format: `help`
 
 ### Adding a person: `add`
 
-Adds a person to the address book.
+Adds a contact (client or vendor) to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS w/WEDDING_DATE type/(client|vendor) [price/PRICE] [budget/BUDGET] [t/TAG]…`
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tags (including 0)
-</div>
+Notes:
+* `type/` must be either `client` or `vendor`. If `type/` is omitted, the contact defaults to `client`.
+* `price/` is only applicable to vendors. If provided for a non-vendor, the command will be rejected.
+* `budget/` is only applicable to clients. If provided for a non-client, the command will be rejected.
+* A person can have any number of tags (including 0).
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* Example (Client):
+  `add n/John Doe p/98765432 e/johnd@example.com a/311, Clementi Ave 2, #02-25 w/15-06-2020 type/client budget/5000-10000 t/friends`
+  - Adds a client with a budget range of `5000-10000`.
+* Example (Vendor):
+  `add n/Jane Smith p/91234567 e/jane@example.com a/123 Orchard Road, #03-45 w/20-07-2020 type/vendor price/1000-2000 t/photographer`
+  - Adds a vendor with a price range of `1000-2000`.
 
 ### Listing all persons : `list`
 
@@ -95,20 +101,43 @@ Format: `list`
 
 ### Editing a person : `edit`
 
-Edits an existing person in the address book.
+Edits details of an existing contact in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/(client|vendor)] [price/PRICE] [budget/BUDGET] [t/TAG]…`
 
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
-* At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+Notes:
+* Edits the person at the specified `INDEX`. `INDEX` refers to the index in the currently displayed person list and must be a positive integer.
+* At least one editable field must be provided.
+* Changing `type/` between client and vendor is allowed; however, `price/` only applies to vendors and `budget/` only applies to clients.
+* When editing tags, the existing tags of the person will be replaced by the supplied tags.
+* To clear all tags, use `t/` with no value.
 
 Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+* `edit 1 p/91234567 e/johndoe@example.com` — updates phone and email of the 1st person.
+* `edit 2 type/vendor price/1500-2500` — change the 2nd person's type to vendor and set their price range.
+* `edit 3 type/client budget/3000-7000` — change the 3rd person's type to client and set their budget range.
+
+### Linking a client and a vendor: `link`
+
+Links a client to a vendor so their relationship appears in both profiles.
+
+Format: `link [client/CLIENT_INDEX] [vendor/VENDOR_INDEX]`
+
+Notes:
+* Both `CLIENT_INDEX` and `VENDOR_INDEX` refer to indexes in the currently displayed person list.
+* The person at `client/` must be a client; the person at `vendor/` must be a vendor. If not, the command will be rejected.
+
+Example:
+* `link client/3 vendor/5` — links the client at index 3 with the vendor at index 5.
+
+### Unlinking a client and a vendor: `unlink`
+
+Removes an existing link between a client and a vendor.
+
+Format: `unlink [client/CLIENT_INDEX] [vendor/VENDOR_INDEX]`
+
+Example:
+* `unlink client/3 vendor/5` — removes the link between the client at index 3 and vendor at index 5.
 
 ### Locating persons by name: `find`
 
@@ -191,10 +220,14 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Add** | `add [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/(client|vendor)] [price/PRICE] [budget/BUDGET] [t/TAG]…` <br>
+e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd w/15-06-2020 type/client budget/5000-10000 t/friend t/colleague`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/(client|vendor)] [price/PRICE] [budget/BUDGET] [t/TAG]…`<br>
+ e.g., `edit 2 n/James Lee e/jameslee@example.com` or `edit 2 type/vendor price/1500-2500`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List** | `list`
 **Help** | `help`
+**Link** | `link [client/CLIENT_INDEX] [vendor/VENDOR_INDEX]`<br> e.g., `link client/3 vendor/5`
+**Unlink** | `unlink [client/CLIENT_INDEX] [vendor/VENDOR_INDEX]`<br> e.g., `unlink client/3 vendor/5`
