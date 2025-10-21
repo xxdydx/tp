@@ -13,7 +13,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.stage.Stage?>
 
-<fx:root minHeight="600" minWidth="450" onCloseRequest="#handleExit" title="KnotBook" type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.ScrollPane?>
+<fx:root minHeight="700" minWidth="700" onCloseRequest="#handleExit" title="KnotBook" type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <icons>
         <Image url="@/images/address_book_32.png" />
     </icons>
@@ -64,12 +65,12 @@
 
                                 <StackPane fx:id="personDetailsPlaceholder"
                                            VBox.vgrow="ALWAYS"
-                                           minHeight="0.0"
+                                           minHeight="300.0"
                                            maxWidth="Infinity" />
 
                                 <StackPane fx:id="resultDisplayPlaceholder"
                                            VBox.vgrow="NEVER"
-                                           minHeight="100.0"
+                                           minHeight="150.0"
                                            maxHeight="200.0"
                                            maxWidth="Infinity">
                                     <padding>
