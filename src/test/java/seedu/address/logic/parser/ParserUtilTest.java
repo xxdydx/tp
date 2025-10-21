@@ -35,7 +35,7 @@ public class ParserUtilTest {
     private static final String INVALID_BUDGET = "abc";
 
     private static final String VALID_NAME = "Rachel Walker";
-    private static final String VALID_PHONE = "123456";
+    private static final String VALID_PHONE = "12345678";
     private static final String VALID_ADDRESS = "123 Main Street #0505";
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_WEDDING_DATE = "15/06/2020";
