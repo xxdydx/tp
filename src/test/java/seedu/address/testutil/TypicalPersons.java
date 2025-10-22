@@ -40,39 +40,39 @@ public class TypicalPersons {
             .build();
 
     public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
-            .withEmail("heinz@example.com").withAddress("wall street").withWeddingDate("03/03/2024")
+            .withEmail("heinz@example.com").withAddress("wall street")
             .withType(PersonType.parse("vendor")).withPrice("800-1500")
             .build();
 
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
-            .withEmail("cornelia@example.com").withAddress("10th street").withWeddingDate("04/04/2024")
+            .withEmail("cornelia@example.com").withAddress("10th street")
             .withTags("friends")
             .withType(PersonType.parse("vendor")).withPrice("1200-2000")
             .build();
 
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("94822241")
-            .withEmail("werner@example.com").withAddress("michegan ave").withWeddingDate("05/05/2024")
+            .withEmail("werner@example.com").withAddress("michegan ave")
             .withType(PersonType.parse("vendor")).withPrice("500-900")
             .build();
 
     public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("94824271")
-            .withEmail("lydia@example.com").withAddress("little tokyo").withWeddingDate("06/06/2024")
+            .withEmail("lydia@example.com").withAddress("little tokyo")
             .withType(PersonType.parse("vendor")).withPrice("700-1100")
             .build();
 
     public static final Person GEORGE = new PersonBuilder().withName("George Best").withPhone("94824421")
-            .withEmail("anna@example.com").withAddress("4th street").withWeddingDate("07/07/2024")
+            .withEmail("anna@example.com").withAddress("4th street")
             .withType(PersonType.parse("vendor")).withPrice("900-1300")
             .build();
 
     // Manually added
     public static final Person HOON = new PersonBuilder().withName("Hoon Meier").withPhone("84824240")
-            .withEmail("stefan@example.com").withAddress("little india").withWeddingDate("08/08/2024")
+            .withEmail("stefan@example.com").withAddress("little india")
             .withType(PersonType.parse("vendor")).withPrice("500-800")
             .build();
 
     public static final Person IDA = new PersonBuilder().withName("Ida Mueller").withPhone("84821310")
-            .withEmail("hans@example.com").withAddress("chicago ave").withWeddingDate("09/09/2024")
+            .withEmail("hans@example.com").withAddress("chicago ave")
             .withType(PersonType.parse("vendor")).withPrice("650-900")
             .build();
 
@@ -84,7 +84,7 @@ public class TypicalPersons {
             .build();
 
     public static final Person BOB = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
-            .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withWeddingDate(VALID_WEDDING_DATE_BOB)
+            .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB)
             .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
             .withType(PersonType.parse("vendor")).withPrice("1000-2000")
             .build();
