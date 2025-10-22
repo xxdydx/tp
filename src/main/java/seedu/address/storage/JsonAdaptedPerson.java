@@ -68,8 +68,9 @@ class JsonAdaptedPerson {
         phone = source.getPhone().value;
         email = source.getEmail().value;
         address = source.getAddress().value;
-        weddingDate = (source.getType() == PersonType.VENDOR) ? null : 
-                source.getWeddingDate().map(WeddingDate::toString).orElse(null);
+        weddingDate = (source.getType() == PersonType.VENDOR)
+                ? null
+                : source.getWeddingDate().map(WeddingDate::toString).orElse(null);
         type = source.getType().toString();
         price = source.getPrice().map(Price::toString).orElse(null);
         budget = source.getBudget().map(Budget::toString).orElse(null);

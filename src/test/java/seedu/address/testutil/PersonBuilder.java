@@ -163,6 +163,10 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Builds a Person object using the appropriate constructor based on the person type.
+     * @return a Person object
+     */
     public Person build() {
         if (type == PersonType.VENDOR) {
             return new Person(name, phone, email, address, type, tags, price);

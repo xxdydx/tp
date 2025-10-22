@@ -26,7 +26,7 @@ public class Person {
 
     // Data fields
     private final Address address;
-    private final WeddingDate weddingDate; 
+    private final WeddingDate weddingDate;
     private final Set<Tag> tags = new HashSet<>();
     private final PersonType type;
     private final Price price; // only for vendors

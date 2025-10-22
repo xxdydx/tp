@@ -111,14 +111,16 @@ public class EditCommand extends Command {
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        WeddingDate updatedWeddingDate = editPersonDescriptor.getWeddingDate().orElse(personToEdit.getWeddingDate().orElse(null));
+        WeddingDate updatedWeddingDate = editPersonDescriptor.getWeddingDate()
+                .orElse(personToEdit.getWeddingDate().orElse(null));
         PersonType updatedType = editPersonDescriptor.getType().orElse(personToEdit.getType());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Price updatedPrice = editPersonDescriptor.getPrice().orElse(personToEdit.getPrice().orElse(null));
         Budget updatedBudget = editPersonDescriptor.getBudget().orElse(personToEdit.getBudget().orElse(null));
 
         if (updatedType == PersonType.VENDOR) {
-            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedType, updatedTags, updatedPrice);
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedType, updatedTags,
+                    updatedPrice);
         } else {
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedWeddingDate,
                     updatedType, updatedTags, updatedPrice, updatedBudget);
