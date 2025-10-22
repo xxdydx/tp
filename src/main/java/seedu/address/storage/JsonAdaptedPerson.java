@@ -171,10 +171,9 @@ class JsonAdaptedPerson {
             modelBudget = null;
         }
 
-        final Optional<Partner> modelPartner =
-                (partner == null || partner.isBlank())
-                        ? Optional.empty()
-                        : Optional.of(new Partner(partner.trim()));
+        final Optional<Partner> modelPartner = (partner == null || partner.isBlank())
+                ? Optional.empty()
+                : Optional.of(new Partner(partner.trim()));
 
         if (modelType == PersonType.CLIENT && modelPartner.isEmpty()) {
             throw new IllegalValueException(Person.MSG_PARTNER_REQUIRED_FOR_CLIENT);

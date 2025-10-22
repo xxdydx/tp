@@ -191,6 +191,9 @@ public class ParserUtil {
         return new Budget(trimmedBudget);
     }
 
+    /**
+     * Parses a {@link String} into a {@link Partner}.
+     */
     public static Partner parsePartner(String partnerName) throws ParseException {
         requireNonNull(partnerName);
         String trimmed = partnerName.trim();
