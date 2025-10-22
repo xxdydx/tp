@@ -19,6 +19,9 @@ import seedu.address.model.tag.Tag;
  */
 public class Person {
 
+    public static final String MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT = "Wedding date is required for clients.";
+    public static final String MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR = "Wedding date is only applicable for clients.";
+
     // Identity fields
     private final Name name;
     private final Phone phone;

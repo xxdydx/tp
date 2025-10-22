@@ -89,7 +89,12 @@ public class EditCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
+        Person editedPerson;
+        try {
+            editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
+        } catch (CommandException e) {
+            throw e;
+        }
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
@@ -104,7 +109,8 @@ public class EditCommand extends Command {
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) 
+            throws CommandException {
         assert personToEdit != null;
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
@@ -117,6 +123,13 @@ public class EditCommand extends Command {
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Price updatedPrice = editPersonDescriptor.getPrice().orElse(personToEdit.getPrice().orElse(null));
         Budget updatedBudget = editPersonDescriptor.getBudget().orElse(personToEdit.getBudget().orElse(null));
+
+        if (updatedType == PersonType.CLIENT && updatedWeddingDate == null) {
+            throw new CommandException(Person.MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT);
+        }
+        if (updatedType != PersonType.CLIENT && updatedWeddingDate != null) {
+            throw new CommandException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
+        }
 
         if (updatedType == PersonType.VENDOR) {
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedType, updatedTags,

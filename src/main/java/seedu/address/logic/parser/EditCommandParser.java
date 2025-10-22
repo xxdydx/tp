@@ -21,6 +21,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.tag.Tag;
 
@@ -68,8 +69,13 @@ public class EditCommandParser implements Parser<EditCommand> {
             editPersonDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
         }
         if (argMultimap.getValue(PREFIX_WEDDING_DATE).isPresent()) {
-            editPersonDescriptor.setWeddingDate(ParserUtil.parseWeddingDate(argMultimap.getValue(
-                    PREFIX_WEDDING_DATE).get()));
+            String weddingDateValue = argMultimap.getValue(PREFIX_WEDDING_DATE).get().trim();
+            if (weddingDateValue.isEmpty()) {
+                // Empty wedding date - set to null to indicate removal
+                editPersonDescriptor.setWeddingDate(null);
+            } else {
+                editPersonDescriptor.setWeddingDate(ParserUtil.parseWeddingDate(weddingDateValue));
+            }
         }
         if (argMultimap.getValue(PREFIX_TYPE).isPresent()) {
             editPersonDescriptor.setType(ParserUtil.parsePersonType(argMultimap.getValue(
@@ -83,10 +89,21 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
 
-        // Validate that wedding date is not provided for vendors
-        if (argMultimap.getValue(PREFIX_WEDDING_DATE).isPresent() && editPersonDescriptor.getType().isPresent()) {
-            if (editPersonDescriptor.getType().get() == PersonType.VENDOR) {
-                throw new ParseException("Wedding date is only applicable for clients.");
+        if (argMultimap.getValue(PREFIX_WEDDING_DATE).isPresent()) {
+            String weddingDateValue = argMultimap.getValue(PREFIX_WEDDING_DATE).get().trim();
+            
+            // If type is being changed to vendor and wedding date is provided (not empty)
+            if (editPersonDescriptor.getType().isPresent() && editPersonDescriptor.getType().get() == PersonType.VENDOR) {
+                if (!weddingDateValue.isEmpty()) {
+                    throw new ParseException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
+                }
+            }
+            
+            // If wedding date is being removed (empty) and type is being changed to client
+            if (editPersonDescriptor.getType().isPresent() && editPersonDescriptor.getType().get() == PersonType.CLIENT) {
+                if (weddingDateValue.isEmpty()) {
+                    throw new ParseException(Person.MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT);
+                }
             }
         }
 

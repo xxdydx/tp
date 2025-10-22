@@ -203,7 +203,7 @@ public class AddCommandParserTest {
 
         // missing wedding date prefix (defaults to client, so wedding date required)
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB,
-                "Wedding date is required for clients.");
+                Person.MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT);
     }
 
     @Test
@@ -375,7 +375,7 @@ public class AddCommandParserTest {
         assertParseFailure(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
                         + WEDDING_DATE_DESC_BOB + TYPE_DESC_VENDOR + TAG_DESC_FRIEND,
-                "Wedding date is only applicable for clients.");
+                Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
     }
 
     @Test
@@ -412,6 +412,6 @@ public class AddCommandParserTest {
         String userInput = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
                 + TYPE_DESC_CLIENT + BUDGET_DESC_BOB + TAG_DESC_FRIEND;
 
-        assertParseFailure(parser, userInput, "Wedding date is required for clients.");
+        assertParseFailure(parser, userInput, Person.MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT);
     }
 }

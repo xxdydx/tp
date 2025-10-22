@@ -80,11 +80,11 @@ public class AddCommandParser implements Parser<AddCommand> {
         if (argMultimap.getValue(PREFIX_WEDDING_DATE).isPresent()) {
             // Wedding date is only applicable for clients
             if (type != PersonType.CLIENT) {
-                throw new ParseException("Wedding date is only applicable for clients.");
+                throw new ParseException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
             }
             weddingDate = ParserUtil.parseWeddingDate(argMultimap.getValue(PREFIX_WEDDING_DATE).get());
         } else if (type == PersonType.CLIENT) {
-            throw new ParseException("Wedding date is required for clients.");
+            throw new ParseException(Person.MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT);
         }
 
         // Parse price if present
