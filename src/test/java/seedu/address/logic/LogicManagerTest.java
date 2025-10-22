@@ -11,8 +11,8 @@ import static seedu.address.logic.commands.CommandTestUtil.PARTNER_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.TYPE_DESC_CLIENT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_BUDGET_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.WEDDING_DATE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PARTNER_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.WEDDING_DATE_DESC_AMY;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.AMY;
 

@@ -188,6 +188,9 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Builds a {@link Person} from the values set on this builder, enforcing type/partner rules.
+     * */
     public Person build() {
         if (type == PersonType.CLIENT) {
             if (partner == null || partner.isEmpty()) {
