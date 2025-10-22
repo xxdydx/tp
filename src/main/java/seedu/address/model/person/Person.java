@@ -19,6 +19,10 @@ import seedu.address.model.tag.Tag;
  * immutable.
  */
 public class Person {
+    public static final String MSG_PARTNER_FORBIDDEN_FOR_VENDOR =
+            "Vendors cannot have a partner (remove pr/<PARTNER_NAME>).";
+    public static final String MSG_PARTNER_REQUIRED_FOR_CLIENT =
+            "Clients must have a partner (use pr/<PARTNER_NAME>).";
 
     // Identity fields
     private final Name name;
@@ -34,11 +38,6 @@ public class Person {
     private final Set<Person> linkedPersons = new HashSet<>();
     private final Budget budget; // only for clients
     private final Optional<Partner> partner;
-
-    public static final String MSG_PARTNER_FORBIDDEN_FOR_VENDOR =
-            "Vendors cannot have a partner (remove pr/<PARTNER_NAME>).";
-    public static final String MSG_PARTNER_REQUIRED_FOR_CLIENT =
-            "Clients must have a partner (use pr/<PARTNER_NAME>).";
 
     /**
      * Every field must be present and not null, except price and budget which are
