@@ -91,14 +91,14 @@ public class EditCommandParser implements Parser<EditCommand> {
 
         if (argMultimap.getValue(PREFIX_WEDDING_DATE).isPresent()) {
             String weddingDateValue = argMultimap.getValue(PREFIX_WEDDING_DATE).get().trim();
-            
+
             // If type is being changed to vendor and wedding date is provided (not empty)
             if (editPersonDescriptor.getType().isPresent() && editPersonDescriptor.getType().get() == PersonType.VENDOR) {
                 if (!weddingDateValue.isEmpty()) {
                     throw new ParseException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
                 }
             }
-            
+
             // If wedding date is being removed (empty) and type is being changed to client
             if (editPersonDescriptor.getType().isPresent() && editPersonDescriptor.getType().get() == PersonType.CLIENT) {
                 if (weddingDateValue.isEmpty()) {
