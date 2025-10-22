@@ -29,6 +29,7 @@ public class EditPersonDescriptorTest {
 
         // null -> returns false
         assertFalse(DESC_AMY.equals(null));
+        assertFalse(DESC_AMY.equals(null));
 
         // different types -> returns false
         assertFalse(DESC_AMY.equals(5));
@@ -68,6 +69,7 @@ public class EditPersonDescriptorTest {
                 + editPersonDescriptor.getWeddingDate().orElse(null) + ", type="
                 + editPersonDescriptor.getType().orElse(null) + ", price="
                 + editPersonDescriptor.getPrice().orElse(null) + ", budget="
+                + editPersonDescriptor.getBudget().orElse(null) + ", partner="
                 + editPersonDescriptor.getBudget().orElse(null) + ", tags="
                 + editPersonDescriptor.getTags().orElse(null) + "}";
         assertEquals(expected, editPersonDescriptor.toString());

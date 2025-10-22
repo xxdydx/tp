@@ -10,7 +10,9 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Budget;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Partner;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
 import seedu.address.model.tag.Tag;
@@ -40,8 +42,10 @@ public class EditPersonDescriptorBuilder {
         descriptor.setEmail(person.getEmail());
         descriptor.setAddress(person.getAddress());
         descriptor.setWeddingDate(person.getWeddingDate());
+        descriptor.setType(person.getType());
         descriptor.setPrice(person.getPrice().orElse(null));
         descriptor.setBudget(person.getBudget().orElse(null));
+        descriptor.setPartner(person.getPartner().orElse(null));
         descriptor.setTags(person.getTags());
     }
 
@@ -98,6 +102,32 @@ public class EditPersonDescriptorBuilder {
      */
     public EditPersonDescriptorBuilder withBudget(String budget) {
         descriptor.setBudget(new Budget(budget));
+        return this;
+    }
+
+    /** Sets the {@code Partner}. */
+    public EditPersonDescriptorBuilder withPartner(String partnerName) {
+        descriptor.setPartner(partnerName == null ? null : new Partner(partnerName));
+        return this;
+    }
+
+    /** Explicitly clears partner (useful when switching to VENDOR). */
+    public EditPersonDescriptorBuilder withoutPartner() {
+        descriptor.setPartner(null);
+        return this;
+    }
+
+    /**
+     * Sets the {@code PersonType} from a string like "client" or "vendor".
+     * Accepts any case; trims and normalises before parsing.
+     */
+    public EditPersonDescriptorBuilder withType(String type) {
+        String normalised = type == null ? null : type.trim().toLowerCase();
+        if (normalised != null) {
+            descriptor.setType(PersonType.parse(normalised));
+        } else {
+            descriptor.setType(null);
+        }
         return this;
     }
 

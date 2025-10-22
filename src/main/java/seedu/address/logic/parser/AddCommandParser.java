@@ -6,12 +6,14 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PARTNER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -22,6 +24,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Budget;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Partner;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
@@ -45,7 +48,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
                 PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_WEDDING_DATE,
-                PREFIX_TAG, PREFIX_TYPE, PREFIX_PRICE, PREFIX_BUDGET);
+                PREFIX_TAG, PREFIX_TYPE, PREFIX_PRICE, PREFIX_BUDGET, PREFIX_PARTNER);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
                 PREFIX_WEDDING_DATE)
@@ -55,7 +58,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         argMultimap.verifyNoDuplicatePrefixesFor(
                 PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_WEDDING_DATE, PREFIX_TYPE,
-                PREFIX_PRICE, PREFIX_BUDGET);
+                PREFIX_PRICE, PREFIX_BUDGET, PREFIX_PARTNER);
 
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
@@ -72,7 +75,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
             // Exact message expected by AddCommandParserTest.parse_typeInvalid_failure
             if (!normalised.equals("client") && !normalised.equals("vendor")) {
-                throw new ParseException("Invalid type. Please choose either 'client' or 'vendor'.");
+                throw new ParseException(AddCommand.MESSAGE_TYPE_INVALID);
             }
             type = PersonType.parse(normalised);
         }
@@ -82,7 +85,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         if (argMultimap.getValue(PREFIX_PRICE).isPresent()) {
             // Price is only applicable for vendors
             if (type != PersonType.VENDOR) {
-                throw new ParseException("Price is only applicable for vendors.");
+                throw new ParseException(AddCommand.MESSAGE_PRICE_ONLY_FOR_VENDOR);
             }
             price = ParserUtil.parsePrice(argMultimap.getValue(PREFIX_PRICE).get());
         }
@@ -92,12 +95,24 @@ public class AddCommandParser implements Parser<AddCommand> {
         if (argMultimap.getValue(PREFIX_BUDGET).isPresent()) {
             // Budget is only applicable for clients
             if (type != PersonType.CLIENT) {
-                throw new ParseException("Budget is only applicable for clients.");
+                throw new ParseException(AddCommand.MESSAGE_BUDGET_ONLY_FOR_CLIENT);
             }
             budget = ParserUtil.parseBudget(argMultimap.getValue(PREFIX_BUDGET).get());
         }
 
-        Person person = new Person(name, phone, email, address, weddingDate, type, tagList, price, budget);
+        // required iff type == CLIENT
+        Optional<Partner> partner = Optional.empty();
+        if (argMultimap.getValue(PREFIX_PARTNER).isPresent()) {
+            partner = Optional.of(ParserUtil.parsePartner(argMultimap.getValue(PREFIX_PARTNER).get()));
+        }
+        if (type == PersonType.CLIENT && partner.isEmpty()) {
+            throw new ParseException(AddCommand.MESSAGE_PARTNER_REQUIRED_FOR_CLIENT);
+        }
+        if (type == PersonType.VENDOR && partner.isPresent()) {
+            throw new ParseException(AddCommand.MESSAGE_PARTNER_FORBIDDEN_FOR_VENDOR);
+        }
+
+        Person person = new Person(name, phone, email, address, weddingDate, type, tagList, price, budget, partner);
         return new AddCommand(person);
     }
 
