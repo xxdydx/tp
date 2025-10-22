@@ -80,6 +80,24 @@ public class Person {
         this.partner = partner;
     }
 
+    /**
+     * Constructor for vendors - no wedding date field.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, PersonType type,
+            Set<Tag> tags, Price price) {
+        requireAllNonNull(name, phone, email, address, tags);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.weddingDate = null; // Vendors don't have wedding dates
+        this.type = type;
+        this.tags.addAll(tags);
+        this.price = price;
+        this.budget = null; // Vendors don't have budgets
+        this.partner = Optional.empty(); // Vendors don't have partners
+    }
+
     public Name getName() {
         return name;
     }

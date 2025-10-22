@@ -29,6 +29,8 @@ public class AddCommand extends Command {
     public static final String MESSAGE_BUDGET_ONLY_FOR_CLIENT = "Budget is only applicable for clients.";
     public static final String MESSAGE_PARTNER_REQUIRED_FOR_CLIENT = "Partner is required when type is CLIENT.";
     public static final String MESSAGE_PARTNER_FORBIDDEN_FOR_VENDOR = "Partner must be empty when type is VENDOR.";
+    public static final String MESSAGE_WEDDING_DATE_REQUIRED_FOR_CLIENT = "Wedding date is required when type is CLIENT.";
+    public static final String MESSAGE_WEDDING_DATE_FORBIDDEN_FOR_VENDOR = "Wedding date must be empty when type is VENDOR.";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a contact (vendor or client) to KnotBook. "
             + "Parameters: "

@@ -202,8 +202,7 @@ public class PersonBuilder {
             if (partner != null && partner.isPresent()) {
                 throw new IllegalArgumentException("Vendors cannot have a partner");
             }
-            return new Person(name, phone, email, address, weddingDate, type, tags,
-                    price, null, Optional.empty());
+            return new Person(name, phone, email, address, type, tags, price);
         }
     }
 
