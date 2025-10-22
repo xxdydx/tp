@@ -107,8 +107,11 @@ public class UnlinkCommand extends Command {
                 person.getType(),
                 person.getTags(),
                 updatedLinks,
-                person.getPrice().orElse(null));
+                person.getPrice().orElse(null),
+                person.getPartner()
+        );
     }
+
 
     @Override
     public boolean equals(Object other) {

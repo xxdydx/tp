@@ -1,9 +1,12 @@
 package seedu.address.testutil;
 
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PARTNER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
@@ -37,11 +40,19 @@ public class PersonUtil {
         sb.append(PREFIX_EMAIL + person.getEmail().value + " ");
         sb.append(PREFIX_ADDRESS + person.getAddress().value + " ");
         sb.append(PREFIX_WEDDING_DATE + person.getWeddingDate().toString() + " ");
-        sb.append(PREFIX_TYPE).append(person.getType().toString());
+        sb.append(PREFIX_TYPE).append(person.getType().toString()).append(" ");
+
+        person.getPrice().ifPresent(price ->
+                sb.append(PREFIX_PRICE).append(price.toString()).append(" "));
+        person.getBudget().ifPresent(budget ->
+                sb.append(PREFIX_BUDGET).append(budget.toString()).append(" "));
+
+        person.getPartner().ifPresent(partner ->
+                sb.append(PREFIX_PARTNER).append(partner.value).append(" "));
 
         person.getTags().forEach(tag -> sb.append(PREFIX_TAG).append(tag.tagName).append(" "));
 
-        return sb.toString();
+        return sb.toString().trim();
     }
 
     /**
@@ -55,6 +66,11 @@ public class PersonUtil {
         descriptor.getAddress().ifPresent(address -> sb.append(PREFIX_ADDRESS).append(address.value).append(" "));
         descriptor.getWeddingDate().ifPresent(weddingDate -> sb.append(PREFIX_WEDDING_DATE)
             .append(weddingDate.toString()).append(" "));
+        descriptor.getType().ifPresent(type ->
+                sb.append(PREFIX_TYPE).append(type.toString().toLowerCase()).append(" "));
+        descriptor.getPrice().ifPresent(price -> sb.append(PREFIX_PRICE).append(price.toString()).append(" "));
+        descriptor.getBudget().ifPresent(budget -> sb.append(PREFIX_BUDGET).append(budget.toString()).append(" "));
+        descriptor.getPartner().ifPresent(partner -> sb.append(PREFIX_PARTNER).append(partner.value).append(" "));
         if (descriptor.getTags().isPresent()) {
             Set<Tag> tags = descriptor.getTags().get();
             if (tags.isEmpty()) {
@@ -63,6 +79,6 @@ public class PersonUtil {
                 tags.forEach(s -> sb.append(PREFIX_TAG).append(s.tagName).append(" "));
             }
         }
-        return sb.toString();
+        return sb.toString().trim();
     }
 }

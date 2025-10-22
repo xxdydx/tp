@@ -1,6 +1,7 @@
 package seedu.address.testutil;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.model.date.WeddingDate;
@@ -8,6 +9,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Budget;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Partner;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
@@ -25,6 +27,7 @@ public class PersonBuilder {
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_WEDDING_DATE = "01/01/2020";
     public static final PersonType DEFAULT_TYPE = PersonType.CLIENT;
+    public static final String DEFAULT_PARTNER = "Clara Chia";
 
     private Name name;
     private Phone phone;
@@ -35,6 +38,7 @@ public class PersonBuilder {
     private PersonType type;
     private Price price;
     private Budget budget;
+    private Optional<Partner> partner;
 
 
     /**
@@ -50,6 +54,7 @@ public class PersonBuilder {
         type = DEFAULT_TYPE;
         price = null;
         budget = null;
+        partner = Optional.of(new Partner(DEFAULT_PARTNER));
     }
 
     /**
@@ -65,6 +70,7 @@ public class PersonBuilder {
         type = personToCopy.getType();
         price = personToCopy.getPrice().orElse(null);
         budget = personToCopy.getBudget().orElse(null);
+        partner = personToCopy.getPartner();
     }
 
     /**
@@ -120,6 +126,15 @@ public class PersonBuilder {
      */
     public PersonBuilder withType(PersonType type) {
         this.type = type;
+        if (type == PersonType.VENDOR) {
+            this.partner = Optional.empty();
+            this.budget = null;
+        } else {
+            this.price = null;
+            if (this.partner == null || this.partner.isEmpty()) {
+                this.partner = Optional.of(new Partner(DEFAULT_PARTNER));
+            }
+        }
         return this;
     }
 
@@ -155,8 +170,41 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Partner} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withPartner(String partnerName) {
+        this.partner = Optional.of(new Partner(partnerName));
+        this.type = PersonType.CLIENT;
+        this.price = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@code Partner} to Optional.empty() for the {@code Person} that we are building.
+     */
+    public PersonBuilder withoutPartner() {
+        this.partner = Optional.empty();
+        return this;
+    }
+
+    /**
+     * Builds a {@link Person} from the values set on this builder, enforcing type/partner rules.
+     * */
     public Person build() {
-        return new Person(name, phone, email, address, weddingDate, type, tags, price, budget);
+        if (type == PersonType.CLIENT) {
+            if (partner == null || partner.isEmpty()) {
+                throw new IllegalArgumentException("Clients must have a partner");
+            }
+            return new Person(name, phone, email, address, weddingDate, type, tags,
+                    null, budget, partner);
+        } else {
+            if (partner != null && partner.isPresent()) {
+                throw new IllegalArgumentException("Vendors cannot have a partner");
+            }
+            return new Person(name, phone, email, address, weddingDate, type, tags,
+                    price, null, Optional.empty());
+        }
     }
 
 }
