@@ -50,28 +50,28 @@ public class TypicalPersons {
             .withType(PersonType.parse("vendor")).withPrice("1200-2000")
             .build();
 
-    public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
+    public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("94822241")
             .withEmail("werner@example.com").withAddress("michegan ave").withWeddingDate("05/05/2024")
             .withType(PersonType.parse("vendor")).withPrice("500-900")
             .build();
 
-    public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("9482427")
+    public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("94824271")
             .withEmail("lydia@example.com").withAddress("little tokyo").withWeddingDate("06/06/2024")
             .withType(PersonType.parse("vendor")).withPrice("700-1100")
             .build();
 
-    public static final Person GEORGE = new PersonBuilder().withName("George Best").withPhone("9482442")
+    public static final Person GEORGE = new PersonBuilder().withName("George Best").withPhone("94824421")
             .withEmail("anna@example.com").withAddress("4th street").withWeddingDate("07/07/2024")
             .withType(PersonType.parse("vendor")).withPrice("900-1300")
             .build();
 
     // Manually added
-    public static final Person HOON = new PersonBuilder().withName("Hoon Meier").withPhone("8482424")
+    public static final Person HOON = new PersonBuilder().withName("Hoon Meier").withPhone("84824240")
             .withEmail("stefan@example.com").withAddress("little india").withWeddingDate("08/08/2024")
             .withType(PersonType.parse("vendor")).withPrice("500-800")
             .build();
 
-    public static final Person IDA = new PersonBuilder().withName("Ida Mueller").withPhone("8482131")
+    public static final Person IDA = new PersonBuilder().withName("Ida Mueller").withPhone("84821310")
             .withEmail("hans@example.com").withAddress("chicago ave").withWeddingDate("09/09/2024")
             .withType(PersonType.parse("vendor")).withPrice("650-900")
             .build();
@@ -93,7 +93,9 @@ public class TypicalPersons {
 
     private TypicalPersons() {} // prevents instantiation
 
-    /** Returns an {@code AddressBook} with all the typical persons. */
+    /**
+     * Returns an {@code AddressBook} with all the typical persons.
+     */
     public static AddressBook getTypicalAddressBook() {
         AddressBook ab = new AddressBook();
         for (Person person : getTypicalPersons()) {
