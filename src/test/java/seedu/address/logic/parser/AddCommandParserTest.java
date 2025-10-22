@@ -74,7 +74,8 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_allFieldsPresent_success() {
-        Person expectedPerson = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND).withType(PersonType.CLIENT)
+        Person expectedPerson = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND)
+                .withWeddingDate(VALID_WEDDING_DATE_BOB).withType(PersonType.CLIENT)
                 .withPartner("Bob Partner").build();
 
         // whitespace only preamble
@@ -85,8 +86,8 @@ public class AddCommandParserTest {
 
         // multiple tags - all accepted
         Person expectedPersonMultipleTags = new PersonBuilder(BOB)
-                .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND).withType(PersonType.CLIENT)
-                .withPartner("Bob Partner").build();
+                .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND).withWeddingDate(VALID_WEDDING_DATE_BOB)
+                .withType(PersonType.CLIENT).withPartner("Bob Partner").build();
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + WEDDING_DATE_DESC_BOB
                         + TYPE_DESC_CLIENT + PARTNER_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
@@ -264,7 +265,8 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_typeClient_success() {
-        Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND).withType(PersonType.CLIENT)
+        Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND)
+                .withWeddingDate(VALID_WEDDING_DATE_BOB).withType(PersonType.CLIENT)
                 .withPartner("Bob Partner").build();
 
         assertParseSuccess(parser,

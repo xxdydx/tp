@@ -35,7 +35,8 @@ public class SampleDataUtil {
                         new Budget("8000-15000"), Optional.of(new Partner("Jackson Wang"))),
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
                         new Address("Blk 11 Ang Mo Kio Street 74, #11-04"),
-                        PersonType.VENDOR, getTagSet("neighbours"), new Price("500-1000")),
+                        null, PersonType.VENDOR, getTagSet("neighbours"), new Price("500-1000"), null,
+                        Optional.empty()),
             new Person(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
                         new Address("Blk 436 Serangoon Gardens Street 26, #16-43"),
                         WeddingDate.parse("05-08-2018"), PersonType.CLIENT, getTagSet("family"), null,
@@ -46,7 +47,8 @@ public class SampleDataUtil {
                         new Budget("10000-15000"), Optional.of(new Partner("Siti Nur"))),
             new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
                         new Address("Blk 45 Aljunied Street 85, #11-31"),
-                        PersonType.VENDOR, getTagSet("colleagues"), new Price("2000-3500"))
+                        null, PersonType.VENDOR, getTagSet("colleagues"), new Price("2000-3500"), null,
+                        Optional.empty())
         };
     }
 
