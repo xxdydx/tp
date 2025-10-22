@@ -38,7 +38,7 @@ public class LinkCommandTest {
                 .withPhone("11111111")
                 .withEmail("alice@example.com")
                 .withAddress("123 Client Street")
-                .withWeddingDate("01/01/2024")
+                .withWeddingDate("01-01-2024")
                 .withType(PersonType.CLIENT)
                 .build();
 
@@ -46,7 +46,7 @@ public class LinkCommandTest {
                 .withPhone("22222222")
                 .withEmail("bob@example.com")
                 .withAddress("456 Vendor Avenue")
-                .withWeddingDate("02/02/2024")
+                .withWeddingDate("02-02-2024")
                 .withType(PersonType.VENDOR)
                 .build();
 
