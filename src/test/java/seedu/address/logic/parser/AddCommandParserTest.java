@@ -390,7 +390,8 @@ public class AddCommandParserTest {
     public void parse_invalidBudget_failure() {
         assertParseFailure(parser,
                 NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                        + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT + PARTNER_DESC_AMY + INVALID_BUDGET_DESC + TAG_DESC_FRIEND,
+                        + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT + PARTNER_DESC_AMY + INVALID_BUDGET_DESC
+                        + TAG_DESC_FRIEND,
                 Budget.MESSAGE_CONSTRAINTS);
     }
 
