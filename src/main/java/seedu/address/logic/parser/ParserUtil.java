@@ -14,6 +14,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Budget;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Partner;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
@@ -190,4 +191,15 @@ public class ParserUtil {
         return new Budget(trimmedBudget);
     }
 
+    /**
+     * Parses a {@link String} into a {@link Partner}.
+     */
+    public static Partner parsePartner(String partnerName) throws ParseException {
+        requireNonNull(partnerName);
+        String trimmed = partnerName.trim();
+        if (trimmed.isEmpty()) {
+            throw new ParseException("Partner name cannot be empty.");
+        }
+        return new Partner(trimmed);
+    }
 }

@@ -35,6 +35,7 @@ import static seedu.address.logic.commands.CommandTestUtil.WEDDING_DATE_DESC_BOB
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PARTNER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
@@ -66,30 +67,36 @@ public class AddCommandParserTest {
     private static final String TYPE_DESC_INVALID = " type/photographer";
     private static final String TYPE_DESC_VENDOR_UPPER = " type/VENDOR";
 
+    private static final String PARTNER_DESC_AMY = " pr/Alex Tan";
+    private static final String PARTNER_DESC_BOB = " pr/Bob Partner";
+
     private AddCommandParser parser = new AddCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {
-        Person expectedPerson = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND).withType(PersonType.CLIENT).build();
+        Person expectedPerson = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND).withType(PersonType.CLIENT)
+                .withPartner("Bob Partner").build();
 
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + TAG_DESC_FRIEND,
+                        + ADDRESS_DESC_BOB + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + PARTNER_DESC_BOB
+                        + TAG_DESC_FRIEND,
                 new AddCommand(expectedPerson));
 
         // multiple tags - all accepted
         Person expectedPersonMultipleTags = new PersonBuilder(BOB)
-                .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND).withType(PersonType.CLIENT).build();
+                .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND).withType(PersonType.CLIENT)
+                .withPartner("Bob Partner").build();
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + WEDDING_DATE_DESC_BOB
-                        + TYPE_DESC_CLIENT + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                        + TYPE_DESC_CLIENT + PARTNER_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 new AddCommand(expectedPersonMultipleTags));
     }
 
     @Test
     public void parse_repeatedNonTagValue_failure() {
         String validExpectedPersonString = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + TAG_DESC_FRIEND;
+                + ADDRESS_DESC_BOB + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + PARTNER_DESC_BOB + TAG_DESC_FRIEND;
 
         // multiple names
         assertParseFailure(parser, NAME_DESC_AMY + validExpectedPersonString,
@@ -116,7 +123,7 @@ public class AddCommandParserTest {
                 validExpectedPersonString + PHONE_DESC_AMY + EMAIL_DESC_AMY + NAME_DESC_AMY + ADDRESS_DESC_AMY
                         + WEDDING_DATE_DESC_AMY + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NAME, PREFIX_ADDRESS, PREFIX_EMAIL,
-                        PREFIX_PHONE, PREFIX_WEDDING_DATE, PREFIX_TYPE));
+                        PREFIX_PHONE, PREFIX_WEDDING_DATE, PREFIX_TYPE, PREFIX_PARTNER));
 
         // invalid value followed by valid value
 
@@ -166,9 +173,10 @@ public class AddCommandParserTest {
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero tags
-        Person expectedPerson = new PersonBuilder(AMY).withTags().withType(PersonType.CLIENT).build();
+        Person expectedPerson = new PersonBuilder(AMY).withTags().withType(PersonType.CLIENT)
+                .withPartner("Alex Tan").withoutBudget().build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                        + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT,
+                        + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT + PARTNER_DESC_AMY,
                 new AddCommand(expectedPerson));
     }
 
@@ -209,58 +217,66 @@ public class AddCommandParserTest {
     public void parse_invalidValue_failure() {
         // invalid name
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + PARTNER_DESC_BOB + TAG_DESC_HUSBAND
+                        + TAG_DESC_FRIEND,
                 Name.MESSAGE_CONSTRAINTS);
 
         // invalid phone
         assertParseFailure(parser, NAME_DESC_BOB + INVALID_PHONE_DESC + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + PARTNER_DESC_BOB + TAG_DESC_HUSBAND
+                        + TAG_DESC_FRIEND,
                 Phone.MESSAGE_CONSTRAINTS);
 
         // invalid email
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + INVALID_EMAIL_DESC + ADDRESS_DESC_BOB
-                + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + PARTNER_DESC_BOB + TAG_DESC_HUSBAND
+                        + TAG_DESC_FRIEND,
                 Email.MESSAGE_CONSTRAINTS);
 
         // invalid address
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + INVALID_ADDRESS_DESC
-                + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + PARTNER_DESC_BOB + TAG_DESC_HUSBAND
+                        + TAG_DESC_FRIEND,
                 Address.MESSAGE_CONSTRAINTS);
 
         // invalid wedding date
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + INVALID_WEDDING_DATE_DESC + TYPE_DESC_CLIENT + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                        + INVALID_WEDDING_DATE_DESC + TYPE_DESC_CLIENT + PARTNER_DESC_BOB + TAG_DESC_HUSBAND
+                        + TAG_DESC_FRIEND,
                 WeddingDate.MESSAGE_CONSTRAINTS);
 
         // invalid tag
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + INVALID_TAG_DESC + VALID_TAG_FRIEND,
+                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + PARTNER_DESC_BOB + INVALID_TAG_DESC
+                        + VALID_TAG_FRIEND,
                 Tag.MESSAGE_CONSTRAINTS);
 
         // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + EMAIL_DESC_BOB + INVALID_ADDRESS_DESC
-                + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT, Name.MESSAGE_CONSTRAINTS);
+                + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + PARTNER_DESC_BOB, Name.MESSAGE_CONSTRAINTS);
 
         // non-empty preamble
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                        + ADDRESS_DESC_BOB + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + PARTNER_DESC_BOB
+                        + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_typeClient_success() {
-        Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND).withType(PersonType.CLIENT).build();
+        Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND).withType(PersonType.CLIENT)
+                .withPartner("Bob Partner").build();
 
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + WEDDING_DATE_DESC_BOB + TAG_DESC_FRIEND + TYPE_DESC_CLIENT,
+                        + WEDDING_DATE_DESC_BOB + TAG_DESC_FRIEND + TYPE_DESC_CLIENT + PARTNER_DESC_BOB,
                 new AddCommand(expected));
     }
 
     @Test
     public void parse_typeVendor_successCaseInsensitive() {
         Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND)
-                .withType(PersonType.VENDOR).build();
+                .withType(PersonType.VENDOR).withoutPrice().withoutPartner().build();
 
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
@@ -279,7 +295,7 @@ public class AddCommandParserTest {
     @Test
     public void parse_repeatedType_failure() {
         String validExpectedPersonString = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + WEDDING_DATE_DESC_BOB + TAG_DESC_FRIEND;
+                + ADDRESS_DESC_BOB + WEDDING_DATE_DESC_BOB + TAG_DESC_FRIEND + PARTNER_DESC_BOB;
 
         assertParseFailure(parser,
                 validExpectedPersonString + TYPE_DESC_CLIENT + " type/vendor",
@@ -316,10 +332,10 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_clientWithPrice_failure() {
-        // Price is only applicable for vendors
         assertParseFailure(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + PRICE_DESC_BOB + TAG_DESC_FRIEND,
+                        + WEDDING_DATE_DESC_BOB + TYPE_DESC_CLIENT + PARTNER_DESC_BOB + PRICE_DESC_BOB
+                        + TAG_DESC_FRIEND,
                 "Price is only applicable for vendors.");
     }
 
@@ -337,11 +353,13 @@ public class AddCommandParserTest {
                 .withTags(VALID_TAG_FRIEND)
                 .withType(PersonType.CLIENT)
                 .withBudget("5000-10000")
+                .withPartner("Alex Tan")
                 .build();
 
         assertParseSuccess(parser,
                 NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                        + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT + BUDGET_DESC_AMY + TAG_DESC_FRIEND,
+                        + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT + PARTNER_DESC_AMY + BUDGET_DESC_AMY
+                        + TAG_DESC_FRIEND,
                 new AddCommand(expected));
     }
 
@@ -350,18 +368,18 @@ public class AddCommandParserTest {
         Person expected = new PersonBuilder(AMY)
                 .withTags(VALID_TAG_FRIEND)
                 .withType(PersonType.CLIENT)
+                .withPartner("Alex Tan")
                 .withoutBudget()
                 .build();
 
         assertParseSuccess(parser,
                 NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                        + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT + TAG_DESC_FRIEND,
+                        + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT + PARTNER_DESC_AMY + TAG_DESC_FRIEND,
                 new AddCommand(expected));
     }
 
     @Test
     public void parse_vendorWithBudget_failure() {
-        // Budget is only applicable for clients
         assertParseFailure(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
                         + WEDDING_DATE_DESC_BOB + TYPE_DESC_VENDOR + BUDGET_DESC_BOB + TAG_DESC_FRIEND,
@@ -372,7 +390,8 @@ public class AddCommandParserTest {
     public void parse_invalidBudget_failure() {
         assertParseFailure(parser,
                 NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                        + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT + INVALID_BUDGET_DESC + TAG_DESC_FRIEND,
+                        + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT + PARTNER_DESC_AMY + INVALID_BUDGET_DESC
+                        + TAG_DESC_FRIEND,
                 Budget.MESSAGE_CONSTRAINTS);
     }
 
@@ -384,5 +403,48 @@ public class AddCommandParserTest {
         assertParseFailure(parser,
                 validExpectedPersonString + PRICE_DESC_BOB + " price/1000",
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PRICE));
+    }
+
+    @Test
+    public void parse_clientWithPartner_success() {
+        Person expected = new PersonBuilder().withName("Amy Bee").withPhone("11111111")
+                .withEmail("amy@example.com").withAddress("Block 312, Amy Street 1")
+                .withWeddingDate("01/01/2024").withType(PersonType.CLIENT).withPartner("Alex Tan")
+                .withTags().build();
+
+        String userInput = NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT + PARTNER_DESC_AMY;
+
+        assertParseSuccess(parser, userInput, new AddCommand(expected));
+    }
+
+    @Test
+    public void parse_clientMissingPartner_failure() {
+        String userInput = NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT;
+
+        String expectedMessage = AddCommand.MESSAGE_PARTNER_REQUIRED_FOR_CLIENT;
+        assertParseFailure(parser, userInput, expectedMessage);
+    }
+
+    @Test
+    public void parse_vendorWithoutPartner_success() {
+        Person expected = new PersonBuilder().withName("Amy Bee").withPhone("11111111")
+                .withEmail("amy@example.com").withAddress("Block 312, Amy Street 1")
+                .withWeddingDate("01/01/2024").withType(PersonType.VENDOR).withTags().build();
+
+        String userInput = NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                + WEDDING_DATE_DESC_AMY + TYPE_DESC_VENDOR;
+
+        assertParseSuccess(parser, userInput, new AddCommand(expected));
+    }
+
+    @Test
+    public void parse_vendorWithPartner_failure() {
+        String userInput = NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                + WEDDING_DATE_DESC_AMY + TYPE_DESC_VENDOR + PARTNER_DESC_AMY;
+
+        String expectedMessage = AddCommand.MESSAGE_PARTNER_FORBIDDEN_FOR_VENDOR;
+        assertParseFailure(parser, userInput, expectedMessage);
     }
 }

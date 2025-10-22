@@ -1,5 +1,6 @@
 package seedu.address.model.person;
 
+import static seedu.address.commons.util.AppUtil.checkArgument;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
@@ -18,6 +19,10 @@ import seedu.address.model.tag.Tag;
  * immutable.
  */
 public class Person {
+    public static final String MSG_PARTNER_FORBIDDEN_FOR_VENDOR =
+            "Vendors cannot have a partner (remove pr/<PARTNER_NAME>).";
+    public static final String MSG_PARTNER_REQUIRED_FOR_CLIENT =
+            "Clients must have a partner (use pr/<PARTNER_NAME>).";
 
     // Identity fields
     private final Name name;
@@ -32,14 +37,17 @@ public class Person {
     private final Price price; // only for vendors
     private final Set<Person> linkedPersons = new HashSet<>();
     private final Budget budget; // only for clients
+    private final Optional<Partner> partner;
 
     /**
      * Every field must be present and not null, except price and budget which are
      * optional.
      */
     public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
-            Set<Tag> tags, Price price, Budget budget) {
-        requireAllNonNull(name, phone, email, address, weddingDate, tags);
+            Set<Tag> tags, Price price, Budget budget, Optional<Partner> partner) {
+        requireAllNonNull(name, phone, email, address, weddingDate, tags, type);
+        checkArgument(isValidPartnerForType(type, partner),
+                type == PersonType.CLIENT ? MSG_PARTNER_REQUIRED_FOR_CLIENT : MSG_PARTNER_FORBIDDEN_FOR_VENDOR);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -49,6 +57,7 @@ public class Person {
         this.tags.addAll(tags);
         this.price = price;
         this.budget = budget;
+        this.partner = partner;
     }
 
     /**
@@ -56,7 +65,7 @@ public class Person {
      * Every field must be present and not null, except price which is optional.
      */
     public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
-            Set<Tag> tags, Set<Person> linkedPersons, Price price) {
+                  Set<Tag> tags, Set<Person> linkedPersons, Price price, Optional<Partner> partner) {
         requireAllNonNull(name, phone, email, address, weddingDate, tags, linkedPersons);
         this.name = name;
         this.phone = phone;
@@ -68,6 +77,7 @@ public class Person {
         this.price = price;
         this.linkedPersons.addAll(linkedPersons);
         this.budget = null;
+        this.partner = partner;
     }
 
     public Name getName() {
@@ -101,6 +111,8 @@ public class Person {
     public Optional<Budget> getBudget() {
         return Optional.ofNullable(budget);
     }
+
+    public Optional<Partner> getPartner() { return partner; }
 
     /**
      * Returns an immutable set of linked persons, which throws
@@ -138,6 +150,16 @@ public class Person {
 
         return otherPerson != null
                 && otherPerson.getName().equals(getName());
+    }
+
+    /** Validates the partner constraint for a {@link PersonType}. */
+    public static boolean isValidPartnerForType(PersonType type, Optional<Partner> partner) {
+        if (type == PersonType.CLIENT) {
+            return partner != null && partner.isPresent();
+        } else if (type == PersonType.VENDOR) {
+            return partner != null && partner.isEmpty();
+        }
+        return partner != null && partner.isEmpty();
     }
 
     /**

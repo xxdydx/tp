@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PARTNER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
@@ -46,6 +47,8 @@ public class CommandTestUtil {
     public static final String VALID_PRICE_BOB = "500-1500";
     public static final String VALID_BUDGET_AMY = "5000-10000";
     public static final String VALID_BUDGET_BOB = "3000-8000";
+    public static final String VALID_PARTNER_AMY = "Alex Tan";
+    public static final String VALID_PARTNER_BOB = "Bella Lim";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
 
@@ -65,6 +68,8 @@ public class CommandTestUtil {
     public static final String PRICE_DESC_BOB = " " + PREFIX_PRICE + VALID_PRICE_BOB;
     public static final String BUDGET_DESC_AMY = " " + PREFIX_BUDGET + VALID_BUDGET_AMY;
     public static final String BUDGET_DESC_BOB = " " + PREFIX_BUDGET + VALID_BUDGET_BOB;
+    public static final String PARTNER_DESC_AMY = " " + PREFIX_PARTNER + VALID_PARTNER_AMY;
+    public static final String PARTNER_DESC_BOB = " " + PREFIX_PARTNER + VALID_PARTNER_BOB;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
 

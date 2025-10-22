@@ -3,6 +3,7 @@ package seedu.address.storage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Budget;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Partner;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
@@ -37,6 +39,7 @@ class JsonAdaptedPerson {
     private final String price;
     private final String budget;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final String partner;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -46,7 +49,7 @@ class JsonAdaptedPerson {
             @JsonProperty("email") String email, @JsonProperty("address") String address,
             @JsonProperty("weddingDate") String weddingDate, @JsonProperty("type") String type,
             @JsonProperty("price") String price, @JsonProperty("budget") String budget,
-            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("partner") String partner, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -55,6 +58,7 @@ class JsonAdaptedPerson {
         this.type = type;
         this.price = price;
         this.budget = budget;
+        this.partner = partner;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -72,6 +76,7 @@ class JsonAdaptedPerson {
         type = source.getType().toString();
         price = source.getPrice().map(Price::toString).orElse(null);
         budget = source.getBudget().map(Budget::toString).orElse(null);
+        this.partner = source.getPartner().map(p -> p.value).orElse(null);
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -166,8 +171,19 @@ class JsonAdaptedPerson {
             modelBudget = null;
         }
 
+        final Optional<Partner> modelPartner = (partner == null || partner.isBlank())
+                ? Optional.empty()
+                : Optional.of(new Partner(partner.trim()));
+
+        if (modelType == PersonType.CLIENT && modelPartner.isEmpty()) {
+            throw new IllegalValueException(Person.MSG_PARTNER_REQUIRED_FOR_CLIENT);
+        }
+        if (modelType == PersonType.VENDOR && modelPartner.isPresent()) {
+            throw new IllegalValueException(Person.MSG_PARTNER_FORBIDDEN_FOR_VENDOR);
+        }
+
         return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelType, modelTags,
-                modelPrice, modelBudget);
+                modelPrice, modelBudget, modelPartner);
     }
 
 }
