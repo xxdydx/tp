@@ -77,6 +77,7 @@ public class Person {
         this.tags.addAll(tags);
         this.price = price;
         this.budget = null; // Vendors don't have budgets
+        this.partner = Optional.empty(); // Vendors don't have partners
     }
 
     /**
@@ -114,6 +115,7 @@ public class Person {
         this.price = price;
         this.linkedPersons.addAll(linkedPersons);
         this.budget = null; // Vendors don't have budgets
+        this.partner = Optional.empty(); // Vendors don't have partners
     }
 
     public Name getName() {

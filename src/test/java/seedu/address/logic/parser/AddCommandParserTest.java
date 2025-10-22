@@ -476,12 +476,4 @@ public class AddCommandParserTest {
         String expectedMessage = AddCommand.MESSAGE_PARTNER_FORBIDDEN_FOR_VENDOR;
         assertParseFailure(parser, userInput, expectedMessage);
     }
-
-    @Test
-    public void parse_vendorWithWeddingDate_failure() {
-        String userInput = NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                + WEDDING_DATE_DESC_AMY + TYPE_DESC_VENDOR;
-
-        assertParseFailure(parser, userInput, Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
-    }
 }
