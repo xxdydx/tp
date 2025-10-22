@@ -118,7 +118,8 @@ public class LinkCommand extends Command {
                     person.getType(),
                     person.getTags(),
                     updatedLinks,
-                    person.getPrice().orElse(null));
+                    person.getPrice().orElse(null),
+                    person.getPartner());
         }
     }
 

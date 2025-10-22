@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PARTNER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
@@ -23,6 +24,11 @@ import seedu.address.model.person.Person;
 public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
+    public static final String MESSAGE_TYPE_INVALID = "Invalid type. Please choose either 'client' or 'vendor'.";
+    public static final String MESSAGE_PRICE_ONLY_FOR_VENDOR = "Price is only applicable for vendors.";
+    public static final String MESSAGE_BUDGET_ONLY_FOR_CLIENT = "Budget is only applicable for clients.";
+    public static final String MESSAGE_PARTNER_REQUIRED_FOR_CLIENT = "Partner is required when type is CLIENT.";
+    public static final String MESSAGE_PARTNER_FORBIDDEN_FOR_VENDOR = "Partner must be empty when type is VENDOR.";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a contact (vendor or client) to KnotBook. "
             + "Parameters: "
@@ -32,6 +38,7 @@ public class AddCommand extends Command {
             + PREFIX_ADDRESS + "ADDRESS "
             + "[" + PREFIX_WEDDING_DATE + "WEDDING_DATE] "
             + PREFIX_TYPE + "TYPE "
+            + "[" + PREFIX_PARTNER + "PARTNER] "
             + "[" + PREFIX_PRICE + "PRICE] "
             + "[" + PREFIX_BUDGET + "BUDGET] "
             + "[" + PREFIX_TAG + "TAG]...\n"
@@ -42,6 +49,7 @@ public class AddCommand extends Command {
             + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
             + PREFIX_WEDDING_DATE + "15-06-2020 "
             + PREFIX_TYPE + "client "
+            + PREFIX_PARTNER + "Jane Doe "
             + PREFIX_BUDGET + "5000-10000 "
             + PREFIX_TAG + "friends"
             + "\n"

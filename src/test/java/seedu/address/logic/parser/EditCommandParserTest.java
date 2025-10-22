@@ -11,6 +11,7 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.PARTNER_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
@@ -293,4 +294,27 @@ public class EditCommandParserTest {
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
+    @Test
+    public void parse_changeToClientWithPartner_success() {
+        Index idx = Index.fromOneBased(1);
+        EditPersonDescriptor desc = new EditPersonDescriptorBuilder()
+                .withType(String.valueOf(PersonType.CLIENT))
+                .withPartner("Alex Tan")
+                .withName("Amy Bee")
+                .build();
+
+        String userInput = "1" + TYPE_DESC_CLIENT + PARTNER_DESC_AMY + NAME_DESC_AMY;
+        assertParseSuccess(parser, userInput, new EditCommand(idx, desc));
+    }
+
+    @Test
+    public void parse_changeToVendor_success() {
+        Index idx = Index.fromOneBased(1);
+        EditPersonDescriptor desc = new EditPersonDescriptorBuilder()
+                .withType(PersonType.VENDOR.name().toLowerCase())
+                .build();
+
+        String userInput = "1" + TYPE_DESC_VENDOR;
+        assertParseSuccess(parser, userInput, new EditCommand(idx, desc));
+    }
 }

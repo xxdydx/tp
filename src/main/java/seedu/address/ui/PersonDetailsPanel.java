@@ -85,7 +85,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
             return;
         }
 
-        name.setText(person.getName().fullName);
+        name.setText(DisplayFormat.nameAndPartner(person));
         phone.setText("Phone       : " + person.getPhone().value);
         email.setText("Email         : " + person.getEmail().value);
         String typeText = person.getType().display();

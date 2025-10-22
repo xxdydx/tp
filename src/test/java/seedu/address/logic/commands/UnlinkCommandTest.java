@@ -53,7 +53,7 @@ public class UnlinkCommandTest {
         // Create linked persons
         Person linkedClient = new Person(client.getName(), client.getPhone(), client.getEmail(),
                 client.getAddress(), client.getWeddingDate().orElse(null), client.getType(), client.getTags(),
-                java.util.Set.of(vendor), null);
+                java.util.Set.of(vendor), null, client.getPartner());
         Person linkedVendor = new Person(vendor.getName(), vendor.getPhone(), vendor.getEmail(),
                 vendor.getAddress(), vendor.getType(), vendor.getTags(),
                 java.util.Set.of(client), vendor.getPrice().orElse(null));
@@ -78,7 +78,7 @@ public class UnlinkCommandTest {
         // Unlink them in expected model
         Person updatedClient = new Person(currentClient.getName(), currentClient.getPhone(),
                 currentClient.getEmail(), currentClient.getAddress(), currentClient.getWeddingDate().orElse(null),
-                currentClient.getType(), currentClient.getTags(), java.util.Set.of(), null);
+                currentClient.getType(), currentClient.getTags(), java.util.Set.of(), null, currentClient.getPartner());
         Person updatedVendor = new Person(currentVendor.getName(), currentVendor.getPhone(),
                 currentVendor.getEmail(), currentVendor.getAddress(), currentVendor.getType(),
                 currentVendor.getTags(), java.util.Set.of(), currentVendor.getPrice().orElse(null));
@@ -119,7 +119,8 @@ public class UnlinkCommandTest {
                 vendorFirst.getTags(), java.util.Set.of(clientSecond), vendorFirst.getPrice().orElse(null));
         Person linkedClient = new Person(clientSecond.getName(), clientSecond.getPhone(),
                 clientSecond.getEmail(), clientSecond.getAddress(), clientSecond.getWeddingDate().orElse(null),
-                clientSecond.getType(), clientSecond.getTags(), java.util.Set.of(vendorFirst), null);
+                clientSecond.getType(), clientSecond.getTags(), java.util.Set.of(vendorFirst), null,
+                clientSecond.getPartner());
 
         AddressBook addressBook = new AddressBook();
         addressBook.addPerson(linkedVendor);
@@ -142,10 +143,12 @@ public class UnlinkCommandTest {
 
         Person linkedClient1 = new Person(clientFirst.getName(), clientFirst.getPhone(),
                 clientFirst.getEmail(), clientFirst.getAddress(), clientFirst.getWeddingDate().orElse(null),
-                clientFirst.getType(), clientFirst.getTags(), java.util.Set.of(clientSecond), null);
+                clientFirst.getType(), clientFirst.getTags(), java.util.Set.of(clientSecond), null,
+                clientFirst.getPartner());
         Person linkedClient2 = new Person(clientSecond.getName(), clientSecond.getPhone(),
                 clientSecond.getEmail(), clientSecond.getAddress(), clientSecond.getWeddingDate().orElse(null),
-                clientSecond.getType(), clientSecond.getTags(), java.util.Set.of(clientFirst), null);
+                clientSecond.getType(), clientSecond.getTags(), java.util.Set.of(clientFirst), null,
+                clientSecond.getPartner());
 
         AddressBook addressBook = new AddressBook();
         addressBook.addPerson(linkedClient1);
