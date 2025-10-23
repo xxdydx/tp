@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.StackPane?>
 
 <StackPane fx:id="commandBoxRoot" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-  <TextField fx:id="commandTextField" onAction="#handleCommandEntered" promptText="Enter command here..."/>
+  <TextArea fx:id="commandTextField" 
+            promptText="Enter command here..." 
+            wrapText="true" 
+            prefRowCount="2"
+            minHeight="60.0"
+            prefHeight="60.0"
+            maxHeight="60.0"/>
 </StackPane>
 
 
