@@ -21,6 +21,8 @@ public class PersonDetailsPanel extends UiPart<Region> {
     @FXML
     private Label email;
     @FXML
+    private Label address;
+    @FXML
     private Label type;
     @FXML
     private Label weddingDate;
@@ -59,6 +61,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
             name.setText("No contact selected");
             phone.setText("");
             email.setText("");
+            address.setText("");
             type.setText("");
             weddingDate.setText("");
             if (price != null) {
@@ -87,6 +90,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
         name.setText(DisplayFormat.nameAndPartner(person));
         phone.setText("Phone       : " + person.getPhone().value);
         email.setText("Email         : " + person.getEmail().value);
+        address.setText("Address   : " + person.getAddress().value);
         String typeText = person.getType().display();
         type.setText("Type          : " + typeText);
 
