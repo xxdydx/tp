@@ -28,7 +28,14 @@ public class NameTest {
         assertFalse(Name.isValidName("")); // empty string
         assertFalse(Name.isValidName(" ")); // spaces only
         assertFalse(Name.isValidName("^")); // only non-alphanumeric characters
-        assertFalse(Name.isValidName("peter*")); // contains non-alphanumeric characters
+        assertFalse(Name.isValidName("*Peter")); // starts with invalid character
+        assertFalse(Name.isValidName(".John")); // starts with period
+        assertFalse(Name.isValidName("'Mary")); // starts with apostrophe
+        assertFalse(Name.isValidName("-Jane")); // starts with hyphen
+        assertFalse(Name.isValidName("&Events")); // starts with ampersand
+        assertFalse(Name.isValidName("Peter+")); // contains invalid character
+        assertFalse(Name.isValidName("John@Doe")); // contains invalid character
+        assertFalse(Name.isValidName("Events$")); // contains invalid character
 
         // valid name
         assertTrue(Name.isValidName("peter jack")); // alphabets only
@@ -36,6 +43,17 @@ public class NameTest {
         assertTrue(Name.isValidName("peter the 2nd")); // alphanumeric characters
         assertTrue(Name.isValidName("Capital Tan")); // with capital letters
         assertTrue(Name.isValidName("David Roger Jackson Ray Jr 2nd")); // long names
+
+        // valid names with special characters
+        assertTrue(Name.isValidName("John's Photography")); // with apostrophe
+        assertTrue(Name.isValidName("Mary-Jane's Events")); // with hyphen and apostrophe
+        assertTrue(Name.isValidName("A.B. Events")); // with periods
+        assertTrue(Name.isValidName("Flowers & More")); // with ampersand
+        assertTrue(Name.isValidName("Sarah's Wedding & Events")); // multiple special chars
+        assertTrue(Name.isValidName("J.R. Smith's Photography")); // multiple special chars
+        assertTrue(Name.isValidName("First-Class Events & Planning")); // multiple special chars
+        assertTrue(Name.isValidName("Mr. & Mrs. Smith")); // periods and ampersand
+        assertTrue(Name.isValidName("Pat's Party-Planning Services")); // multiple special chars
     }
 
     @Test
