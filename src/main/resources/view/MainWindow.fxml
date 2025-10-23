@@ -68,9 +68,8 @@
                                            maxWidth="Infinity" />
 
                                 <StackPane fx:id="resultDisplayPlaceholder"
-                                           VBox.vgrow="NEVER"
-                                           minHeight="150.0"
-                                           maxHeight="200.0"
+                                           VBox.vgrow="ALWAYS"
+                                           minHeight="100.0"
                                            maxWidth="Infinity">
                                     <padding>
                                         <Insets top="5" right="10" bottom="5" left="10"/>
@@ -80,7 +79,7 @@
                                 <StackPane fx:id="commandBoxPlaceholder"
                                            VBox.vgrow="NEVER"
                                            minHeight="60.0"
-                                           maxHeight="80.0"
+                                           prefHeight="60.0"
                                            maxWidth="Infinity">
                                     <padding>
                                         <Insets top="2.0" right="10.0" left="10.0"/>
