@@ -110,6 +110,11 @@ public class AddCommandParser implements Parser<AddCommand> {
             budget = ParserUtil.parseBudget(argMultimap.getValue(PREFIX_BUDGET).get());
         }
 
+        // Validate tags - only vendors can have tags
+        if (type == PersonType.CLIENT && !tagList.isEmpty()) {
+            throw new ParseException(Person.MSG_TAGS_FORBIDDEN_FOR_CLIENT);
+        }
+
         // required iff type == CLIENT
         Optional<Partner> partner = Optional.empty();
         if (argMultimap.getValue(PREFIX_PARTNER).isPresent()) {

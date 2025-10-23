@@ -98,9 +98,17 @@ public class PersonCard extends UiPart<Region> {
             budget.setManaged(false);
         }
 
-        person.getTags().stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        // Display tags only for vendors
+        if (person.getType() == PersonType.VENDOR) {
+            person.getTags().stream()
+                    .sorted(Comparator.comparing(tag -> tag.tagName))
+                    .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+            tags.setVisible(true);
+            tags.setManaged(true);
+        } else {
+            tags.setVisible(false);
+            tags.setManaged(false);
+        }
 
         PersonType type = person.getType();
         typeChip.setText(person.getType().display());

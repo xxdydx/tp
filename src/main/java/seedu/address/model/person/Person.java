@@ -27,6 +27,9 @@ public class Person {
     public static final String MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT = "Wedding date is required for clients.";
     public static final String MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR = "Wedding date is only applicable for clients.";
 
+    public static final String MSG_TAGS_FORBIDDEN_FOR_CLIENT =
+            "Tags are not allowed for clients. Only vendors can have tags/categories.";
+
     // Identity fields
     private final Name name;
     private final Phone phone;
@@ -50,6 +53,7 @@ public class Person {
         requireAllNonNull(name, phone, email, address, weddingDate, tags, type);
         checkArgument(isValidPartnerForType(type, partner),
                 type == PersonType.CLIENT ? MSG_PARTNER_REQUIRED_FOR_CLIENT : MSG_PARTNER_FORBIDDEN_FOR_VENDOR);
+        checkArgument(isValidTagsForType(type, tags), MSG_TAGS_FORBIDDEN_FOR_CLIENT);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -86,6 +90,7 @@ public class Person {
     public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
                   Set<Tag> tags, Set<Person> linkedPersons, Price price, Optional<Partner> partner) {
         requireAllNonNull(name, phone, email, address, weddingDate, tags, linkedPersons);
+        checkArgument(isValidTagsForType(type, tags), MSG_TAGS_FORBIDDEN_FOR_CLIENT);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -200,6 +205,14 @@ public class Person {
             return partner != null && partner.isEmpty();
         }
         return partner != null && partner.isEmpty();
+    }
+
+    /** Validates the tags constraint for a {@link PersonType}. */
+    public static boolean isValidTagsForType(PersonType type, Set<Tag> tags) {
+        if (type == PersonType.CLIENT) {
+            return tags.isEmpty();
+        }
+        return true; // Vendors can have tags
     }
 
     /**

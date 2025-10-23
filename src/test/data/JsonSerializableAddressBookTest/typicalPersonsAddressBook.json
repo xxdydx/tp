@@ -10,7 +10,7 @@
     "price": null,
     "budget": "5000-10000",
     "partner": "Aaron Tan",
-    "tags": ["friends"]
+    "tags": []
   }, {
     "name": "Benson Meier",
     "phone": "98765432",
@@ -21,7 +21,7 @@
     "price": null,
     "budget": "6000-12000",
     "partner": "Beatrice Lim",
-    "tags": ["owesMoney", "friends"]
+    "tags": []
   }, {
     "name": "Carl Kurz",
     "phone": "95352563",

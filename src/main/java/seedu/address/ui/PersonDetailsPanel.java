@@ -129,7 +129,8 @@ public class PersonDetailsPanel extends UiPart<Region> {
             budget.setManaged(false);
         }
 
-        if (person.getTags().isEmpty()) {
+        // Display tags only for vendors
+        if (person.getType() == PersonType.CLIENT || person.getTags().isEmpty()) {
             tagsLine.setText("");
             tagsLine.setVisible(false);
             tagsLine.setManaged(false); // remove its layout space
