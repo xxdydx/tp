@@ -113,7 +113,7 @@ Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/TYPE [price/PR
 
 **Parameters:**
 * `n/NAME` - Contact name (required)
-* `p/PHONE` - Phone number, must be 3-15 digits (required)
+* `p/PHONE` - Phone number, must be 8 digits (required)
 * `e/EMAIL` - Email address (required)
 * `a/ADDRESS` - Physical address (required)
 * `w/WEDDING_DATE` - Wedding date in DD-MM-YYYY format (required)
@@ -306,7 +306,7 @@ _Details coming soon ..._
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
-3. **Phone numbers** must be between 3-15 digits. If you need to store international numbers with special characters, you may need to remove the formatting (e.g., use `6591234567` instead of `+65 9123 4567`).
+3. **Phone numbers** must be 8 digits. If you need to store international numbers with special characters, you may need to remove the formatting (e.g., use `6591234567` instead of `+65 9123 4567`).
 
 --------------------------------------------------------------------------------------------------------------------
 
