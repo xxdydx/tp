@@ -409,7 +409,7 @@ public class AddCommandParserTest {
     public void parse_clientWithPartner_success() {
         Person expected = new PersonBuilder().withName("Amy Bee").withPhone("11111111")
                 .withEmail("amy@example.com").withAddress("Block 312, Amy Street 1")
-                .withWeddingDate("01/01/2024").withType(PersonType.CLIENT).withPartner("Alex Tan")
+                .withWeddingDate("01-01-2024").withType(PersonType.CLIENT).withPartner("Alex Tan")
                 .withTags().build();
 
         String userInput = NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
@@ -431,7 +431,7 @@ public class AddCommandParserTest {
     public void parse_vendorWithoutPartner_success() {
         Person expected = new PersonBuilder().withName("Amy Bee").withPhone("11111111")
                 .withEmail("amy@example.com").withAddress("Block 312, Amy Street 1")
-                .withWeddingDate("01/01/2024").withType(PersonType.VENDOR).withTags().build();
+                .withWeddingDate("01-01-2024").withType(PersonType.VENDOR).withTags().build();
 
         String userInput = NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
                 + WEDDING_DATE_DESC_AMY + TYPE_DESC_VENDOR;
