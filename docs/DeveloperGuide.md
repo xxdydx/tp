@@ -651,7 +651,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 6b. Invalid date format.
 
-    * 6b1. KnotBook shows error: "Invalid wedding date. Use DD/MM/YYYY (e.g., 12/10/2025)"
+    * 6b1. KnotBook shows error: "Invalid wedding date. Use DD-MM-YYYY (e.g., 12-10-2025)"
 
       Use case ends.
 
