@@ -98,6 +98,25 @@ public class Person {
         this.partner = Optional.empty(); // Vendors don't have partners
     }
 
+    /**
+     * Constructor for vendors with linked persons - no wedding date field.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, PersonType type,
+            Set<Tag> tags, Set<Person> linkedPersons, Price price) {
+        requireAllNonNull(name, phone, email, address, tags, linkedPersons);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.weddingDate = null; // Vendors don't have wedding dates
+        this.type = type;
+        this.tags.addAll(tags);
+        this.price = price;
+        this.linkedPersons.addAll(linkedPersons);
+        this.budget = null; // Vendors don't have budgets
+        this.partner = Optional.empty(); // Vendors don't have partners
+    }
+
     public Name getName() {
         return name;
     }
@@ -202,11 +221,12 @@ public class Person {
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
-                && weddingDate.equals(otherPerson.weddingDate)
+                && Objects.equals(weddingDate, otherPerson.weddingDate)
                 && type == otherPerson.type
                 && tags.equals(otherPerson.tags)
                 && Objects.equals(price, otherPerson.price)
-                && Objects.equals(budget, otherPerson.budget);
+                && Objects.equals(budget, otherPerson.budget)
+                && Objects.equals(partner, otherPerson.partner);
     }
 
     @Override

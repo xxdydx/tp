@@ -136,8 +136,13 @@ public class EditCommand extends Command {
             throw new CommandException("Budget is only applicable for clients.");
         }
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedWeddingDate,
-                updatedType, updatedTags, updatedPrice, updatedBudget, updatedPartner);
+        if (updatedType == PersonType.VENDOR) {
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedType, updatedTags,
+                    updatedPrice);
+        } else {
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedWeddingDate,
+                    updatedType, updatedTags, updatedPrice, updatedBudget, updatedPartner);
+        }
     }
 
     @Override

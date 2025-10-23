@@ -55,8 +55,8 @@ public class UnlinkCommandTest {
                 client.getAddress(), client.getWeddingDate(), client.getType(), client.getTags(),
                 java.util.Set.of(vendor), null, client.getPartner());
         Person linkedVendor = new Person(vendor.getName(), vendor.getPhone(), vendor.getEmail(),
-                vendor.getAddress(), vendor.getWeddingDate(), vendor.getType(), vendor.getTags(),
-                java.util.Set.of(client), null, vendor.getPartner());
+                vendor.getAddress(), vendor.getType(), vendor.getTags(),
+                java.util.Set.of(client), vendor.getPrice().orElse(null));
 
         AddressBook addressBook = new AddressBook();
         addressBook.addPerson(linkedClient);
@@ -80,8 +80,8 @@ public class UnlinkCommandTest {
                 currentClient.getEmail(), currentClient.getAddress(), currentClient.getWeddingDate(),
                 currentClient.getType(), currentClient.getTags(), java.util.Set.of(), null, currentClient.getPartner());
         Person updatedVendor = new Person(currentVendor.getName(), currentVendor.getPhone(),
-                currentVendor.getEmail(), currentVendor.getAddress(), currentVendor.getWeddingDate(),
-                currentVendor.getType(), currentVendor.getTags(), java.util.Set.of(), null, currentVendor.getPartner());
+                currentVendor.getEmail(), currentVendor.getAddress(), currentVendor.getType(),
+                currentVendor.getTags(), java.util.Set.of(), currentVendor.getPrice().orElse(null));
         expectedModel.setPerson(currentClient, updatedClient);
         expectedModel.setPerson(currentVendor, updatedVendor);
 
@@ -113,9 +113,8 @@ public class UnlinkCommandTest {
                 .withType(PersonType.CLIENT).build();
 
         Person linkedVendor = new Person(vendorFirst.getName(), vendorFirst.getPhone(),
-                vendorFirst.getEmail(), vendorFirst.getAddress(), vendorFirst.getWeddingDate(),
-                vendorFirst.getType(), vendorFirst.getTags(), java.util.Set.of(clientSecond), null,
-                vendorFirst.getPartner());
+                vendorFirst.getEmail(), vendorFirst.getAddress(), vendorFirst.getType(),
+                vendorFirst.getTags(), java.util.Set.of(clientSecond), vendorFirst.getPrice().orElse(null));
         Person linkedClient = new Person(clientSecond.getName(), clientSecond.getPhone(),
                 clientSecond.getEmail(), clientSecond.getAddress(), clientSecond.getWeddingDate(),
                 clientSecond.getType(), clientSecond.getTags(), java.util.Set.of(vendorFirst), null,

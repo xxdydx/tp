@@ -98,18 +98,31 @@ public class UnlinkCommand extends Command {
         Set<Person> updatedLinks = new HashSet<>(person.getLinkedPersons());
         updatedLinks.remove(linkedPerson);
 
-        return new Person(
-                person.getName(),
-                person.getPhone(),
-                person.getEmail(),
-                person.getAddress(),
-                person.getWeddingDate(),
-                person.getType(),
-                person.getTags(),
-                updatedLinks,
-                person.getPrice().orElse(null),
-                person.getPartner()
-        );
+        if (person.getType() == PersonType.VENDOR) {
+            return new Person(
+                    person.getName(),
+                    person.getPhone(),
+                    person.getEmail(),
+                    person.getAddress(),
+                    person.getType(),
+                    person.getTags(),
+                    updatedLinks,
+                    person.getPrice().orElse(null)
+            );
+        } else {
+            return new Person(
+                    person.getName(),
+                    person.getPhone(),
+                    person.getEmail(),
+                    person.getAddress(),
+                    person.getWeddingDate(),
+                    person.getType(),
+                    person.getTags(),
+                    updatedLinks,
+                    person.getPrice().orElse(null),
+                    person.getPartner()
+            );
+        }
     }
 
 

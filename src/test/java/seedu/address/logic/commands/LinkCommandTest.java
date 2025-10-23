@@ -72,8 +72,8 @@ public class LinkCommandTest {
                 client.getAddress(), client.getWeddingDate(), client.getType(), client.getTags(),
                 java.util.Set.of(vendor), null, client.getPartner());
         Person updatedVendor = new Person(vendor.getName(), vendor.getPhone(), vendor.getEmail(),
-                vendor.getAddress(), vendor.getWeddingDate(), vendor.getType(), vendor.getTags(),
-                java.util.Set.of(client), null, vendor.getPartner());
+                vendor.getAddress(), vendor.getType(), vendor.getTags(),
+                java.util.Set.of(client), vendor.getPrice().orElse(null));
         expectedModel.setPerson(client, updatedClient);
         expectedModel.setPerson(vendor, updatedVendor);
 
