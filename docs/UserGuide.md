@@ -10,6 +10,7 @@ KnotBook is a **desktop app for wedding planners to manage client and vendor con
 
 --------------------------------------------------------------------------------------------------------------------
 
+
 ## Quick start
 
 ### Step 1: Install Java
@@ -97,7 +98,7 @@ The app window should appear in a few seconds with some sample wedding contacts 
 
 Opens a help window with detailed information about all available commands in an easy-to-navigate accordion interface.
 
-![help message](images/helpMessage.png)
+![help message](image.png)
 
 Format: `help`
 
@@ -180,7 +181,6 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 **Examples:**
 * `find John` - Returns contacts like `john`, `John Doe`, `John & Mary`
 * `find blooming garden` - Returns `Blooming Flowers`, `Garden Paradise`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
 
 ### Deleting a contact : `delete`
 
