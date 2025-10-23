@@ -81,8 +81,8 @@ class JsonAdaptedPerson {
                 ? null
                 : source.getWeddingDate().map(WeddingDate::toString).orElse(null);
         type = source.getType().toString();
-        price = source.getPrice().map(Price::toString).orElse(null);
-        budget = source.getBudget().map(Budget::toString).orElse(null);
+        price = source.getPrice().map(p -> p.value).orElse(null);
+        budget = source.getBudget().map(b -> b.value).orElse(null);
         this.partner = source.getPartner().map(p -> p.value).orElse(null);
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
