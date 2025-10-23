@@ -112,7 +112,7 @@ public class UnlinkCommandTest {
                 .withType(PersonType.VENDOR).withPrice("1000-2000").build();
         Person clientSecond = new PersonBuilder().withName("Client Second")
                 .withPhone("22222222").withEmail("client@example.com").withAddress("456 Client Ave")
-                .withWeddingDate("01/01/2024").withType(PersonType.CLIENT).build();
+                .withWeddingDate("01-01-2024").withType(PersonType.CLIENT).build();
 
         Person linkedVendor = new Person(vendorFirst.getName(), vendorFirst.getPhone(),
                 vendorFirst.getEmail(), vendorFirst.getAddress(), vendorFirst.getType(),
