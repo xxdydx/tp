@@ -3,11 +3,11 @@ package seedu.address.model.person;
 import java.util.List;
 import java.util.function.Predicate;
 
-import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.util.ToStringBuilder;
 
 /**
- * Tests that a {@code Person}'s {@code Name} matches any of the keywords given.
+ * Matches if a {@code Person}'s name OR (for CLIENTs) their partner's name
+ * contains any of the given keyword substrings (case-insensitive).
  */
 public class NameContainsKeywordsPredicate implements Predicate<Person> {
     private final List<String> keywords;
@@ -18,27 +18,36 @@ public class NameContainsKeywordsPredicate implements Predicate<Person> {
 
     @Override
     public boolean test(Person person) {
+        final String selfName = person.getName() == null ? "" : person.getName().toString();
+
+        final String partnerName =
+                person.getType() == PersonType.CLIENT
+                        ? person.getPartner().map(Partner::toString).orElse("")
+                        : "";
+
         return keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword));
+                .map(String::trim)
+                .filter(k -> !k.isEmpty())
+                .anyMatch(k -> containsSubstringIgnoreCase(selfName, k)
+                        || containsSubstringIgnoreCase(partnerName, k));
     }
 
     @Override
     public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof NameContainsKeywordsPredicate)) {
-            return false;
-        }
-
-        NameContainsKeywordsPredicate otherNameContainsKeywordsPredicate = (NameContainsKeywordsPredicate) other;
-        return keywords.equals(otherNameContainsKeywordsPredicate.keywords);
+        return other == this
+                || (other instanceof NameContainsKeywordsPredicate
+                && keywords.equals(((NameContainsKeywordsPredicate) other).keywords));
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this).add("keywords", keywords).toString();
+    }
+
+    private static boolean containsSubstringIgnoreCase(String haystack, String needle) {
+        if (haystack == null || needle == null) {
+            return false;
+        }
+        return haystack.toLowerCase().contains(needle.toLowerCase());
     }
 }
