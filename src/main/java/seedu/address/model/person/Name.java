@@ -11,8 +11,8 @@ public class Name {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Names should start with an alphanumeric character and can contain letters, numbers, spaces, "
-            + "apostrophes ('), hyphens (-), periods (.), and ampersands (&). It should not be blank." +
-            "Names should also not start with special characters";
+            + "apostrophes ('), hyphens (-), periods (.), and ampersands (&). It should not be blank."
+            + "Names should also not start with special characters";
 
     /*
      * The first character must be alphanumeric,
