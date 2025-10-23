@@ -149,6 +149,11 @@ public class EditCommand extends Command {
             throw new CommandException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
         }
 
+        // Validate tags - only vendors can have tags
+        if (updatedType == PersonType.CLIENT && !updatedTags.isEmpty()) {
+            throw new CommandException(Person.MSG_TAGS_FORBIDDEN_FOR_CLIENT);
+        }
+
         if (updatedType == PersonType.VENDOR) {
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedType, updatedTags,
                     updatedPrice);

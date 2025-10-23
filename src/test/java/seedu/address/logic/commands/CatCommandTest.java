@@ -63,15 +63,18 @@ public class CatCommandTest {
 
     @Test
     public void execute_categoryFound_multiplePersonsFound() {
-        // Add some test persons with category tags
+        // Add some test persons with category tags (vendors only can have tags)
         Person florist1 = new PersonBuilder().withName("John Flowers").withPhone("91234567")
-                .withEmail("john@flowers.com").withAddress("123 Street").withWeddingDate("01-01-2024")
+                .withEmail("john@flowers.com").withAddress("123 Street")
+                .withType(seedu.address.model.person.PersonType.VENDOR)
                 .withTags("florist").build();
         Person florist2 = new PersonBuilder().withName("Mary Blooms").withPhone("91234568")
-                .withEmail("mary@blooms.com").withAddress("456 Avenue").withWeddingDate("02-02-2024")
+                .withEmail("mary@blooms.com").withAddress("456 Avenue")
+                .withType(seedu.address.model.person.PersonType.VENDOR)
                 .withTags("florist", "premium").build();
         Person caterer = new PersonBuilder().withName("Best Catering").withPhone("91234569")
-                .withEmail("best@catering.com").withAddress("789 Road").withWeddingDate("03-03-2024")
+                .withEmail("best@catering.com").withAddress("789 Road")
+                .withType(seedu.address.model.person.PersonType.VENDOR)
                 .withTags("caterer").build();
 
         model.addPerson(florist1);
@@ -91,9 +94,10 @@ public class CatCommandTest {
 
     @Test
     public void execute_categoryFoundCaseInsensitive_personsFound() {
-        // Add test person with lowercase category tag
+        // Add test person with lowercase category tag (vendors only can have tags)
         Person florist = new PersonBuilder().withName("John Flowers").withPhone("91234567")
-                .withEmail("john@flowers.com").withAddress("123 Street").withWeddingDate("01-01-2024")
+                .withEmail("john@flowers.com").withAddress("123 Street")
+                .withType(seedu.address.model.person.PersonType.VENDOR)
                 .withTags("florist").build();
 
         model.addPerson(florist);
