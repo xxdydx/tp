@@ -43,6 +43,7 @@ public class PriceTest {
         assertFalse(Price.isValidPrice("$800-$1500")); // dollar signs not allowed
         assertFalse(Price.isValidPrice("1,000-2,000")); // commas not allowed
         assertFalse(Price.isValidPrice("800–1500")); // en-dash not allowed
+        assertFalse(Price.isValidPrice("10 000")); // space not allowed
 
         // valid prices - single numbers
         assertTrue(Price.isValidPrice("1000")); // simple number

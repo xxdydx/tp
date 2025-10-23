@@ -44,6 +44,7 @@ public class BudgetTest {
         assertFalse(Budget.isValidBudget("$800-$1500")); // dollar signs not allowed
         assertFalse(Budget.isValidBudget("1,000-2,000")); // commas not allowed
         assertFalse(Budget.isValidBudget("800–1500")); // en-dash not allowed
+        assertFalse(Budget.isValidBudget("10 000"));
 
         // valid budgets - single numbers
         assertTrue(Budget.isValidBudget("1000")); // simple number
