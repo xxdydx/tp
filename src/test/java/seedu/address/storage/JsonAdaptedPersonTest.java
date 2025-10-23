@@ -18,10 +18,8 @@ import seedu.address.model.person.Budget;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
-import seedu.address.testutil.PersonBuilder;
 
 public class JsonAdaptedPersonTest {
     private static final String INVALID_NAME = "R@chel";
@@ -128,10 +126,10 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_nullWeddingDate_success() throws Exception {
-        // Test with vendor type since vendors don't have wedding dates
+        // Test with client type - clients must have wedding dates
         JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, null,
                 VALID_TYPE, null, null, VALID_PARTNER, VALID_TAGS, null);
-        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, WeddingDate.class.getSimpleName());
+        String expectedMessage = Person.MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 

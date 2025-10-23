@@ -198,6 +198,12 @@ class JsonAdaptedPerson {
         if (modelType == PersonType.VENDOR && modelPartner.isPresent()) {
             throw new IllegalValueException(Person.MSG_PARTNER_FORBIDDEN_FOR_VENDOR);
         }
+        if (modelType == PersonType.CLIENT && modelWeddingDate == null) {
+            throw new IllegalValueException(Person.MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT);
+        }
+        if (modelType == PersonType.VENDOR && modelWeddingDate != null) {
+            throw new IllegalValueException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
+        }
 
         if (modelType == PersonType.VENDOR) {
             return new Person(modelName, modelPhone, modelEmail, modelAddress, modelType, modelTags, modelPrice);

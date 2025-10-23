@@ -150,7 +150,9 @@ public class Person {
         return Optional.ofNullable(budget);
     }
 
-    public Optional<Partner> getPartner() { return partner; }
+    public Optional<Partner> getPartner() {
+        return partner;
+    }
 
     /**
      * Returns an immutable set of linked persons, which throws
