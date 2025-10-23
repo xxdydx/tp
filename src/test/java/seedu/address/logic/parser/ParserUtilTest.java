@@ -290,9 +290,13 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parsePrice_validWithDollarSign_returnsPrice() throws Exception {
-        Price expectedPrice = new Price("$1000");
-        assertEquals(expectedPrice, ParserUtil.parsePrice("$1000"));
+    public void parsePrice_invalidWithDollarSign_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parsePrice("$1000"));
+    }
+
+    @Test
+    public void parsePrice_invalidWithCommas_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parsePrice("1,000"));
     }
 
     @Test
@@ -335,8 +339,12 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseBudget_validWithDollarSign_returnsBudget() throws Exception {
-        Budget expectedBudget = new Budget("$5000");
-        assertEquals(expectedBudget, ParserUtil.parseBudget("$5000"));
+    public void parseBudget_invalidWithDollarSign_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseBudget("$5000"));
+    }
+
+    @Test
+    public void parseBudget_invalidWithCommas_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseBudget("5,000"));
     }
 }

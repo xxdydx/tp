@@ -36,26 +36,27 @@ public class BudgetTest {
         assertFalse(Budget.isValidBudget("100-200-300")); // multiple ranges
         assertFalse(Budget.isValidBudget("12345678901")); // too many digits (>10)
         assertFalse(Budget.isValidBudget("5000-1000")); // invalid range (min > max)
-        assertFalse(Budget.isValidBudget("$10,000-$5,000")); // invalid range with formatting
+
+        // invalid budgets - with special characters
+        assertFalse(Budget.isValidBudget("$1000")); // dollar sign not allowed
+        assertFalse(Budget.isValidBudget("1,000")); // comma not allowed
+        assertFalse(Budget.isValidBudget("$1,000")); // dollar and comma not allowed
+        assertFalse(Budget.isValidBudget("$800-$1500")); // dollar signs not allowed
+        assertFalse(Budget.isValidBudget("1,000-2,000")); // commas not allowed
+        assertFalse(Budget.isValidBudget("800–1500")); // en-dash not allowed
+        assertFalse(Budget.isValidBudget("10 000"));
 
         // valid budgets - single numbers
         assertTrue(Budget.isValidBudget("1000")); // simple number
         assertTrue(Budget.isValidBudget("0")); // zero
         assertTrue(Budget.isValidBudget("1")); // single digit
         assertTrue(Budget.isValidBudget("1234567890")); // 10 digits (max)
-        assertTrue(Budget.isValidBudget("$1000")); // with dollar sign
-        assertTrue(Budget.isValidBudget("1,000")); // with comma
-        assertTrue(Budget.isValidBudget("$1,000")); // with dollar and comma
-        assertTrue(Budget.isValidBudget("10,000,000")); // multiple commas
+        assertTrue(Budget.isValidBudget("10000000")); // large number
 
         // valid budgets - ranges
         assertTrue(Budget.isValidBudget("800-1500")); // simple range
-        assertTrue(Budget.isValidBudget("800–1500")); // en-dash
-        assertTrue(Budget.isValidBudget("$800-$1500")); // with dollar signs
-        assertTrue(Budget.isValidBudget("$800-1500")); // mixed dollar
-        assertTrue(Budget.isValidBudget("800-$1500")); // mixed dollar
-        assertTrue(Budget.isValidBudget("1,000-2,000")); // with commas
-        assertTrue(Budget.isValidBudget("$1,000-$2,000")); // with dollar and commas
+        assertTrue(Budget.isValidBudget("100-200")); // small range
+        assertTrue(Budget.isValidBudget("1000-5000")); // medium range
         assertTrue(Budget.isValidBudget("1000-1000")); // equal min and max (valid)
     }
 
@@ -90,6 +91,10 @@ public class BudgetTest {
     @Test
     public void toString_returnsCorrectString() {
         Budget budget = new Budget("1000-2000");
-        assertTrue(budget.toString().equals("1000-2000"));
+        assertTrue(budget.toString().equals("$1,000-$2,000"));
+        Budget singleBudget = new Budget("5000");
+        assertTrue(singleBudget.toString().equals("$5,000"));
+        Budget largeBudget = new Budget("10000");
+        assertTrue(largeBudget.toString().equals("$10,000"));
     }
 }

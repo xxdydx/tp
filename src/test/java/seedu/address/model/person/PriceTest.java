@@ -36,24 +36,26 @@ public class PriceTest {
         assertFalse(Price.isValidPrice("100-200-300")); // multiple ranges
         assertFalse(Price.isValidPrice("12345678901")); // too many digits (>10)
 
+        // invalid prices - with special characters
+        assertFalse(Price.isValidPrice("$1000")); // dollar sign not allowed
+        assertFalse(Price.isValidPrice("1,000")); // comma not allowed
+        assertFalse(Price.isValidPrice("$1,000")); // dollar and comma not allowed
+        assertFalse(Price.isValidPrice("$800-$1500")); // dollar signs not allowed
+        assertFalse(Price.isValidPrice("1,000-2,000")); // commas not allowed
+        assertFalse(Price.isValidPrice("800–1500")); // en-dash not allowed
+        assertFalse(Price.isValidPrice("10 000")); // space not allowed
+
         // valid prices - single numbers
         assertTrue(Price.isValidPrice("1000")); // simple number
         assertTrue(Price.isValidPrice("0")); // zero
         assertTrue(Price.isValidPrice("1")); // single digit
         assertTrue(Price.isValidPrice("1234567890")); // 10 digits (max)
-        assertTrue(Price.isValidPrice("$1000")); // with dollar sign
-        assertTrue(Price.isValidPrice("1,000")); // with comma
-        assertTrue(Price.isValidPrice("$1,000")); // with dollar and comma
-        assertTrue(Price.isValidPrice("10,000,000")); // multiple commas
+        assertTrue(Price.isValidPrice("10000000")); // large number
 
         // valid prices - ranges
         assertTrue(Price.isValidPrice("800-1500")); // simple range
-        assertTrue(Price.isValidPrice("800–1500")); // en-dash
-        assertTrue(Price.isValidPrice("$800-$1500")); // with dollar signs
-        assertTrue(Price.isValidPrice("$800-1500")); // mixed dollar
-        assertTrue(Price.isValidPrice("800-$1500")); // mixed dollar
-        assertTrue(Price.isValidPrice("1,000-2,000")); // with commas
-        assertTrue(Price.isValidPrice("$1,000-$2,000")); // with dollar and commas
+        assertTrue(Price.isValidPrice("100-200")); // small range
+        assertTrue(Price.isValidPrice("1000-5000")); // medium range
     }
 
     @Test
@@ -87,6 +89,12 @@ public class PriceTest {
     @Test
     public void toString_returnsCorrectString() {
         Price price = new Price("1000-2000");
-        assertTrue(price.toString().equals("1000-2000"));
+        assertTrue(price.toString().equals("$1,000-$2,000"));
+
+        Price singlePrice = new Price("5000");
+        assertTrue(singlePrice.toString().equals("$5,000"));
+
+        Price largePrice = new Price("10000");
+        assertTrue(largePrice.toString().equals("$10,000"));
     }
 }

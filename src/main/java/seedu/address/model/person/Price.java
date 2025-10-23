@@ -9,17 +9,16 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Price {
 
-    public static final String MESSAGE_CONSTRAINTS = "Invalid amount. Provide a number or a range like 800-1500.";
+    public static final String MESSAGE_CONSTRAINTS = "Invalid amount. Provide a number or a range like 800-1500. "
+            + "Only digits and hyphens are allowed (no commas or dollar signs).";
 
     /*
      * Accepts:
-     * - Single number: "1200", "$1200"
-     * - Range with hyphen: "800-1500", "$800-$1500"
-     * - Range with en-dash: "800–1500"
-     * Numbers can have optional $ prefix and optional commas
+     * - Single number: "1200"
+     * - Range with hyphen: "800-1500"
+     * Only digits and hyphens allowed (no commas, no dollar signs)
      */
-    public static final String VALIDATION_REGEX = "^\\$?\\d{1,10}(,\\d{3})*"
-            + "([–\\-]\\$?\\d{1,10}(,\\d{3})*)?$";
+    public static final String VALIDATION_REGEX = "^\\d{1,10}(-\\d{1,10})?$";
 
     public final String value;
 
@@ -44,13 +43,12 @@ public class Price {
         }
 
         // If it's a range, validate that min <= max
-        if (test.contains("-") || test.contains("–")) {
-            String[] parts = test.split("[–\\-]");
+        if (test.contains("-")) {
+            String[] parts = test.split("-");
             if (parts.length == 2) {
                 try {
-                    // Remove $ and commas to parse numbers
-                    long min = Long.parseLong(parts[0].replaceAll("[\\$,]", ""));
-                    long max = Long.parseLong(parts[1].replaceAll("[\\$,]", ""));
+                    long min = Long.parseLong(parts[0]);
+                    long max = Long.parseLong(parts[1]);
                     return min <= max;
                 } catch (NumberFormatException e) {
                     return false;
@@ -61,9 +59,36 @@ public class Price {
         return true;
     }
 
+    /**
+     * Returns a formatted string representation with $ and commas.
+     */
     @Override
     public String toString() {
-        return value;
+        return formatPrice(value);
+    }
+
+    /**
+     * Formats a price string with $ prefix and thousand separators.
+     * Handles both single values and ranges.
+     */
+    private static String formatPrice(String price) {
+        if (price.contains("-")) {
+            String[] parts = price.split("-");
+            return "$" + formatNumber(parts[0]) + "-$" + formatNumber(parts[1]);
+        }
+        return "$" + formatNumber(price);
+    }
+
+    /**
+     * Formats a number with thousand separators.
+     */
+    private static String formatNumber(String number) {
+        try {
+            long num = Long.parseLong(number);
+            return String.format("%,d", num);
+        } catch (NumberFormatException e) {
+            return number;
+        }
     }
 
     @Override
