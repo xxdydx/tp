@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonType;
 
 /**
  * A UI component that displays the details of a selected {@link Person}.
@@ -20,6 +21,8 @@ public class PersonDetailsPanel extends UiPart<Region> {
     private Label phone;
     @FXML
     private Label email;
+    @FXML
+    private Label address;
     @FXML
     private Label type;
     @FXML
@@ -59,6 +62,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
             name.setText("No contact selected");
             phone.setText("");
             email.setText("");
+            address.setText("");
             type.setText("");
             weddingDate.setText("");
             if (price != null) {
@@ -84,16 +88,24 @@ public class PersonDetailsPanel extends UiPart<Region> {
             return;
         }
 
-        name.setText(person.getName().fullName);
+        name.setText(DisplayFormat.nameAndPartner(person));
         phone.setText("Phone       : " + person.getPhone().value);
         email.setText("Email         : " + person.getEmail().value);
+        address.setText("Address   : " + person.getAddress().value);
         String typeText = person.getType().display();
         type.setText("Type          : " + typeText);
 
-        String wdText = (person.getWeddingDate() != null)
-                ? person.getWeddingDate().toString()
-                : "-";
-        weddingDate.setText("Wedding  : " + wdText);
+        if (person.getType() == PersonType.VENDOR) {
+            weddingDate.setVisible(false);
+            weddingDate.setManaged(false);
+        } else {
+            String wdText = person.getWeddingDate().isPresent()
+                    ? person.getWeddingDate().get().toString()
+                    : "-";
+            weddingDate.setText("Wedding  : " + wdText);
+            weddingDate.setVisible(true);
+            weddingDate.setManaged(true);
+        }
 
         // Display price only for vendors with price
         if (person.getPrice().isPresent()) {
@@ -131,7 +143,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
             tagsLine.setManaged(true);
         }
 
-        // Display linked persons with their type (CLIENT/VENDOR)
+        // Display linked persons with their type (CLIENT/VENDOR) and tags
         if (person.getLinkedPersons().isEmpty()) {
             linkedPersonsLine.setText("");
             linkedPersonsLine.setVisible(false);
@@ -139,11 +151,36 @@ public class PersonDetailsPanel extends UiPart<Region> {
         } else {
             String linkedPersonsText = person.getLinkedPersons().stream()
                     .sorted(Comparator.comparing(p -> p.getName().fullName))
-                    .map(p -> p.getType().display() + ": " + p.getName().fullName)
-                    .collect(Collectors.joining(", "));
-            linkedPersonsLine.setText("Linked      : " + linkedPersonsText);
+                    .map(p -> {
+                        // Get the first tag as category label (e.g., "venue", "florist")
+                        String categoryLabel = p.getTags().stream()
+                                .sorted(Comparator.comparing(t -> t.tagName))
+                                .findFirst()
+                                .map(t -> capitalize(t.tagName))
+                                .orElse(p.getType().display());
+                        return "• " + categoryLabel + ": " + p.getName().fullName;
+                    })
+                    .collect(Collectors.joining("\n"));
+
+            // Determine if linked persons are vendors or clients
+            String label = person.getLinkedPersons().stream()
+                    .findFirst()
+                    .map(p -> p.getType().display() + "s")
+                    .orElse("Linked");
+
+            linkedPersonsLine.setText(label + ":\n" + linkedPersonsText);
             linkedPersonsLine.setVisible(true);
             linkedPersonsLine.setManaged(true);
         }
+    }
+
+    /**
+     * Capitalizes the first letter of a string.
+     */
+    private String capitalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }

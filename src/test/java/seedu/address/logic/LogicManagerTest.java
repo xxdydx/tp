@@ -4,10 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.BUDGET_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.PARTNER_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.TYPE_DESC_CLIENT;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_BUDGET_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PARTNER_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.WEDDING_DATE_DESC_AMY;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.AMY;
@@ -182,8 +186,10 @@ public class LogicManagerTest {
 
         // Triggers the saveAddressBook method by executing an add command
         String addCommand = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
-                + EMAIL_DESC_AMY + ADDRESS_DESC_AMY + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT;
-        Person expectedPerson = new PersonBuilder(AMY).withTags().withType(PersonType.CLIENT).build();
+                + EMAIL_DESC_AMY + ADDRESS_DESC_AMY + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT
+                + PARTNER_DESC_AMY + BUDGET_DESC_AMY;
+        Person expectedPerson = new PersonBuilder(AMY).withTags().withType(PersonType.CLIENT)
+                .withPartner(VALID_PARTNER_AMY).withBudget(VALID_BUDGET_AMY).build();
         ModelManager expectedModel = new ModelManager();
         expectedModel.addPerson(expectedPerson);
         assertCommandFailure(addCommand, CommandException.class, expectedMessage, expectedModel);

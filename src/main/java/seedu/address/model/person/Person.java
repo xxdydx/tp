@@ -1,5 +1,6 @@
 package seedu.address.model.person;
 
+import static seedu.address.commons.util.AppUtil.checkArgument;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
@@ -18,6 +19,13 @@ import seedu.address.model.tag.Tag;
  * immutable.
  */
 public class Person {
+    public static final String MSG_PARTNER_FORBIDDEN_FOR_VENDOR =
+            "Vendors cannot have a partner (remove pr/<PARTNER_NAME>).";
+    public static final String MSG_PARTNER_REQUIRED_FOR_CLIENT =
+            "Clients must have a partner (use pr/<PARTNER_NAME>).";
+
+    public static final String MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT = "Wedding date is required for clients.";
+    public static final String MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR = "Wedding date is only applicable for clients.";
 
     // Identity fields
     private final Name name;
@@ -32,14 +40,16 @@ public class Person {
     private final Price price; // only for vendors
     private final Set<Person> linkedPersons = new HashSet<>();
     private final Budget budget; // only for clients
+    private final Optional<Partner> partner;
 
     /**
-     * Every field must be present and not null, except price and budget which are
-     * optional.
+     * Constructor for clients - every field must be present and not null, except budget which is optional.
      */
     public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
-            Set<Tag> tags, Price price, Budget budget) {
-        requireAllNonNull(name, phone, email, address, weddingDate, tags);
+            Set<Tag> tags, Price price, Budget budget, Optional<Partner> partner) {
+        requireAllNonNull(name, phone, email, address, weddingDate, tags, type);
+        checkArgument(isValidPartnerForType(type, partner),
+                type == PersonType.CLIENT ? MSG_PARTNER_REQUIRED_FOR_CLIENT : MSG_PARTNER_FORBIDDEN_FOR_VENDOR);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -49,14 +59,32 @@ public class Person {
         this.tags.addAll(tags);
         this.price = price;
         this.budget = budget;
+        this.partner = partner;
     }
 
     /**
-     * Constructor with linked persons.
-     * Every field must be present and not null, except price which is optional.
+     * Constructor for vendors - no wedding date field.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, PersonType type,
+            Set<Tag> tags, Price price) {
+        requireAllNonNull(name, phone, email, address, tags);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.weddingDate = null; // Vendors don't have wedding dates
+        this.type = type;
+        this.tags.addAll(tags);
+        this.price = price;
+        this.budget = null; // Vendors don't have budgets
+        this.partner = Optional.empty(); // Vendors don't have partners
+    }
+
+    /**
+     * Constructor with linked persons for clients.
      */
     public Person(Name name, Phone phone, Email email, Address address, WeddingDate weddingDate, PersonType type,
-            Set<Tag> tags, Set<Person> linkedPersons, Price price) {
+                  Set<Tag> tags, Set<Person> linkedPersons, Price price, Optional<Partner> partner) {
         requireAllNonNull(name, phone, email, address, weddingDate, tags, linkedPersons);
         this.name = name;
         this.phone = phone;
@@ -68,6 +96,26 @@ public class Person {
         this.price = price;
         this.linkedPersons.addAll(linkedPersons);
         this.budget = null;
+        this.partner = partner;
+    }
+
+    /**
+     * Constructor with linked persons for vendors.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, PersonType type,
+            Set<Tag> tags, Set<Person> linkedPersons, Price price) {
+        requireAllNonNull(name, phone, email, address, tags, linkedPersons);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.weddingDate = null; // Vendors don't have wedding dates
+        this.type = type;
+        this.tags.addAll(tags);
+        this.price = price;
+        this.linkedPersons.addAll(linkedPersons);
+        this.budget = null; // Vendors don't have budgets
+        this.partner = Optional.empty(); // Vendors don't have partners
     }
 
     public Name getName() {
@@ -86,8 +134,8 @@ public class Person {
         return address;
     }
 
-    public WeddingDate getWeddingDate() {
-        return weddingDate;
+    public Optional<WeddingDate> getWeddingDate() {
+        return Optional.ofNullable(weddingDate);
     }
 
     public PersonType getType() {
@@ -100,6 +148,10 @@ public class Person {
 
     public Optional<Budget> getBudget() {
         return Optional.ofNullable(budget);
+    }
+
+    public Optional<Partner> getPartner() {
+        return partner;
     }
 
     /**
@@ -140,6 +192,16 @@ public class Person {
                 && otherPerson.getName().equals(getName());
     }
 
+    /** Validates the partner constraint for a {@link PersonType}. */
+    public static boolean isValidPartnerForType(PersonType type, Optional<Partner> partner) {
+        if (type == PersonType.CLIENT) {
+            return partner != null && partner.isPresent();
+        } else if (type == PersonType.VENDOR) {
+            return partner != null && partner.isEmpty();
+        }
+        return partner != null && partner.isEmpty();
+    }
+
     /**
      * Returns true if both persons have the same identity and data fields.
      * This defines a stronger notion of equality between two persons.
@@ -160,7 +222,7 @@ public class Person {
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
-                && weddingDate.equals(otherPerson.weddingDate)
+                && Objects.equals(weddingDate, otherPerson.weddingDate)
                 && type == otherPerson.type
                 && tags.equals(otherPerson.tags)
                 && Objects.equals(price, otherPerson.price)

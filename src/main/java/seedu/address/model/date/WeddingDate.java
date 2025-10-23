@@ -14,11 +14,11 @@ import java.util.Locale;
 public class WeddingDate {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Invalid wedding date. Use DD/MM/YYYY (e.g., 12/10/2025) or YYYY-MM-DD (e.g., 2025-10-12).";
+            "Invalid wedding date. Use DD-MM-YYYY (e.g., 12-10-2025) or YYYY-MM-DD (e.g., 2025-10-12).";
 
-    private static final DateTimeFormatter DMY_SLASH = new DateTimeFormatterBuilder()
+    private static final DateTimeFormatter DMY_DASH = new DateTimeFormatterBuilder()
             .parseStrict()
-            .appendPattern("dd/MM/uuuu")
+            .appendPattern("dd-MM-uuuu")
             .toFormatter(Locale.ENGLISH)
             .withResolverStyle(ResolverStyle.STRICT);
 
@@ -49,7 +49,7 @@ public class WeddingDate {
 
     private static LocalDate tryParse(String s) {
         try {
-            return LocalDate.parse(s, DMY_SLASH);
+            return LocalDate.parse(s, DMY_DASH);
         } catch (Exception ignore) {
             /* try next accepted format */
         }

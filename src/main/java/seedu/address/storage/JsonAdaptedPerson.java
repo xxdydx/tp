@@ -3,6 +3,7 @@ package seedu.address.storage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Budget;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Partner;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
@@ -37,6 +39,8 @@ class JsonAdaptedPerson {
     private final String price;
     private final String budget;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final String partner;
+    private final List<String> linkedPersonNames = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -46,7 +50,8 @@ class JsonAdaptedPerson {
             @JsonProperty("email") String email, @JsonProperty("address") String address,
             @JsonProperty("weddingDate") String weddingDate, @JsonProperty("type") String type,
             @JsonProperty("price") String price, @JsonProperty("budget") String budget,
-            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("partner") String partner, @JsonProperty("tags") List<JsonAdaptedTag> tags,
+            @JsonProperty("linkedPersonNames") List<String> linkedPersonNames) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -55,8 +60,12 @@ class JsonAdaptedPerson {
         this.type = type;
         this.price = price;
         this.budget = budget;
+        this.partner = partner;
         if (tags != null) {
             this.tags.addAll(tags);
+        }
+        if (linkedPersonNames != null) {
+            this.linkedPersonNames.addAll(linkedPersonNames);
         }
     }
 
@@ -68,13 +77,26 @@ class JsonAdaptedPerson {
         phone = source.getPhone().value;
         email = source.getEmail().value;
         address = source.getAddress().value;
-        weddingDate = source.getWeddingDate().toString();
+        weddingDate = (source.getType() == PersonType.VENDOR)
+                ? null
+                : source.getWeddingDate().map(WeddingDate::toString).orElse(null);
         type = source.getType().toString();
         price = source.getPrice().map(Price::toString).orElse(null);
         budget = source.getBudget().map(Budget::toString).orElse(null);
+        this.partner = source.getPartner().map(p -> p.value).orElse(null);
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
+        linkedPersonNames.addAll(source.getLinkedPersons().stream()
+                .map(person -> person.getName().fullName)
+                .collect(Collectors.toList()));
+    }
+
+    /**
+     * Returns the list of linked person names.
+     */
+    public List<String> getLinkedPersonNames() {
+        return new ArrayList<>(linkedPersonNames);
     }
 
     /**
@@ -122,15 +144,15 @@ class JsonAdaptedPerson {
         }
         final Address modelAddress = new Address(address);
 
-        if (weddingDate == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
-                    WeddingDate.class.getSimpleName()));
-        }
         final WeddingDate modelWeddingDate;
-        try {
-            modelWeddingDate = WeddingDate.parse(weddingDate);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalValueException(WeddingDate.MESSAGE_CONSTRAINTS);
+        if (weddingDate == null) {
+            modelWeddingDate = null;
+        } else {
+            try {
+                modelWeddingDate = WeddingDate.parse(weddingDate);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalValueException(WeddingDate.MESSAGE_CONSTRAINTS);
+            }
         }
 
         if (type == null) {
@@ -166,8 +188,29 @@ class JsonAdaptedPerson {
             modelBudget = null;
         }
 
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelType, modelTags,
-                modelPrice, modelBudget);
+        final Optional<Partner> modelPartner = (partner == null || partner.isBlank())
+                ? Optional.empty()
+                : Optional.of(new Partner(partner.trim()));
+
+        if (modelType == PersonType.CLIENT && modelPartner.isEmpty()) {
+            throw new IllegalValueException(Person.MSG_PARTNER_REQUIRED_FOR_CLIENT);
+        }
+        if (modelType == PersonType.VENDOR && modelPartner.isPresent()) {
+            throw new IllegalValueException(Person.MSG_PARTNER_FORBIDDEN_FOR_VENDOR);
+        }
+        if (modelType == PersonType.CLIENT && modelWeddingDate == null) {
+            throw new IllegalValueException(Person.MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT);
+        }
+        if (modelType == PersonType.VENDOR && modelWeddingDate != null) {
+            throw new IllegalValueException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
+        }
+
+        if (modelType == PersonType.VENDOR) {
+            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelType, modelTags, modelPrice);
+        } else {
+            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelType, modelTags,
+                    modelPrice, modelBudget, modelPartner);
+        }
     }
 
 }

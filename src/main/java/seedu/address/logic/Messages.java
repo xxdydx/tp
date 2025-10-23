@@ -56,6 +56,10 @@ public class Messages {
         person.getBudget().ifPresent(budget ->
                 builder.append("; Budget: ").append(budget));
 
+        // Add partner if present (clients only)
+        person.getPartner().ifPresent(partner ->
+                builder.append("; Partner: ").append(partner));
+
         builder.append("; Tags: ");
         person.getTags().forEach(builder::append);
         return builder.toString();

@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PARTNER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
@@ -23,18 +24,26 @@ import seedu.address.model.person.Person;
 public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
+    public static final String MESSAGE_TYPE_INVALID = "Invalid type. Please choose either 'client' or 'vendor'.";
+    public static final String MESSAGE_PRICE_ONLY_FOR_VENDOR = "Price is only applicable for vendors.";
+    public static final String MESSAGE_BUDGET_ONLY_FOR_CLIENT = "Budget is only applicable for clients.";
+    public static final String MESSAGE_PARTNER_REQUIRED_FOR_CLIENT = "Partner is required when type is CLIENT.";
+    public static final String MESSAGE_PARTNER_FORBIDDEN_FOR_VENDOR = "Partner must be empty when type is VENDOR.";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a contact (vendor or client) to KnotBook. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a contact (vendor or client) to KnotBook.\n\n"
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
             + PREFIX_ADDRESS + "ADDRESS "
-            + PREFIX_WEDDING_DATE + "WEDDING_DATE "
-            + PREFIX_TYPE + "TYPE "
+            + PREFIX_WEDDING_DATE + "DATE "
+            + PREFIX_TYPE + "(client|vendor) "
+            + "[" + PREFIX_PARTNER + "PARTNER] "
             + "[" + PREFIX_PRICE + "PRICE] "
             + "[" + PREFIX_BUDGET + "BUDGET] "
             + "[" + PREFIX_TAG + "TAG]...\n"
+            + "  For clients only: [" + PREFIX_BUDGET + "BUDGET] (e.g., 5000 or 5000-10000)\n"
+            + "  For vendors only: [" + PREFIX_PRICE + "PRICE] (e.g., 1000 or 1000-2000)\n\n"
             + "Example 1 (Client): " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
@@ -42,17 +51,16 @@ public class AddCommand extends Command {
             + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
             + PREFIX_WEDDING_DATE + "15-06-2020 "
             + PREFIX_TYPE + "client "
+            + PREFIX_PARTNER + "Jane Doe "
             + PREFIX_BUDGET + "5000-10000 "
-            + PREFIX_TAG + "friends"
-            + "\n"
+            + "\n\n"
             + "Example 2 (Vendor): " + COMMAND_WORD + " "
             + PREFIX_NAME + "Jane Smith "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "jane@example.com "
             + PREFIX_ADDRESS + "123 Orchard Road, #03-45 "
-            + PREFIX_WEDDING_DATE + "20-07-2020 "
             + PREFIX_TYPE + "vendor "
-            + PREFIX_PRICE + "1000-2000 "
+            + PREFIX_PRICE + "1500 "
             + PREFIX_TAG + "photographer";
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
