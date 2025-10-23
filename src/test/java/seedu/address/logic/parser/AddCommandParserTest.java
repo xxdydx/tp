@@ -210,9 +210,10 @@ public class AddCommandParserTest {
         assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_EMAIL_BOB + VALID_ADDRESS_BOB,
                 expectedMessage);
 
-        // missing wedding date prefix
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB,
-                expectedMessage);
+        // missing wedding date prefix (should fail for clients, pass for vendors)
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                        + TYPE_DESC_CLIENT + PARTNER_DESC_BOB,
+                AddCommand.MESSAGE_WEDDING_DATE_REQUIRED_FOR_CLIENT);
     }
 
     @Test
@@ -412,7 +413,7 @@ public class AddCommandParserTest {
     public void parse_clientWithPartner_success() {
         Person expected = new PersonBuilder().withName("Amy Bee").withPhone("11111111")
                 .withEmail("amy@example.com").withAddress("Block 312, Amy Street 1")
-                .withWeddingDate("01/01/2024").withType(PersonType.CLIENT).withPartner("Alex Tan")
+                .withWeddingDate("01-01-2024").withType(PersonType.CLIENT).withPartner("Alex Tan")
                 .withTags().build();
 
         String userInput = NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
