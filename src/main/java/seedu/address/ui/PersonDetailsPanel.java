@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonType;
 
 /**
  * A UI component that displays the details of a selected {@link Person}.
@@ -94,10 +95,17 @@ public class PersonDetailsPanel extends UiPart<Region> {
         String typeText = person.getType().display();
         type.setText("Type          : " + typeText);
 
-        String wdText = (person.getWeddingDate() != null)
-                ? person.getWeddingDate().toString()
-                : "-";
-        weddingDate.setText("Wedding  : " + wdText);
+        if (person.getType() == PersonType.VENDOR) {
+            weddingDate.setVisible(false);
+            weddingDate.setManaged(false);
+        } else {
+            String wdText = person.getWeddingDate().isPresent()
+                    ? person.getWeddingDate().get().toString()
+                    : "-";
+            weddingDate.setText("Wedding  : " + wdText);
+            weddingDate.setVisible(true);
+            weddingDate.setManaged(true);
+        }
 
         // Display price only for vendors with price
         if (person.getPrice().isPresent()) {

@@ -65,7 +65,7 @@ public class PersonBuilder {
         phone = personToCopy.getPhone();
         email = personToCopy.getEmail();
         address = personToCopy.getAddress();
-        weddingDate = personToCopy.getWeddingDate();
+        weddingDate = personToCopy.getWeddingDate().orElse(null);
         tags = new HashSet<>(personToCopy.getTags());
         type = personToCopy.getType();
         price = personToCopy.getPrice().orElse(null);
@@ -118,6 +118,14 @@ public class PersonBuilder {
      */
     public PersonBuilder withWeddingDate(String weddingDate) {
         this.weddingDate = WeddingDate.parse(weddingDate);
+        return this;
+    }
+
+    /**
+     * Sets the {@code WeddingDate} of the {@code Person} that we are building to null.
+     */
+    public PersonBuilder withWeddingDate(WeddingDate weddingDate) {
+        this.weddingDate = weddingDate;
         return this;
     }
 
@@ -189,21 +197,20 @@ public class PersonBuilder {
     }
 
     /**
-     * Builds a {@link Person} from the values set on this builder, enforcing type/partner rules.
-     * */
+     * Builds a Person object using the appropriate constructor based on the person type.
+     * @return a Person object
+     */
     public Person build() {
-        if (type == PersonType.CLIENT) {
-            if (partner == null || partner.isEmpty()) {
-                throw new IllegalArgumentException("Clients must have a partner");
-            }
-            return new Person(name, phone, email, address, weddingDate, type, tags,
-                    null, budget, partner);
-        } else {
+        if (type == PersonType.VENDOR) {
             if (partner != null && partner.isPresent()) {
                 throw new IllegalArgumentException("Vendors cannot have a partner");
             }
-            return new Person(name, phone, email, address, weddingDate, type, tags,
-                    price, null, Optional.empty());
+            return new Person(name, phone, email, address, type, tags, price);
+        } else {
+            if (partner == null || partner.isEmpty()) {
+                throw new IllegalArgumentException("Clients must have a partner");
+            }
+            return new Person(name, phone, email, address, weddingDate, type, tags, price, budget, partner);
         }
     }
 

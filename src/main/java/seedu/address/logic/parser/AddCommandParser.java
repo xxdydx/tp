@@ -50,8 +50,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                 PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_WEDDING_DATE,
                 PREFIX_TAG, PREFIX_TYPE, PREFIX_PRICE, PREFIX_BUDGET, PREFIX_PARTNER);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                PREFIX_WEDDING_DATE)
+        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
@@ -64,7 +63,6 @@ public class AddCommandParser implements Parser<AddCommand> {
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
-        WeddingDate weddingDate = ParserUtil.parseWeddingDate(argMultimap.getValue(PREFIX_WEDDING_DATE).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
         PersonType type = PersonType.CLIENT;
@@ -78,6 +76,18 @@ public class AddCommandParser implements Parser<AddCommand> {
                 throw new ParseException(AddCommand.MESSAGE_TYPE_INVALID);
             }
             type = PersonType.parse(normalised);
+        }
+
+        // Parse wedding date - required for clients, not allowed for vendors
+        WeddingDate weddingDate = null;
+        if (argMultimap.getValue(PREFIX_WEDDING_DATE).isPresent()) {
+            // Wedding date is only applicable for clients
+            if (type != PersonType.CLIENT) {
+                throw new ParseException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
+            }
+            weddingDate = ParserUtil.parseWeddingDate(argMultimap.getValue(PREFIX_WEDDING_DATE).get());
+        } else if (type == PersonType.CLIENT) {
+            throw new ParseException(Person.MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT);
         }
 
         // Parse price if present
@@ -112,7 +122,12 @@ public class AddCommandParser implements Parser<AddCommand> {
             throw new ParseException(AddCommand.MESSAGE_PARTNER_FORBIDDEN_FOR_VENDOR);
         }
 
-        Person person = new Person(name, phone, email, address, weddingDate, type, tagList, price, budget, partner);
+        Person person;
+        if (type == PersonType.VENDOR) {
+            person = new Person(name, phone, email, address, type, tagList, price);
+        } else {
+            person = new Person(name, phone, email, address, weddingDate, type, tagList, price, budget, partner);
+        }
         return new AddCommand(person);
     }
 

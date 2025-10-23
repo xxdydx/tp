@@ -34,7 +34,7 @@ public class JsonAdaptedPersonTest {
     private static final String VALID_PHONE = BENSON.getPhone().toString();
     private static final String VALID_EMAIL = BENSON.getEmail().toString();
     private static final String VALID_ADDRESS = BENSON.getAddress().toString();
-    private static final String VALID_WEDDING_DATE = BENSON.getWeddingDate().toString();
+    private static final String VALID_WEDDING_DATE = BENSON.getWeddingDate().get().toString();
     private static final List<JsonAdaptedTag> VALID_TAGS = BENSON.getTags().stream()
             .map(JsonAdaptedTag::new)
             .collect(Collectors.toList());
@@ -125,10 +125,11 @@ public class JsonAdaptedPersonTest {
     }
 
     @Test
-    public void toModelType_nullWeddingDate_throwsIllegalValueException() {
+    public void toModelType_nullWeddingDate_success() throws Exception {
+        // Test with client type - clients must have wedding dates
         JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, null,
                 VALID_TYPE, null, null, VALID_PARTNER, VALID_TAGS, null);
-        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, WeddingDate.class.getSimpleName());
+        String expectedMessage = Person.MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 

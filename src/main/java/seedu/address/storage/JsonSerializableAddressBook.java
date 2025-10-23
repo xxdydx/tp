@@ -16,6 +16,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonType;
 
 /**
  * An Immutable AddressBook that is serializable to JSON format.
@@ -83,18 +84,34 @@ class JsonSerializableAddressBook {
 
                 if (!linkedPersons.isEmpty()) {
                     // Create updated person with links
-                    Person updatedPerson = new Person(
-                            person.getName(),
-                            person.getPhone(),
-                            person.getEmail(),
-                            person.getAddress(),
-                            person.getWeddingDate(),
-                            person.getType(),
-                            person.getTags(),
-                            linkedPersons,
-                            person.getPrice().orElse(null),
-                            person.getPartner()
-                    );
+                    Person updatedPerson;
+                    if (person.getType() == PersonType.CLIENT) {
+                        // For clients, use constructor with wedding date
+                        updatedPerson = new Person(
+                                person.getName(),
+                                person.getPhone(),
+                                person.getEmail(),
+                                person.getAddress(),
+                                person.getWeddingDate().orElse(null),
+                                person.getType(),
+                                person.getTags(),
+                                linkedPersons,
+                                person.getPrice().orElse(null),
+                                person.getPartner()
+                        );
+                    } else {
+                        // For vendors, use constructor without wedding date
+                        updatedPerson = new Person(
+                                person.getName(),
+                                person.getPhone(),
+                                person.getEmail(),
+                                person.getAddress(),
+                                person.getType(),
+                                person.getTags(),
+                                linkedPersons,
+                                person.getPrice().orElse(null)
+                        );
+                    }
                     addressBook.setPerson(person, updatedPerson);
                 }
             }

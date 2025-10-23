@@ -92,7 +92,12 @@ public class EditCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
+        Person editedPerson;
+        try {
+            editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
+        } catch (CommandException e) {
+            throw e;
+        }
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
@@ -115,7 +120,8 @@ public class EditCommand extends Command {
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        WeddingDate updatedWeddingDate = editPersonDescriptor.getWeddingDate().orElse(personToEdit.getWeddingDate());
+        WeddingDate updatedWeddingDate = editPersonDescriptor.getWeddingDate()
+                .orElse(personToEdit.getWeddingDate().orElse(null));
         PersonType updatedType = editPersonDescriptor.getType().orElse(personToEdit.getType());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Price updatedPrice = editPersonDescriptor.getPrice().orElse(personToEdit.getPrice().orElse(null));
@@ -136,8 +142,20 @@ public class EditCommand extends Command {
             throw new CommandException("Budget is only applicable for clients.");
         }
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedWeddingDate,
-                updatedType, updatedTags, updatedPrice, updatedBudget, updatedPartner);
+        if (updatedType == PersonType.CLIENT && updatedWeddingDate == null) {
+            throw new CommandException(Person.MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT);
+        }
+        if (updatedType != PersonType.CLIENT && updatedWeddingDate != null) {
+            throw new CommandException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
+        }
+
+        if (updatedType == PersonType.VENDOR) {
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedType, updatedTags,
+                    updatedPrice);
+        } else {
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedWeddingDate,
+                    updatedType, updatedTags, updatedPrice, updatedBudget, updatedPartner);
+        }
     }
 
     @Override

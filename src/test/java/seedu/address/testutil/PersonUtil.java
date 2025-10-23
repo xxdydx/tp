@@ -16,6 +16,7 @@ import java.util.Set;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonType;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -39,7 +40,9 @@ public class PersonUtil {
         sb.append(PREFIX_PHONE + person.getPhone().value + " ");
         sb.append(PREFIX_EMAIL + person.getEmail().value + " ");
         sb.append(PREFIX_ADDRESS + person.getAddress().value + " ");
-        sb.append(PREFIX_WEDDING_DATE + person.getWeddingDate().toString() + " ");
+        if (person.getType() != PersonType.VENDOR && person.getWeddingDate().isPresent()) {
+            sb.append(PREFIX_WEDDING_DATE + person.getWeddingDate().get().toString() + " ");
+        }
         sb.append(PREFIX_TYPE).append(person.getType().toString()).append(" ");
 
         person.getPrice().ifPresent(price ->

@@ -59,7 +59,6 @@ public class AddCommand extends Command {
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "jane@example.com "
             + PREFIX_ADDRESS + "123 Orchard Road, #03-45 "
-            + PREFIX_WEDDING_DATE + "20-07-2020 "
             + PREFIX_TYPE + "vendor "
             + PREFIX_PRICE + "1500 "
             + PREFIX_TAG + "photographer";

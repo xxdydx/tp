@@ -46,8 +46,8 @@ public class LinkCommandTest {
                 .withPhone("22222222")
                 .withEmail("bob@example.com")
                 .withAddress("456 Vendor Avenue")
-                .withWeddingDate("02-02-2024")
                 .withType(PersonType.VENDOR)
+                .withPrice("1000-2000")
                 .build();
 
         AddressBook addressBook = new AddressBook();
@@ -69,11 +69,11 @@ public class LinkCommandTest {
 
         // Manually link them in expected model
         Person updatedClient = new Person(client.getName(), client.getPhone(), client.getEmail(),
-                client.getAddress(), client.getWeddingDate(), client.getType(), client.getTags(),
+                client.getAddress(), client.getWeddingDate().orElse(null), client.getType(), client.getTags(),
                 java.util.Set.of(vendor), null, client.getPartner());
         Person updatedVendor = new Person(vendor.getName(), vendor.getPhone(), vendor.getEmail(),
-                vendor.getAddress(), vendor.getWeddingDate(), vendor.getType(), vendor.getTags(),
-                java.util.Set.of(client), null, vendor.getPartner());
+                vendor.getAddress(), vendor.getType(), vendor.getTags(),
+                java.util.Set.of(client), vendor.getPrice().orElse(null));
         expectedModel.setPerson(client, updatedClient);
         expectedModel.setPerson(vendor, updatedVendor);
 

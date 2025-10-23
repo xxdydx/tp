@@ -77,7 +77,9 @@ class JsonAdaptedPerson {
         phone = source.getPhone().value;
         email = source.getEmail().value;
         address = source.getAddress().value;
-        weddingDate = source.getWeddingDate().toString();
+        weddingDate = (source.getType() == PersonType.VENDOR)
+                ? null
+                : source.getWeddingDate().map(WeddingDate::toString).orElse(null);
         type = source.getType().toString();
         price = source.getPrice().map(Price::toString).orElse(null);
         budget = source.getBudget().map(Budget::toString).orElse(null);
@@ -142,15 +144,15 @@ class JsonAdaptedPerson {
         }
         final Address modelAddress = new Address(address);
 
-        if (weddingDate == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
-                    WeddingDate.class.getSimpleName()));
-        }
         final WeddingDate modelWeddingDate;
-        try {
-            modelWeddingDate = WeddingDate.parse(weddingDate);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalValueException(WeddingDate.MESSAGE_CONSTRAINTS);
+        if (weddingDate == null) {
+            modelWeddingDate = null;
+        } else {
+            try {
+                modelWeddingDate = WeddingDate.parse(weddingDate);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalValueException(WeddingDate.MESSAGE_CONSTRAINTS);
+            }
         }
 
         if (type == null) {
@@ -196,9 +198,19 @@ class JsonAdaptedPerson {
         if (modelType == PersonType.VENDOR && modelPartner.isPresent()) {
             throw new IllegalValueException(Person.MSG_PARTNER_FORBIDDEN_FOR_VENDOR);
         }
+        if (modelType == PersonType.CLIENT && modelWeddingDate == null) {
+            throw new IllegalValueException(Person.MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT);
+        }
+        if (modelType == PersonType.VENDOR && modelWeddingDate != null) {
+            throw new IllegalValueException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
+        }
 
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelType, modelTags,
-                modelPrice, modelBudget, modelPartner);
+        if (modelType == PersonType.VENDOR) {
+            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelType, modelTags, modelPrice);
+        } else {
+            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelType, modelTags,
+                    modelPrice, modelBudget, modelPartner);
+        }
     }
 
 }
