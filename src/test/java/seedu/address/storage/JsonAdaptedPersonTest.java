@@ -128,7 +128,7 @@ public class JsonAdaptedPersonTest {
     public void toModelType_nullWeddingDate_throwsIllegalValueException() {
         JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, null,
                 VALID_TYPE, null, null, VALID_PARTNER, VALID_TAGS);
-        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, WeddingDate.class.getSimpleName());
+        String expectedMessage = "Wedding date is required for clients.";
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
