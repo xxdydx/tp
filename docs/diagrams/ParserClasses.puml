@@ -5,34 +5,90 @@ skinparam arrowColor LOGIC_COLOR_T4
 skinparam classBackgroundColor LOGIC_COLOR
 
 Class "{abstract}\nCommand" as Command
-Class XYZCommand
+Class AddCommand
+Class EditCommand
+Class DeleteCommand
+Class FindCommand
+Class CatCommand
+Class LinkCommand
+Class UnlinkCommand
+
+Class NameContainsSubstringPredicate
+Class CategoryPredicate
 
 package "Parser classes"{
-Class "<<interface>>\nParser" as Parser
-Class AddressBookParser
-Class XYZCommandParser
-Class CliSyntax
-Class ParserUtil
-Class ArgumentMultimap
-Class ArgumentTokenizer
-Class Prefix
+  Class "<<interface>>\nParser" as Parser
+  Class AddressBookParser
+  Class AddCommandParser
+  Class EditCommandParser
+  Class DeleteCommandParser
+  Class FindCommandParser
+  Class CatCommandParser
+  Class LinkCommandParser
+  Class UnlinkCommandParser
+
+  Class CliSyntax
+  Class ParserUtil
+  Class ArgumentMultimap
+  Class ArgumentTokenizer
+  Class Prefix
 }
 
 Class HiddenOutside #FFFFFF
 HiddenOutside ..> AddressBookParser
 
-AddressBookParser .down.> XYZCommandParser: <<create>>
+AddressBookParser .down.> AddCommandParser : <<create>>
+AddressBookParser .down.> EditCommandParser : <<create>>
+AddressBookParser .down.> DeleteCommandParser : <<create>>
+AddressBookParser .down.> FindCommandParser : <<create>>
+AddressBookParser .down.> CatCommandParser : <<create>>
+AddressBookParser .down.> LinkCommandParser : <<create>>
+AddressBookParser .down.> UnlinkCommandParser : <<create>>
 
-XYZCommandParser ..> XYZCommand : <<create>>
 AddressBookParser ..> Command : <<use>>
-XYZCommandParser .up.|> Parser
-XYZCommandParser ..> ArgumentMultimap
-XYZCommandParser ..> ArgumentTokenizer
-ArgumentTokenizer .left.> ArgumentMultimap
-XYZCommandParser ..> CliSyntax
-CliSyntax ..> Prefix
-XYZCommandParser ..> ParserUtil
-ParserUtil .down.> Prefix
-ArgumentTokenizer .down.> Prefix
-XYZCommand -up-|> Command
+
+AddCommandParser    ..> AddCommand    : <<create>>
+EditCommandParser   ..> EditCommand   : <<create>>
+DeleteCommandParser ..> DeleteCommand : <<create>>
+FindCommandParser   ..> FindCommand   : <<create>>
+CatCommandParser    ..> CatCommand    : <<create>>
+LinkCommandParser   ..> LinkCommand   : <<create>>
+UnlinkCommandParser ..> UnlinkCommand : <<create>>
+
+AddCommandParser     .up.|> Parser
+EditCommandParser    .up.|> Parser
+DeleteCommandParser  .up.|> Parser
+FindCommandParser    .up.|> Parser
+CatCommandParser     .up.|> Parser
+LinkCommandParser    .up.|> Parser
+UnlinkCommandParser  .up.|> Parser
+
+FindCommandParser  ..> ArgumentMultimap
+FindCommandParser  ..> ArgumentTokenizer
+FindCommandParser  ..> CliSyntax
+FindCommandParser  ..> ParserUtil
+ArgumentTokenizer  .left.> ArgumentMultimap
+CliSyntax          ..> Prefix
+ParserUtil         .down.> Prefix
+ArgumentTokenizer  .down.> Prefix
+
+AddCommand -up-|> Command
+EditCommand -up-|> Command
+DeleteCommand -up-|> Command
+FindCommand -up-|> Command
+CatCommand -up-|> Command
+LinkCommand -up-|> Command
+UnlinkCommand -up-|> Command
+
+FindCommandParser ..> NameContainsSubstringPredicate : <<use>>
+FindCommand       --> NameContainsSubstringPredicate
+
+CatCommandParser  ..> CategoryPredicate : <<use>>
+CatCommand        --> CategoryPredicate
+
+note right of NameContainsSubstringPredicate
+  Substring match (case-insensitive).
+  e.g., find "ka" → matches "Kai Lim Photography".
+end note
+
 @enduml
