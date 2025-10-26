@@ -170,9 +170,9 @@
 .label-header { -fx-font-size: 32pt; -fx-text-fill: -app-ink; }
 .text-field { -fx-font-size: 12pt; -fx-text-fill: -app-ink; }
 
-#tags { 
-    -fx-hgap: 14; 
-    -fx-vgap: 10; 
+#tags {
+    -fx-hgap: 14;
+    -fx-vgap: 10;
 }
 #tags .label {
     -fx-background-color: #FFFEFD;
