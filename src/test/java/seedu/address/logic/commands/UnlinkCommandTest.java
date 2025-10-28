@@ -137,8 +137,10 @@ public class UnlinkCommandTest {
     public void execute_vendorNotVendor_throwsCommandException() {
         // Create client at index 1 and another client at index 2, already linked
         Person clientFirst = new PersonBuilder().withName("Client First")
+                .withPhone("77777777")
                 .withType(PersonType.CLIENT).build();
         Person clientSecond = new PersonBuilder().withName("Client Second")
+                .withPhone("88888888")
                 .withType(PersonType.CLIENT).build();
 
         Person linkedClient1 = new Person(clientFirst.getName(), clientFirst.getPhone(),
@@ -165,8 +167,10 @@ public class UnlinkCommandTest {
     public void execute_notLinked_throwsCommandException() {
         // Create unlinked client and vendor
         Person unlinkClient = new PersonBuilder().withName("Unlinked Client")
+                .withPhone("55555555")
                 .withType(PersonType.CLIENT).build();
         Person unlinkVendor = new PersonBuilder().withName("Unlinked Vendor")
+                .withPhone("66666666")
                 .withType(PersonType.VENDOR).build();
 
         AddressBook addressBook = new AddressBook();

@@ -101,8 +101,10 @@ public class LinkCommandTest {
         // Create a vendor at index 1 and client at index 2
         AddressBook addressBook = new AddressBook();
         Person vendorFirst = new PersonBuilder().withName("Vendor First")
+                .withPhone("11111111")
                 .withType(PersonType.VENDOR).build();
         Person clientSecond = new PersonBuilder().withName("Client Second")
+                .withPhone("22222222")
                 .withType(PersonType.CLIENT).build();
         addressBook.addPerson(vendorFirst);
         addressBook.addPerson(clientSecond);
@@ -119,8 +121,10 @@ public class LinkCommandTest {
         // Create client at index 1 and another client at index 2
         AddressBook addressBook = new AddressBook();
         Person clientFirst = new PersonBuilder().withName("Client First")
+                .withPhone("33333333")
                 .withType(PersonType.CLIENT).build();
         Person clientSecond = new PersonBuilder().withName("Client Second")
+                .withPhone("44444444")
                 .withType(PersonType.CLIENT).build();
         addressBook.addPerson(clientFirst);
         addressBook.addPerson(clientSecond);
