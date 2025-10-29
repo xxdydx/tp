@@ -187,7 +187,6 @@
     -fx-max-width: 180;
     -fx-line-spacing: 1.3;
     -fx-text-alignment: center;
-    -fx-pref-width: 180;
 }
 
 .status-bar { -fx-background-color: -app-cream; }
