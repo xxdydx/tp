@@ -131,7 +131,7 @@ Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/TYPE [price/PR
 **Examples:**
 * **Adding a client:**<br>
   `add n/John & Mary Tan p/98765432 e/john@example.com a/311 Clementi Ave 2 w/15-06-2026 type/client budget/5000-10000 t/friends`
-  
+
 * **Adding a vendor:**<br>
   `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Road w/20-07-2026 type/vendor price/1000-2000 t/florist`
 
