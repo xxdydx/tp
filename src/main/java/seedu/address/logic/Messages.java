@@ -44,9 +44,11 @@ public class Messages {
                 .append("; Email: ")
                 .append(person.getEmail())
                 .append("; Address: ")
-                .append(person.getAddress())
-                .append("; Wedding Date: ")
-                .append(person.getWeddingDate());
+                .append(person.getAddress());
+
+        // Add wedding date if present (clients only)
+        person.getWeddingDate().ifPresent(weddingDate ->
+                builder.append("; Wedding Date: ").append(weddingDate));
 
         // Add price if present (vendors only)
         person.getPrice().ifPresent(price ->
