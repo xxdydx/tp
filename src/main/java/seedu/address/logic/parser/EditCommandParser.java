@@ -22,8 +22,6 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.PersonType;
 import seedu.address.model.tag.Tag;
 
 /**
