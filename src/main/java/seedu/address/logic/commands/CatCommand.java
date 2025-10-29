@@ -18,7 +18,8 @@ public class CatCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose tags contain "
             + "the specified category (case-insensitive) and displays them as a list with index numbers.\n"
             + "Parameters: CATEGORY\n"
-            + "Example: " + COMMAND_WORD + " florist";
+            + "Example: " + COMMAND_WORD + " florist\n"
+            + "Note: Use the 'list' command to revert to the full view of all contacts.";
 
     private final CategoryMatchesPredicate predicate;
 
