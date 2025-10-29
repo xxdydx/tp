@@ -14,11 +14,18 @@ public class ClearCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Clears all entries from the address book.\n"
             + "Example: " + COMMAND_WORD;
     public static final String MESSAGE_SUCCESS = "Address book has been cleared!";
+    public static final String MESSAGE_ALREADY_EMPTY = "Address book is already empty.";
 
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
+
+        // Check if address book is already empty
+        if (model.getAddressBook().getPersonList().isEmpty()) {
+            return new CommandResult(MESSAGE_ALREADY_EMPTY);
+        }
+
         model.setAddressBook(new AddressBook());
         return new CommandResult(MESSAGE_SUCCESS);
     }
