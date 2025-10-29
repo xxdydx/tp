@@ -102,14 +102,7 @@ public class PersonCard extends UiPart<Region> {
         if (person.getType() == PersonType.VENDOR) {
             person.getTags().stream()
                     .sorted(Comparator.comparing(tag -> tag.tagName))
-                    .forEach(tag -> {
-                        Label tagLabel = new Label(tag.tagName);
-                        tagLabel.setWrapText(true);
-                        tagLabel.setMaxWidth(180);
-                        tagLabel.setPrefWidth(180);
-                        tagLabel.setMinWidth(180);
-                        tags.getChildren().add(tagLabel);
-                    });
+                    .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
             tags.setVisible(true);
             tags.setManaged(true);
         } else {
