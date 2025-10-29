@@ -9,7 +9,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PARTNER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
@@ -55,18 +54,19 @@ public class EditCommand extends Command {
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_PARTNER + "PARTNER] "
             + "[" + PREFIX_WEDDING_DATE + "WEDDING_DATE] "
-            + "[" + PREFIX_TYPE + "(client|vendor)] "
             + "[" + PREFIX_PRICE + "PRICE] "
             + "[" + PREFIX_BUDGET + "BUDGET] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
-            + PREFIX_EMAIL + "johndoe@example.com";
+            + PREFIX_EMAIL + "johndoe@example.com \n"
+            + "Note: Type (client/vendor) cannot be edited after creation.";
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON =
             "This person already exists in the address book (same phone number).";
+    public static final String MESSAGE_TYPE_IMMUTABLE = "Type cannot be changed.";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -123,44 +123,44 @@ public class EditCommand extends Command {
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         WeddingDate updatedWeddingDate = editPersonDescriptor.getWeddingDate()
                 .orElse(personToEdit.getWeddingDate().orElse(null));
-        PersonType updatedType = editPersonDescriptor.getType().orElse(personToEdit.getType());
+        PersonType unchangedType = personToEdit.getType();
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Price updatedPrice = editPersonDescriptor.getPrice().orElse(personToEdit.getPrice().orElse(null));
         Budget updatedBudget = editPersonDescriptor.getBudget().orElse(personToEdit.getBudget().orElse(null));
         Optional<Partner> updatedPartner = editPersonDescriptor.getPartner().map(Optional::of)
                 .orElse(personToEdit.getPartner());
 
-        if (updatedType == PersonType.CLIENT && updatedPartner.isEmpty()) {
+        if (unchangedType == PersonType.CLIENT && updatedPartner.isEmpty()) {
             throw new CommandException(Person.MSG_PARTNER_REQUIRED_FOR_CLIENT);
         }
-        if (updatedType == PersonType.VENDOR && updatedPartner.isPresent()) {
+        if (unchangedType == PersonType.VENDOR && updatedPartner.isPresent()) {
             throw new CommandException(Person.MSG_PARTNER_FORBIDDEN_FOR_VENDOR);
         }
-        if (updatedType == PersonType.CLIENT && updatedPrice != null) {
+        if (unchangedType == PersonType.CLIENT && updatedPrice != null) {
             throw new CommandException("Price is only applicable for vendors.");
         }
-        if (updatedType == PersonType.VENDOR && updatedBudget != null) {
+        if (unchangedType == PersonType.VENDOR && updatedBudget != null) {
             throw new CommandException("Budget is only applicable for clients.");
         }
 
-        if (updatedType == PersonType.CLIENT && updatedWeddingDate == null) {
+        if (unchangedType == PersonType.CLIENT && updatedWeddingDate == null) {
             throw new CommandException(Person.MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT);
         }
-        if (updatedType != PersonType.CLIENT && updatedWeddingDate != null) {
+        if (unchangedType != PersonType.CLIENT && updatedWeddingDate != null) {
             throw new CommandException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
         }
 
         // Validate tags - only vendors can have tags
-        if (updatedType == PersonType.CLIENT && !updatedTags.isEmpty()) {
+        if (unchangedType == PersonType.CLIENT && !updatedTags.isEmpty()) {
             throw new CommandException(Person.MSG_TAGS_FORBIDDEN_FOR_CLIENT);
         }
 
-        if (updatedType == PersonType.VENDOR) {
-            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedType, updatedTags,
+        if (unchangedType == PersonType.VENDOR) {
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, unchangedType, updatedTags,
                     updatedPrice);
         } else {
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedWeddingDate,
-                    updatedType, updatedTags, updatedPrice, updatedBudget, updatedPartner);
+                    unchangedType, updatedTags, updatedPrice, updatedBudget, updatedPartner);
         }
     }
 
@@ -199,7 +199,6 @@ public class EditCommand extends Command {
         private Email email;
         private Address address;
         private WeddingDate weddingDate;
-        private PersonType type;
         private Price price;
         private Budget budget;
         private Set<Tag> tags;
@@ -218,7 +217,6 @@ public class EditCommand extends Command {
             setEmail(toCopy.email);
             setAddress(toCopy.address);
             setWeddingDate(toCopy.weddingDate);
-            setType(toCopy.type);
             setPrice(toCopy.price);
             setBudget(toCopy.budget);
             setPartner(toCopy.partner);
@@ -229,7 +227,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, weddingDate, type, price, budget,
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, weddingDate, price, budget,
                     partner, tags);
         }
 
@@ -271,14 +269,6 @@ public class EditCommand extends Command {
 
         public Optional<WeddingDate> getWeddingDate() {
             return Optional.ofNullable(weddingDate);
-        }
-
-        public void setType(PersonType type) {
-            this.type = type;
-        }
-
-        public Optional<PersonType> getType() {
-            return Optional.ofNullable(type);
         }
 
         public void setPrice(Price price) {
@@ -340,7 +330,6 @@ public class EditCommand extends Command {
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(weddingDate, otherEditPersonDescriptor.weddingDate)
-                    && Objects.equals(type, otherEditPersonDescriptor.type)
                     && Objects.equals(price, otherEditPersonDescriptor.price)
                     && Objects.equals(budget, otherEditPersonDescriptor.budget)
                     && Objects.equals(partner, otherEditPersonDescriptor.partner)
@@ -355,7 +344,6 @@ public class EditCommand extends Command {
                     .add("email", email)
                     .add("address", address)
                     .add("weddingDate", weddingDate)
-                    .add("type", type)
                     .add("price", price)
                     .add("budget", budget)
                     .add("partner", partner)
