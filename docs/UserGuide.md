@@ -149,7 +149,7 @@ Format: `list`
 **Example:**
 * `list` - Displays all your wedding contacts
 
-Note: Dates shown in the contacts list are formatted as `YYYY MM DD` (e.g., `2026 07 15`).
+Note: Dates shown in the contacts list are formatted as `YYYY-MM-DD` (e.g., `2026-07-15`).
 
 ### Editing a contact : `edit`
 
