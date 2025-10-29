@@ -171,7 +171,7 @@ The Person Type feature allows KnotBook to distinguish between clients and vendo
 * **Alternative 1 (Current choice):** Use an enum for PersonType
   * Pros: Type-safe, prevents invalid values, easy to extend
   * Cons: Requires code changes to add new types
-  
+
 * **Alternative 2:** Use a String field for type
   * Pros: More flexible, can add types dynamically
   * Cons: No compile-time type checking, prone to typos and inconsistencies
@@ -194,7 +194,7 @@ The Wedding Date feature stores the date of a client's wedding event. This is im
 * **Alternative 1 (Current choice):** Create a dedicated `WeddingDate` class
   * Pros: Encapsulates validation logic, can add date-specific methods
   * Cons: Additional class to maintain
-  
+
 * **Alternative 2:** Use Java's `LocalDate` directly
   * Pros: Simpler, uses standard library
   * Cons: Less control over validation and formatting
@@ -224,7 +224,7 @@ This command filters and displays all contacts categorized as "florist".
 * **Alternative 1 (Current choice):** Case-insensitive matching
   * Pros: More user-friendly, reduces errors
   * Cons: Slightly more complex comparison logic
-  
+
 * **Alternative 2:** Case-sensitive matching
   * Pros: Simpler implementation
   * Cons: Less forgiving for users
@@ -266,7 +266,7 @@ The following sequence diagram shows how the link operation works:
 * **Alternative 1 (Current choice):** Use indices from the displayed list
   * Pros: Intuitive, works with filtered lists
   * Cons: Indices change when list is filtered
-  
+
 * **Alternative 2:** Use unique IDs or names
   * Pros: More stable references
   * Cons: Requires users to remember/type full names or IDs
@@ -295,7 +295,7 @@ The Help Window has been enhanced to display all command formats in an accordion
 * **Alternative 1 (Current choice):** Accordion with collapsible panes
   * Pros: Clean interface, only shows relevant information, easy to navigate
   * Cons: Requires more clicks to view all commands
-  
+
 * **Alternative 2:** Single scrollable text area with all commands
   * Pros: All information visible at once
   * Cons: Cluttered, overwhelming for new users

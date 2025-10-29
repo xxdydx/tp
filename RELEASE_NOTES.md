@@ -111,5 +111,5 @@ Developed by Team T16-3 from NUS School of Computing:
 
 ---
 
-For detailed usage instructions, see the [User Guide](docs/UserGuide.md).  
+For detailed usage instructions, see the [User Guide](docs/UserGuide.md).
 For technical documentation, see the [Developer Guide](docs/DeveloperGuide.md).
