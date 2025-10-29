@@ -3,6 +3,8 @@ package seedu.address.model.person;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
+import org.apache.commons.validator.routines.EmailValidator;
+
 /**
  * Represents a Person's email in the address book.
  * Guarantees: immutable; is valid as declared in {@link #isValidEmail(String)}
@@ -10,8 +12,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Email {
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid email format.";
-    // Simple email validation: local@domain.tld format
-    public static final String VALIDATION_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    private static final EmailValidator EMAIL_VALIDATOR = EmailValidator.getInstance();
 
     public final String value;
 
@@ -30,7 +31,7 @@ public class Email {
      * Returns if a given string is a valid email.
      */
     public static boolean isValidEmail(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return EMAIL_VALIDATOR.isValid(test);
     }
 
     @Override
