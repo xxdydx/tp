@@ -17,7 +17,8 @@ public final class DisplayFormat {
      * <p>
      */
     public static String nameAndPartner(Person person) {
-        return person.getPartner().map(partner -> person.getName() + " & " + partner)
+        return person.getPartner()
+                .map(partner -> person.getName().toString() + " & " + partner.toString())
                 .orElse(person.getName().toString());
     }
 }
