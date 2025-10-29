@@ -50,6 +50,16 @@ public class PersonDetailsPanel extends UiPart<Region> {
         setPerson(person);
     }
 
+    private static String fmtPhone(String raw) {
+        return raw;
+    }
+
+    private static String fmtDate(Person p) {
+        return p.getWeddingDate()
+                .map(d -> d.toString())
+                .orElse("—");
+    }
+
     /**
      * Updates the panel to display the given {@link Person}.
      * <p>
@@ -153,21 +163,29 @@ public class PersonDetailsPanel extends UiPart<Region> {
             String linkedPersonsText = person.getLinkedPersons().stream()
                     .sorted(Comparator.comparing(p -> p.getName().fullName))
                     .map(p -> {
-                        // Get the first tag as category label (e.g., "venue", "florist")
-                        // If no tags, just show the name without a category prefix
-                        String categoryLabel = p.getTags().stream()
-                                .sorted(Comparator.comparing(t -> t.tagName))
-                                .findFirst()
-                                .map(t -> capitalize(t.tagName))
-                                .orElse(p.getType().display());
-
-                        if (categoryLabel != null) {
-                            return "• " + categoryLabel + ": " + DisplayFormat.nameAndPartner(p);
+                        // Prefix = wedding date when the selected person is a VENDOR and the linked is a CLIENT
+                        String prefix;
+                        if (person.getType() == PersonType.VENDOR && p.getType() == PersonType.CLIENT) {
+                            prefix = fmtDate(p);                    // e.g., "2025-10-12"
                         } else {
-                            return "• " + DisplayFormat.nameAndPartner(p);
+                            // fallback to your existing category/type label
+                            prefix = p.getTags().stream()
+                                    .sorted(Comparator.comparing(t -> t.tagName))
+                                    .findFirst()
+                                    .map(t -> capitalize(t.tagName))
+                                    .orElse(p.getType().display());
                         }
+
+                        // For clients, keep Name & Partner; for vendors, just Name
+                        String displayName = (p.getType() == PersonType.CLIENT)
+                                ? DisplayFormat.nameAndPartner(p)
+                                : p.getName().fullName;
+
+                        String namePhone = displayName + " (" + fmtPhone(p.getPhone().value) + ")";
+                        return "• " + prefix + ": " + namePhone;
                     })
                     .collect(Collectors.joining("\n"));
+
 
             // Determine if linked persons are vendors or clients
             String label = person.getLinkedPersons().stream()
