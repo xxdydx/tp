@@ -3,7 +3,7 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
+import static seedu.address.logic.Messages.getPersonsListedMessage;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
@@ -53,7 +53,7 @@ public class CatCommandTest {
 
     @Test
     public void execute_categoryNotFound_noPersonFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
+        String expectedMessage = getPersonsListedMessage(0);
         CategoryMatchesPredicate predicate = new CategoryMatchesPredicate("nonexistent");
         CatCommand command = new CatCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
@@ -84,7 +84,7 @@ public class CatCommandTest {
         expectedModel.addPerson(florist2);
         expectedModel.addPerson(caterer);
 
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 2);
+        String expectedMessage = getPersonsListedMessage(2);
         CategoryMatchesPredicate predicate = new CategoryMatchesPredicate("florist");
         CatCommand command = new CatCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
@@ -104,7 +104,7 @@ public class CatCommandTest {
         expectedModel.addPerson(florist);
 
         // Search with uppercase
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        String expectedMessage = getPersonsListedMessage(1);
         CategoryMatchesPredicate predicate = new CategoryMatchesPredicate("FLORIST");
         CatCommand command = new CatCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
