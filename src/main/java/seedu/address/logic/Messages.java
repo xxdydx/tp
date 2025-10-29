@@ -28,13 +28,6 @@ public class Messages {
     }
 
     /**
-     * Returns a message indicating the number of persons listed with correct pluralization.
-     */
-    public static String getPersonsListedMessage(int count) {
-        return count == 1 ? "1 person listed!" : String.format("%d persons listed!", count);
-    }
-
-    /**
      * Returns an error message indicating the duplicate prefixes.
      */
     public static String getErrorMessageForDuplicatePrefixes(Prefix... duplicatePrefixes) {
