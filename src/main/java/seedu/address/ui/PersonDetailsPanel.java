@@ -166,7 +166,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
                         // Prefix = wedding date when the selected person is a VENDOR and the linked is a CLIENT
                         String prefix;
                         if (person.getType() == PersonType.VENDOR && p.getType() == PersonType.CLIENT) {
-                            prefix = fmtDate(p);                    // e.g., "2025-10-12"
+                            prefix = fmtDate(p);
                         } else {
                             // fallback to your existing category/type label
                             prefix = p.getTags().stream()
