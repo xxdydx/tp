@@ -3,7 +3,6 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.Messages.getPersonsListedMessage;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
@@ -12,6 +11,7 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -53,7 +53,8 @@ public class CatCommandTest {
 
     @Test
     public void execute_categoryNotFound_noPersonFound() {
-        String expectedMessage = getPersonsListedMessage(0);
+        String expectedMessage = Messages.getPersonsListedMessage(0)
+                + "\nUse the 'list' command to go back and view all contacts.";
         CategoryMatchesPredicate predicate = new CategoryMatchesPredicate("nonexistent");
         CatCommand command = new CatCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
@@ -84,7 +85,8 @@ public class CatCommandTest {
         expectedModel.addPerson(florist2);
         expectedModel.addPerson(caterer);
 
-        String expectedMessage = getPersonsListedMessage(2);
+        String expectedMessage = Messages.getPersonsListedMessage(2)
+                + "\nUse the 'list' command to go back and view all contacts.";
         CategoryMatchesPredicate predicate = new CategoryMatchesPredicate("florist");
         CatCommand command = new CatCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
@@ -104,7 +106,8 @@ public class CatCommandTest {
         expectedModel.addPerson(florist);
 
         // Search with uppercase
-        String expectedMessage = getPersonsListedMessage(1);
+        String expectedMessage = Messages.getPersonsListedMessage(1)
+                + "\nUse the 'list' command to go back and view all contacts.";
         CategoryMatchesPredicate predicate = new CategoryMatchesPredicate("FLORIST");
         CatCommand command = new CatCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);

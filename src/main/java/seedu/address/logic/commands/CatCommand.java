@@ -30,7 +30,10 @@ public class CatCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         model.updateFilteredPersonList(predicate);
-        return new CommandResult(Messages.getPersonsListedMessage(model.getFilteredPersonList().size()));
+        int count = model.getFilteredPersonList().size();
+        String message = Messages.getPersonsListedMessage(count)
+                + "\nUse the 'list' command to go back and view all contacts.";
+        return new CommandResult(message);
     }
 
     @Override

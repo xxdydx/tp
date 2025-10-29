@@ -3,7 +3,6 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.Messages.getPersonsListedMessage;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.ELLE;
@@ -15,6 +14,7 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -52,13 +52,13 @@ public class FindCommandTest {
         // null -> returns false
         assertFalse(findFirstCommand.equals(null));
 
-        // different person -> returns false
         assertFalse(findFirstCommand.equals(findSecondCommand));
     }
 
     @Test
     public void execute_zeroKeywords_noPersonFound() {
-        String expectedMessage = getPersonsListedMessage(0);
+        String expectedMessage = Messages.getPersonsListedMessage(0)
+                + "\nUse the 'list' command to go back and view all contacts.";
         NameContainsKeywordsPredicate predicate = preparePredicate(" ");
         FindCommand command = new FindCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
@@ -68,7 +68,8 @@ public class FindCommandTest {
 
     @Test
     public void execute_multipleKeywords_multiplePersonsFound() {
-        String expectedMessage = getPersonsListedMessage(3);
+        String expectedMessage = Messages.getPersonsListedMessage(3)
+                + "\nUse the 'list' command to go back and view all contacts.";
         NameContainsKeywordsPredicate predicate = preparePredicate("Kurz Elle Kunz");
         FindCommand command = new FindCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
@@ -98,7 +99,8 @@ public class FindCommandTest {
         model.addPerson(amira);
         expectedModel.addPerson(amira);
 
-        String expectedMessage = getPersonsListedMessage(1);
+        String expectedMessage = Messages.getPersonsListedMessage(1)
+                + "\nUse the 'list' command to go back and view all contacts.";
         NameContainsKeywordsPredicate predicate = preparePredicate("Alex");
         FindCommand command = new FindCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);

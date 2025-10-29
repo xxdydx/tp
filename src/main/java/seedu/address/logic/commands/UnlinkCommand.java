@@ -32,6 +32,10 @@ public class UnlinkCommand extends Command {
             + "It must be a valid number referring to an existing client.";
     public static final String MESSAGE_INVALID_VENDOR_INDEX = "Invalid vendor index. "
             + "It must be a valid number referring to an existing vendor.";
+    public static final String MESSAGE_OUT_OF_BOUNDS_CLIENT_INDEX = "Client index is out of bounds. "
+        + "\n\nPlease enter a number within the range of the displayed person list.";
+    public static final String MESSAGE_OUT_OF_BOUNDS_VENDOR_INDEX = "Vendor index is out of bounds. "
+        + "\n\nPlease enter a number within the range of the displayed person list.";
 
     private final Index clientIndex;
     private final Index vendorIndex;
@@ -55,11 +59,11 @@ public class UnlinkCommand extends Command {
         List<Person> lastShownList = model.getFilteredPersonList();
 
         if (clientIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(MESSAGE_INVALID_CLIENT_INDEX);
+            throw new CommandException(MESSAGE_OUT_OF_BOUNDS_CLIENT_INDEX);
         }
 
         if (vendorIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(MESSAGE_INVALID_VENDOR_INDEX);
+            throw new CommandException(MESSAGE_OUT_OF_BOUNDS_VENDOR_INDEX);
         }
 
         Person client = lastShownList.get(clientIndex.getZeroBased());
