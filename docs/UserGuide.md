@@ -91,6 +91,8 @@ The app window should appear in a few seconds with some sample wedding contacts 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
 
+* Dates displayed in the contacts list use the format `YYYY-MM-DD` to avoid ambiguity. Input for `w/WEDDING_DATE` accepts `DD-MM-YYYY` or `YYYY-MM-DD`.
+  
 * Commands must be entered on a single line. Newlines are not supported.<br>
   If you copy a command that appears on multiple lines, join it into one line before pressing Enter.
   Pasting multi-line commands into the command box will fail; replace line breaks with spaces.
@@ -147,6 +149,8 @@ Format: `list`
 
 **Example:**
 * `list` - Displays all your wedding contacts
+
+Note: Dates shown in the contacts list are formatted as `YYYY-MM-DD` (e.g., `2026-07-15`).
 
 ### Editing a contact : `edit`
 
