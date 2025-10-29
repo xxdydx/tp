@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 import seedu.address.logic.parser.Prefix;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonType;
 
 /**
  * Container for user visible messages.
@@ -44,9 +45,11 @@ public class Messages {
                 .append("; Email: ")
                 .append(person.getEmail())
                 .append("; Address: ")
-                .append(person.getAddress())
-                .append("; Wedding Date: ")
-                .append(person.getWeddingDate());
+                .append(person.getAddress());
+
+        // Add wedding date if present (clients only)
+        person.getWeddingDate().ifPresent(weddingDate ->
+                builder.append("; Wedding Date: ").append(weddingDate));
 
         // Add price if present (vendors only)
         person.getPrice().ifPresent(price ->
@@ -60,11 +63,15 @@ public class Messages {
         person.getPartner().ifPresent(partner ->
                 builder.append("; Partner: ").append(partner));
 
-        builder.append("; Tags: ");
-        String tags = person.getTags().stream()
-                .map(tag -> tag.tagName)
-                .collect(Collectors.joining(", "));
-        builder.append(tags);
+        // Add tags if person is a vendor and has tags
+        if (person.getType() == PersonType.VENDOR && !person.getTags().isEmpty()) {
+            builder.append("; Tags: ");
+            String tags = person.getTags().stream()
+                    .map(tag -> tag.tagName)
+                    .collect(Collectors.joining(", "));
+            builder.append(tags);
+        }
+
         return builder.toString();
     }
 
