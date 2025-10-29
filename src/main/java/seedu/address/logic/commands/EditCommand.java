@@ -105,6 +105,18 @@ public class EditCommand extends Command {
         }
 
         model.setPerson(personToEdit, editedPerson);
+
+        // Update all counterparts that previously linked to the old person to now link
+        // to the edited one
+        for (Person other : model.getAddressBook().getPersonList()) {
+            if (other.equals(editedPerson)) {
+                continue;
+            }
+            if (other.isLinkedTo(personToEdit)) {
+                Person updatedOther = replaceLink(other, personToEdit, editedPerson);
+                model.setPerson(other, updatedOther);
+            }
+        }
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
     }
@@ -155,12 +167,53 @@ public class EditCommand extends Command {
             throw new CommandException(Person.MSG_TAGS_FORBIDDEN_FOR_CLIENT);
         }
 
+        java.util.Set<Person> existingLinks = new java.util.HashSet<>(personToEdit.getLinkedPersons());
+
         if (unchangedType == PersonType.VENDOR) {
+            // Preserve links for vendor
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, unchangedType, updatedTags,
-                    updatedPrice);
+                    existingLinks, updatedPrice);
         } else {
+            // Preserve links and budget/partner for client
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedWeddingDate,
-                    unchangedType, updatedTags, updatedPrice, updatedBudget, updatedPartner);
+                    unchangedType, updatedTags, existingLinks, updatedPrice, updatedBudget, updatedPartner);
+        }
+    }
+
+    /**
+     * Returns a copy of {@code original} where {@code oldLink} in its link set is replaced with {@code newLink}.
+     * Preserves all other fields as-is.
+     */
+    private static Person replaceLink(Person original, Person oldLink, Person newLink) {
+        java.util.Set<Person> updatedLinks = new java.util.HashSet<>(original.getLinkedPersons());
+        updatedLinks.remove(oldLink);
+        updatedLinks.add(newLink);
+
+        if (original.getType() == PersonType.VENDOR) {
+            return new Person(
+                    original.getName(),
+                    original.getPhone(),
+                    original.getEmail(),
+                    original.getAddress(),
+                    original.getType(),
+                    original.getTags(),
+                    updatedLinks,
+                    original.getPrice().orElse(null)
+            );
+        } else {
+            return new Person(
+                    original.getName(),
+                    original.getPhone(),
+                    original.getEmail(),
+                    original.getAddress(),
+                    original.getWeddingDate().orElse(null),
+                    original.getType(),
+                    original.getTags(),
+                    updatedLinks,
+                    original.getPrice().orElse(null),
+                    original.getBudget().orElse(null),
+                    original.getPartner()
+            );
         }
     }
 
