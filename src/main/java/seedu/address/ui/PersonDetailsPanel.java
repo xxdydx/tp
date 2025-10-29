@@ -154,12 +154,18 @@ public class PersonDetailsPanel extends UiPart<Region> {
                     .sorted(Comparator.comparing(p -> p.getName().fullName))
                     .map(p -> {
                         // Get the first tag as category label (e.g., "venue", "florist")
+                        // If no tags, just show the name without a category prefix
                         String categoryLabel = p.getTags().stream()
                                 .sorted(Comparator.comparing(t -> t.tagName))
                                 .findFirst()
                                 .map(t -> capitalize(t.tagName))
                                 .orElse(p.getType().display());
-                        return "• " + categoryLabel + ": " + DisplayFormat.nameAndPartner(p);
+
+                        if (categoryLabel != null) {
+                            return "• " + categoryLabel + ": " + DisplayFormat.nameAndPartner(p);
+                        } else {
+                            return "• " + DisplayFormat.nameAndPartner(p);
+                        }
                     })
                     .collect(Collectors.joining("\n"));
 
