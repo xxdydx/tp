@@ -92,6 +92,10 @@ The app window should appear in a few seconds with some sample wedding contacts 
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
 
 * Dates displayed in the contacts list use the format `YYYY-MM-DD` to avoid ambiguity. Input for `w/WEDDING_DATE` accepts `DD-MM-YYYY` or `YYYY-MM-DD`.
+  
+* Commands must be entered on a single line. Newlines are not supported.<br>
+  If you copy a command that appears on multiple lines, join it into one line before pressing Enter.
+  Pasting multi-line commands into the command box will fail; replace line breaks with spaces.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </div>
@@ -133,7 +137,7 @@ Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/TYPE [price/PR
 **Examples:**
 * **Adding a client:**<br>
   `add n/John & Mary Tan p/98765432 e/john@example.com a/311 Clementi Ave 2 w/15-06-2026 type/client budget/5000-10000 t/friends`
-  
+
 * **Adding a vendor:**<br>
   `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Road w/20-07-2026 type/vendor price/1000-2000 t/florist`
 

@@ -21,16 +21,27 @@
       </padding>
 
       <HBox spacing="8.0" alignment="CENTER_LEFT">
+        <VBox.margin>
+          <javafx.geometry.Insets bottom="16.0" />
+        </VBox.margin>
         <Label fx:id="id" styleClass="cell_big_label">
           <minWidth>
             <Region fx:constant="USE_PREF_SIZE" />
           </minWidth>
         </Label>
         <Label fx:id="name" text="$first" styleClass="cell_big_label" />
-        <Label fx:id="typeChip" text="client" styleClass="type-chip"/>
+        <Label fx:id="typeChip" text="client" styleClass="type-chip">
+          <minWidth>
+            <Region fx:constant="USE_PREF_SIZE" />
+          </minWidth>
+        </Label>
       </HBox>
 
-      <FlowPane fx:id="tags" />
+      <FlowPane fx:id="tags" maxWidth="Infinity">
+        <VBox.margin>
+          <javafx.geometry.Insets bottom="6.0" />
+        </VBox.margin>
+      </FlowPane>
       <Label fx:id="phone" styleClass="cell_small_label" text="$phone" />
       <Label fx:id="email" styleClass="cell_small_label" text="$email" />
       <Label fx:id="address" styleClass="cell_small_label" text="$address" />
