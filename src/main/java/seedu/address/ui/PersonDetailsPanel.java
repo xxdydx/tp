@@ -89,11 +89,11 @@ public class PersonDetailsPanel extends UiPart<Region> {
         }
 
         name.setText(DisplayFormat.nameAndPartner(person));
-        phone.setText("Phone       : " + person.getPhone().value);
-        email.setText("Email         : " + person.getEmail().value);
-        address.setText("Address   : " + person.getAddress().value);
+        phone.setText("Phone: " + person.getPhone().value);
+        email.setText("Email: " + person.getEmail().value);
+        address.setText("Address: " + person.getAddress().value);
         String typeText = person.getType().display();
-        type.setText("Type          : " + typeText);
+        type.setText("Type: " + typeText);
 
         if (person.getType() == PersonType.VENDOR) {
             weddingDate.setVisible(false);
@@ -102,14 +102,14 @@ public class PersonDetailsPanel extends UiPart<Region> {
             String wdText = person.getWeddingDate().isPresent()
                     ? person.getWeddingDate().get().toString()
                     : "-";
-            weddingDate.setText("Wedding  : " + wdText);
+            weddingDate.setText("Wedding: " + wdText);
             weddingDate.setVisible(true);
             weddingDate.setManaged(true);
         }
 
         // Display price only for vendors with price
         if (person.getPrice().isPresent()) {
-            price.setText("Price         : " + person.getPrice().get().toString());
+            price.setText("Price: " + person.getPrice().get().toString());
             price.setVisible(true);
             price.setManaged(true);
         } else {
@@ -120,7 +120,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
 
         // Display budget only for clients with budget
         if (person.getBudget().isPresent()) {
-            budget.setText("Budget      : " + person.getBudget().get().toString());
+            budget.setText("Budget: " + person.getBudget().get().toString());
             budget.setVisible(true);
             budget.setManaged(true);
         } else {
@@ -139,7 +139,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
                     .sorted(Comparator.comparing(t -> t.tagName))
                     .map(t -> t.tagName)
                     .collect(Collectors.joining(", "));
-            tagsLine.setText("Tags          : " + tagsCsv);
+            tagsLine.setText("Tags: " + tagsCsv);
             tagsLine.setVisible(true);
             tagsLine.setManaged(true);
         }

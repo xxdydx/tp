@@ -49,6 +49,12 @@
     -fx-padding: 5;
     -fx-border-width: 0;
 }
+.scroll-pane#detailsScroll,
+.scroll-pane#detailsScroll .viewport,
+.scroll-pane#detailsScroll .content {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
 .result-display {
     -fx-text-fill: -app-ink;
     -fx-font-size: 14pt;
