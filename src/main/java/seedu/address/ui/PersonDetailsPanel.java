@@ -159,7 +159,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
                                 .findFirst()
                                 .map(t -> capitalize(t.tagName))
                                 .orElse(p.getType().display());
-                        return "• " + categoryLabel + ": " + p.getName().fullName;
+                        return "• " + categoryLabel + ": " + DisplayFormat.nameAndPartner(p);
                     })
                     .collect(Collectors.joining("\n"));
 
