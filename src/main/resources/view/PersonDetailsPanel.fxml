@@ -9,7 +9,7 @@
         <VBox spacing="8.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             <Label fx:id="name" styleClass="cell_huge_label" />
             <Label fx:id="type" styleClass="cell_bigger_label" />
-            <Label fx:id="tagsLine" styleClass="cell_bigger_label" wrapText="true"/>
+            <Label fx:id="tagsLine" styleClass="cell_bigger_label" wrapText="false" textOverrun="ELLIPSIS" maxWidth="Infinity" />
             <Label fx:id="phone" styleClass="cell_bigger_label" />
             <Label fx:id="email" styleClass="cell_bigger_label" />
             <Label fx:id="address" styleClass="cell_bigger_label" />
