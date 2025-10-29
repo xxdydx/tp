@@ -11,7 +11,10 @@ import org.apache.commons.validator.routines.EmailValidator;
  */
 public class Email {
 
-    public static final String MESSAGE_CONSTRAINTS = "Invalid email format.";
+   public static final String MESSAGE_CONSTRAINTS = "Email should be a valid address of the form local@domain.\n"
+      + "• Exactly one '@' and no spaces\n"
+      + "• Domain must be fully-qualified (e.g., example.com)\n"
+      + "• Local-only domains (e.g., 'localhost') and TLD-only domains (e.g., 'user@com') are not accepted";
     private static final EmailValidator EMAIL_VALIDATOR = EmailValidator.getInstance();
 
     public final String value;
