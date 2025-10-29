@@ -93,7 +93,7 @@ public class UnlinkCommandTest {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         UnlinkCommand unlinkCommand = new UnlinkCommand(outOfBoundIndex, INDEX_SECOND_PERSON);
 
-        assertCommandFailure(unlinkCommand, model, UnlinkCommand.MESSAGE_INVALID_CLIENT_INDEX);
+        assertCommandFailure(unlinkCommand, model, UnlinkCommand.MESSAGE_OUT_OF_BOUNDS_CLIENT_INDEX);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class UnlinkCommandTest {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         UnlinkCommand unlinkCommand = new UnlinkCommand(INDEX_FIRST_PERSON, outOfBoundIndex);
 
-        assertCommandFailure(unlinkCommand, model, UnlinkCommand.MESSAGE_INVALID_VENDOR_INDEX);
+        assertCommandFailure(unlinkCommand, model, UnlinkCommand.MESSAGE_OUT_OF_BOUNDS_VENDOR_INDEX);
     }
 
     @Test

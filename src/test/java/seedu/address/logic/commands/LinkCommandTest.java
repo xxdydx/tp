@@ -85,7 +85,7 @@ public class LinkCommandTest {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         LinkCommand linkCommand = new LinkCommand(outOfBoundIndex, INDEX_SECOND_PERSON);
 
-        assertCommandFailure(linkCommand, model, LinkCommand.MESSAGE_INVALID_CLIENT_INDEX);
+        assertCommandFailure(linkCommand, model, LinkCommand.MESSAGE_OUT_OF_BOUNDS_CLIENT_INDEX);
     }
 
     @Test
@@ -93,7 +93,7 @@ public class LinkCommandTest {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         LinkCommand linkCommand = new LinkCommand(INDEX_FIRST_PERSON, outOfBoundIndex);
 
-        assertCommandFailure(linkCommand, model, LinkCommand.MESSAGE_INVALID_VENDOR_INDEX);
+        assertCommandFailure(linkCommand, model, LinkCommand.MESSAGE_OUT_OF_BOUNDS_VENDOR_INDEX);
     }
 
     @Test
