@@ -61,7 +61,7 @@ public class EmailTest {
         assertTrue(Email.isValidEmail("PeterJack+1190@example.com")); // '+' symbol in local part
         assertTrue(Email.isValidEmail("PeterJack-1190@example.com")); // hyphen in local part
         assertTrue(Email.isValidEmail("a@bc.com")); // minimal with proper domain
-        assertFalse(Email.isValidEmail("test@localhost.local")); // localhost with proper domain (invalid in strict validation)
+        assertFalse(Email.isValidEmail("test@localhost.local")); // localhost domain (invalid in strict validation)
         assertTrue(Email.isValidEmail("123@123.com")); // numeric local part and domain name with proper TLD
         assertTrue(Email.isValidEmail("a1+be.d@example1.com")); // mixture of alphanumeric and special characters
         assertTrue(Email.isValidEmail("peter_jack@very-very-very-long-example.com")); // long domain name
