@@ -168,11 +168,11 @@ public class PersonDetailsPanel extends UiPart<Region> {
                         if (person.getType() == PersonType.VENDOR && p.getType() == PersonType.CLIENT) {
                             prefix = fmtDate(p);
                         } else {
-                            // fallback to your existing category/type label
+                            // Use the first category if present, preserving original casing; otherwise use type
                             prefix = p.getCategories().stream()
                                     .sorted(Comparator.comparing(c -> c.categoryName))
                                     .findFirst()
-                                    .map(c -> capitalize(c.categoryName))
+                                    .map(c -> c.categoryName)
                                     .orElse(p.getType().display());
                         }
 
@@ -197,15 +197,5 @@ public class PersonDetailsPanel extends UiPart<Region> {
             linkedPersonsLine.setVisible(true);
             linkedPersonsLine.setManaged(true);
         }
-    }
-
-    /**
-     * Capitalizes the first letter of a string.
-     */
-    private String capitalize(String str) {
-        if (str == null || str.isEmpty()) {
-            return str;
-        }
-        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }
