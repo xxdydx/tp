@@ -36,66 +36,50 @@ public class EditCommandEdgeCasesTest {
         private final AddressBook addressBook = new AddressBook();
         private ObservableList<Person> list = FXCollections.observableArrayList();
 
-        ModelStub(Person... persons)
-        {
+        ModelStub(Person... persons) {
             list.addAll(Arrays.asList(persons));
-            for (Person p : persons)
-            {
+            for (Person p : persons) {
                 addressBook.addPerson(p);
             }
         }
 
-        @Override public void setUserPrefs(ReadOnlyUserPrefs userPrefs)
-        {
+        @Override public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
         }
-        @Override public ReadOnlyUserPrefs getUserPrefs()
-        {
+        @Override public ReadOnlyUserPrefs getUserPrefs() {
             return null;
         }
-        @Override public GuiSettings getGuiSettings()
-        {
+        @Override public GuiSettings getGuiSettings() {
             return null;
         }
-        @Override public void setGuiSettings(GuiSettings guiSettings)
-        {
+        @Override public void setGuiSettings(GuiSettings guiSettings) {
         }
-        @Override public java.nio.file.Path getAddressBookFilePath()
-        {
+        @Override public java.nio.file.Path getAddressBookFilePath() {
             return null;
         }
-        @Override public void setAddressBookFilePath(java.nio.file.Path addressBookFilePath)
-        {
+        @Override public void setAddressBookFilePath(java.nio.file.Path addressBookFilePath) {
         }
-        @Override public void setAddressBook(ReadOnlyAddressBook addressBook)
-        {
+        @Override public void setAddressBook(ReadOnlyAddressBook addressBook) {
         }
-        @Override public ReadOnlyAddressBook getAddressBook()
-        {
+        @Override public ReadOnlyAddressBook getAddressBook() {
             return addressBook;
         }
-        @Override public boolean hasPerson(Person person)
-        {
+        @Override public boolean hasPerson(Person person) {
             return addressBook.hasPerson(person);
         }
-        @Override public void deletePerson(Person target)
-        {
+        @Override public void deletePerson(Person target) {
             addressBook.removePerson(target);
         }
-        @Override public void addPerson(Person person)
-        {
+        @Override public void addPerson(Person person) {
             addressBook.addPerson(person);
             list.add(person);
         }
-        @Override public void setPerson(Person target, Person editedPerson)
-        {
+        @Override public void setPerson(Person target, Person editedPerson) {
             addressBook.setPerson(target, editedPerson);
         }
-        @Override public ObservableList<Person> getFilteredPersonList()
-        {
+        @Override public ObservableList<Person> getFilteredPersonList() {
             return FXCollections.unmodifiableObservableList(list);
         }
-        @Override public void updateFilteredPersonList(Predicate<Person> predicate)
-        {
+        @Override public void updateFilteredPersonList(Predicate<Person> predicate) {
         }
     }
 
@@ -111,13 +95,15 @@ public class EditCommandEdgeCasesTest {
     @Test
     public void execute_vendorAddingBudgetOrWeddingDate_throws() {
         // Make a vendor
+        Set<Tag> vendorTags = new HashSet<>();
+        vendorTags.add(new Tag("Decor"));
         Person vendor = new Person(
                 ALICE.getName(),
                 new Phone("99999999"),
                 ALICE.getEmail(),
                 ALICE.getAddress(),
                 PersonType.VENDOR,
-                new HashSet<>(Arrays.asList(new Tag("Decor"))),
+                vendorTags,
                 null);
 
         ModelStub model = new ModelStub(vendor);
@@ -140,7 +126,9 @@ public class EditCommandEdgeCasesTest {
     public void execute_clientWithTags_throws() {
         ModelStub model = new ModelStub(ALICE); // client
         EditCommand.EditPersonDescriptor d = new EditCommand.EditPersonDescriptor();
-        d.setTags(Set.of(new seedu.address.model.tag.Tag("Photography")));
+        Set<Tag> tags = new HashSet<>();
+        tags.add(new Tag("Photography"));
+        d.setTags(tags);
         EditCommand cmd = new EditCommand(Index.fromOneBased(1), d);
         assertThrows(CommandException.class, () -> cmd.execute(model));
     }

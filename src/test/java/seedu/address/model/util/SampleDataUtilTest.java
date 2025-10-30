@@ -12,10 +12,10 @@ public class SampleDataUtilTest {
     public void getTagSet_deduplicatesAndPreservesValues() {
         Set<seedu.address.model.tag.Tag> tags =
             seedu.address.model.util.SampleDataUtil.getTagSet(
-                "Photography & Videography", "Photography & Videography", "Decor"
+                "Photography", "Photography", "Decor"
             );
         assertEquals(2, tags.size());
-        assertTrue(tags.stream().anyMatch(t -> t.tagName.equals("Photography & Videography")));
+        assertTrue(tags.stream().anyMatch(t -> t.tagName.equals("Photography")));
         assertTrue(tags.stream().anyMatch(t -> t.tagName.equals("Decor")));
     }
 }
