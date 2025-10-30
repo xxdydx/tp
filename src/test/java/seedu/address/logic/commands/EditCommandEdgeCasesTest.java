@@ -117,7 +117,7 @@ public class EditCommandEdgeCasesTest {
                 ALICE.getAddress(),
                 PersonType.VENDOR,
                 new HashSet<>(Arrays.asList(new Tag("Decor"))),
-                new Price("100-200"));
+                null);
 
         ModelStub model = new ModelStub(vendor);
 

@@ -9,11 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.model.tag.Tag;
 
-/**
- * Tests for {@link SampleDataUtil}.
- */
 public class SampleDataUtilTest {
-
     @Test
     public void getTagSet_deduplicatesAndPreservesValues() {
         Set<Tag> tags = SampleDataUtil.getTagSet("Photography & Videography", "Photography & Videography", "Decor");
