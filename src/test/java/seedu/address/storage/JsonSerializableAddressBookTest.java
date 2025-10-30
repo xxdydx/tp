@@ -92,11 +92,11 @@ public class JsonSerializableAddressBookTest {
     }
 
     @Test
-    public void toModelType_duplicatePhoneInMemory_throws() {
+    public void toModelType_duplicatePhoneInMemoryThrows() {
         JsonAdaptedPerson a = makeClient("Alice A", "11111111");
         JsonAdaptedPerson b = makeVendor("Vendor V", "11111111", Collections.emptyList());
         JsonSerializableAddressBook book = new JsonSerializableAddressBook(Arrays.asList(a, b));
-        org.junit.jupiter.api.Assertions.assertThrows(IllegalValueException.class, book::toModelType);
+        assertThrows(IllegalValueException.class, book::toModelType);
     }
 
     @Test
