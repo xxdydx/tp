@@ -163,8 +163,9 @@ public class PersonDetailsPanel extends UiPart<Region> {
             String linkedPersonsText = person.getLinkedPersons().stream()
                     .sorted(Comparator.comparing(p -> p.getName().fullName))
                     .map(p -> {
-                        // Prefix = wedding date when the selected person is a VENDOR and the linked is a CLIENT
-                        String prefix;
+                        // Prefix = wedding date when the selected person is a VENDOR and the linked is
+                        // a CLIENT
+                        String prefix = null;
                         if (person.getType() == PersonType.VENDOR && p.getType() == PersonType.CLIENT) {
                             prefix = fmtDate(p);
                         } else {
@@ -182,10 +183,9 @@ public class PersonDetailsPanel extends UiPart<Region> {
                                 : p.getName().fullName;
 
                         String namePhone = displayName + " (" + fmtPhone(p.getPhone().value) + ")";
-                        return "• " + prefix + ": " + namePhone;
+                        return prefix != null ? "• " + prefix + ": " + namePhone : "• " + namePhone;
                     })
                     .collect(Collectors.joining("\n"));
-
 
             // Determine if linked persons are vendors or clients
             String label = person.getLinkedPersons().stream()
