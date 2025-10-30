@@ -39,6 +39,7 @@ public class PersonBuilder {
     private Price price;
     private Budget budget;
     private Optional<Partner> partner;
+    private Set<Person> linkedPersons;
 
 
     /**
@@ -55,6 +56,7 @@ public class PersonBuilder {
         price = null;
         budget = null;
         partner = Optional.of(new Partner(DEFAULT_PARTNER));
+        linkedPersons = new HashSet<>();
     }
 
     /**
@@ -71,6 +73,7 @@ public class PersonBuilder {
         price = personToCopy.getPrice().orElse(null);
         budget = personToCopy.getBudget().orElse(null);
         partner = personToCopy.getPartner();
+        linkedPersons = new HashSet<>(personToCopy.getLinkedPersons());
     }
 
     /**
@@ -197,6 +200,14 @@ public class PersonBuilder {
     }
 
     /**
+     * Sets the {@code linkedPersons} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withLinkedPersons(Set<Person> linkedPersons) {
+        this.linkedPersons = linkedPersons;
+        return this;
+    }
+
+    /**
      * Builds a Person object using the appropriate constructor based on the person type.
      * @return a Person object
      */
@@ -205,10 +216,17 @@ public class PersonBuilder {
             if (partner != null && partner.isPresent()) {
                 throw new IllegalArgumentException("Vendors cannot have a partner");
             }
+            if (linkedPersons != null && !linkedPersons.isEmpty()) {
+                return new Person(name, phone, email, address, type, categories, linkedPersons, price);
+            }
             return new Person(name, phone, email, address, type, categories, price);
         } else {
             if (partner == null || partner.isEmpty()) {
                 throw new IllegalArgumentException("Clients must have a partner");
+            }
+            if (linkedPersons != null && !linkedPersons.isEmpty()) {
+                return new Person(name, phone, email, address, weddingDate, type, categories,
+                        linkedPersons, price, budget, partner);
             }
             return new Person(name, phone, email, address, weddingDate, type, categories, price, budget, partner);
         }
