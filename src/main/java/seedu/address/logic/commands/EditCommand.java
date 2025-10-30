@@ -3,12 +3,12 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PARTNER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
 
 import java.util.Collections;
@@ -24,6 +24,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.category.Category;
 import seedu.address.model.date.WeddingDate;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Budget;
@@ -34,7 +35,6 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
-import seedu.address.model.tag.Tag;
 
 /**
  * Edits the details of an existing person in the address book.
@@ -55,7 +55,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_WEDDING_DATE + "WEDDING_DATE] "
             + "[" + PREFIX_PRICE + "PRICE] "
             + "[" + PREFIX_BUDGET + "BUDGET] "
-            + "[" + PREFIX_TAG + "TAG]...\n"
+            + "[" + PREFIX_CATEGORY + "CATEGORY]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com \n"
@@ -135,7 +135,8 @@ public class EditCommand extends Command {
         WeddingDate updatedWeddingDate = editPersonDescriptor.getWeddingDate()
                 .orElse(personToEdit.getWeddingDate().orElse(null));
         PersonType unchangedType = personToEdit.getType();
-        Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        Set<Category> updatedCategories = editPersonDescriptor.getCategories()
+                .orElse(personToEdit.getCategories());
         Price updatedPrice = editPersonDescriptor.getPrice().orElse(personToEdit.getPrice().orElse(null));
         Budget updatedBudget = editPersonDescriptor.getBudget().orElse(personToEdit.getBudget().orElse(null));
         Optional<Partner> updatedPartner = editPersonDescriptor.getPartner().map(Optional::of)
@@ -161,8 +162,8 @@ public class EditCommand extends Command {
             throw new CommandException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
         }
 
-        // Validate tags - only vendors can have tags
-        if (unchangedType == PersonType.CLIENT && !updatedTags.isEmpty()) {
+        // Validate categories - only vendors can have categories
+        if (unchangedType == PersonType.CLIENT && !updatedCategories.isEmpty()) {
             throw new CommandException(Person.MSG_TAGS_FORBIDDEN_FOR_CLIENT);
         }
 
@@ -170,12 +171,12 @@ public class EditCommand extends Command {
 
         if (unchangedType == PersonType.VENDOR) {
             // Preserve links for vendor
-            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, unchangedType, updatedTags,
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, unchangedType, updatedCategories,
                     existingLinks, updatedPrice);
         } else {
             // Preserve links and budget/partner for client
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedWeddingDate,
-                    unchangedType, updatedTags, existingLinks, updatedPrice, updatedBudget, updatedPartner);
+                    unchangedType, updatedCategories, existingLinks, updatedPrice, updatedBudget, updatedPartner);
         }
     }
 
@@ -195,7 +196,7 @@ public class EditCommand extends Command {
                     original.getEmail(),
                     original.getAddress(),
                     original.getType(),
-                    original.getTags(),
+                    original.getCategories(),
                     updatedLinks,
                     original.getPrice().orElse(null)
             );
@@ -207,7 +208,7 @@ public class EditCommand extends Command {
                     original.getAddress(),
                     original.getWeddingDate().orElse(null),
                     original.getType(),
-                    original.getTags(),
+                    original.getCategories(),
                     updatedLinks,
                     original.getPrice().orElse(null),
                     original.getBudget().orElse(null),
@@ -253,7 +254,7 @@ public class EditCommand extends Command {
         private WeddingDate weddingDate;
         private Price price;
         private Budget budget;
-        private Set<Tag> tags;
+        private Set<Category> categories;
         private Partner partner;
 
         public EditPersonDescriptor() {
@@ -261,7 +262,7 @@ public class EditCommand extends Command {
 
         /**
          * Copy constructor.
-         * A defensive copy of {@code tags} is used internally.
+         * A defensive copy of {@code categories} is used internally.
          */
         public EditPersonDescriptor(EditPersonDescriptor toCopy) {
             setName(toCopy.name);
@@ -272,7 +273,7 @@ public class EditCommand extends Command {
             setPrice(toCopy.price);
             setBudget(toCopy.budget);
             setPartner(toCopy.partner);
-            setTags(toCopy.tags);
+            setCategories(toCopy.categories);
         }
 
         /**
@@ -280,7 +281,7 @@ public class EditCommand extends Command {
          */
         public boolean isAnyFieldEdited() {
             return CollectionUtil.isAnyNonNull(name, phone, email, address, weddingDate, price, budget,
-                    partner, tags);
+                    partner, categories);
         }
 
         public void setName(Name name) {
@@ -348,21 +349,21 @@ public class EditCommand extends Command {
         }
 
         /**
-         * Sets {@code tags} to this object's {@code tags}.
-         * A defensive copy of {@code tags} is used internally.
+         * Sets {@code categories} to this object's {@code categories}.
+         * A defensive copy of {@code categories} is used internally.
          */
-        public void setTags(Set<Tag> tags) {
-            this.tags = (tags != null) ? new HashSet<>(tags) : null;
+        public void setCategories(Set<Category> categories) {
+            this.categories = (categories != null) ? new HashSet<>(categories) : null;
         }
 
         /**
-         * Returns an unmodifiable tag set, which throws
+         * Returns an unmodifiable category set, which throws
          * {@code UnsupportedOperationException}
          * if modification is attempted.
-         * Returns {@code Optional#empty()} if {@code tags} is null.
+         * Returns {@code Optional#empty()} if {@code categories} is null.
          */
-        public Optional<Set<Tag>> getTags() {
-            return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
+        public Optional<Set<Category>> getCategories() {
+            return (categories != null) ? Optional.of(Collections.unmodifiableSet(categories)) : Optional.empty();
         }
 
         @Override
@@ -385,7 +386,7 @@ public class EditCommand extends Command {
                     && Objects.equals(price, otherEditPersonDescriptor.price)
                     && Objects.equals(budget, otherEditPersonDescriptor.budget)
                     && Objects.equals(partner, otherEditPersonDescriptor.partner)
-                    && Objects.equals(tags, otherEditPersonDescriptor.tags);
+                    && Objects.equals(categories, otherEditPersonDescriptor.categories);
         }
 
         @Override
@@ -399,7 +400,7 @@ public class EditCommand extends Command {
                     .add("price", price)
                     .add("budget", budget)
                     .add("partner", partner)
-                    .add("tags", tags)
+                    .add("categories", categories)
                     .toString();
         }
     }

@@ -132,7 +132,7 @@ public class AddressBook implements ReadOnlyAddressBook {
                     person.getEmail(),
                     person.getAddress(),
                     person.getType(),
-                    person.getTags(),
+                    person.getCategories(),
                     updatedLinkedPersons,
                     person.getPrice().orElse(null)
             );
@@ -144,7 +144,7 @@ public class AddressBook implements ReadOnlyAddressBook {
                     person.getAddress(),
                     person.getWeddingDate().orElse(null),
                     person.getType(),
-                    person.getTags(),
+                    person.getCategories(),
                     updatedLinkedPersons,
                     person.getPrice().orElse(null),
                     person.getBudget().orElse(null),
