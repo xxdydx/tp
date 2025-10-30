@@ -11,7 +11,7 @@
                     AnchorPane.topAnchor="10.0" AnchorPane.rightAnchor="10.0"
                     AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
             <content>
-                <VBox spacing="8.0" fillWidth="true">
+                <VBox spacing="8.0" fillWidth="true" styleClass="scroll-pane-content">
                     <Label fx:id="name" styleClass="cell_huge_label" wrapText="true" maxWidth="Infinity" />
                     <Label fx:id="type" styleClass="cell_bigger_label" wrapText="true" maxWidth="Infinity" />
                     <Label fx:id="tagsLine" styleClass="cell_bigger_label" wrapText="true" maxWidth="Infinity" />
