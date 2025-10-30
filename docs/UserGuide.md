@@ -57,7 +57,7 @@ The app window should appear in a few seconds with some sample wedding contacts 
 * `list` - Shows all your contacts (clients and vendors)
 * `cat florist` - Shows only florist vendors
 * `add n/Jane Smith p/91234567 e/jane@flowers.com a/123 Orchard Road type/vendor price/1500 t/florist` - Adds a new florist vendor
-* `add n/John & Mary p/98765432 e/john@example.com a/311 Clementi Ave w/15-06-2026 type/client budget/10000 t/friends` - Adds a new client couple
+* `add n/John Doe p/98765432 e/johnd@example.com a/311 Clementi Ave type/client w/15-06-2026 pr/Jane Doe budget/10000 t/friends` - Adds a new client couple
 * `delete 3` - Deletes the 3rd contact in the current list
 * `exit` - Closes the app
 
@@ -116,7 +116,11 @@ Format: `help`
 
 Adds a client or vendor contact to KnotBook.
 
-Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/TYPE [price/PRICE] [budget/BUDGET] [t/TAG]…​`
+**Format for adding a client:**
+`add n/NAME p/PHONE e/EMAIL a/ADDRESS type/client w/WEDDING_DATE [pr/PARTNER] [budget/BUDGET] [t/TAG]…​`
+
+**Format for adding a vendor:**
+`add n/NAME p/PHONE e/EMAIL a/ADDRESS type/vendor [w/WEDDING_DATE] [price/PRICE] [t/TAG]…​`
 
 **Parameters:**
 * `n/NAME` - Contact name (required)
@@ -152,17 +156,17 @@ Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/TYPE [price/PR
   * Example: `florist`, `photographer`, `friends`, `vip`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tips:**
-* For clients (wedding couples), include their wedding date and budget
-* For vendors (service providers), include pricing and use tags to categorize them (e.g., `florist`, `caterer`, `photographer`)
+* For clients (wedding couples), wedding date is required. You can also include their partner name and budget
+* For vendors (service providers), wedding date is optional. Include pricing and use tags to categorize them (e.g., `florist`, `caterer`, `photographer`)
 * You can add multiple tags by repeating `t/TAG`
 </div>
 
 **Examples:**
 * **Adding a client:**<br>
-  `add n/John & Mary Tan p/98765432 e/john@example.com a/311 Clementi Ave 2 w/15-06-2026 type/client budget/5000-10000 t/friends`
+  `add n/John Doe p/98765432 e/johnd@example.com a/311, Clementi Ave 2, #02-25 type/client w/15-06-2020 pr/Jane Doe budget/5000-10000 t/friends`
 
 * **Adding a vendor:**<br>
-  `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Road w/20-07-2026 type/vendor price/1000-2000 t/florist`
+  `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Road type/vendor price/1000-2000 t/florist`
 
 ### Listing all contacts : `list`
 
@@ -179,7 +183,7 @@ Note: Dates shown in the contacts list are formatted as `YYYY-MM-DD` (e.g., `202
 
 Edits an existing contact in KnotBook.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/TYPE] [price/PRICE] [budget/BUDGET] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/TYPE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [t/TAG]…​`
 
 
 **How it works:**
@@ -323,7 +327,7 @@ _Details coming soon ..._
 **A**: A **client** is a couple planning their wedding (your customers). A **vendor** is a service provider like a florist, caterer, or photographer.
 
 **Q**: Can I add a contact without a wedding date?<br>
-**A**: No, the wedding date field (`w/`) is required for all contacts. This helps you track and organize weddings by their dates.
+**A**: For clients, the wedding date field (`w/`) is required as it's essential to track when their wedding is. For vendors, the wedding date is optional since vendors may not be associated with a specific wedding until they are linked to a client.
 
 **Q**: How do I see which vendors are linked to a specific client?<br>
 **A**: Click on a client contact in the list to view their details, which will show all linked vendors.
@@ -344,12 +348,12 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add Client** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/client [budget/BUDGET] [t/TAG]…​` <br> e.g., `add n/John & Mary p/98765432 e/john@example.com a/311 Clementi Ave w/15-06-2026 type/client budget/10000 t/friends`
-**Add Vendor** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/vendor [price/PRICE] [t/TAG]…​` <br> e.g., `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Rd w/20-07-2026 type/vendor price/1500 t/florist`
+**Add Client** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS type/client w/WEDDING_DATE [pr/PARTNER] [budget/BUDGET] [t/TAG]…​` <br> e.g., `add n/John Doe p/98765432 e/johnd@example.com a/311 Clementi Ave type/client w/15-06-2026 pr/Jane Doe budget/10000 t/friends`
+**Add Vendor** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS type/vendor [w/WEDDING_DATE] [price/PRICE] [t/TAG]…​` <br> e.g., `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Rd type/vendor price/1500 t/florist`
 **List** | `list` - Shows all contacts
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find John Blooming`
 **Filter by Category** | `cat CATEGORY`<br> e.g., `cat florist`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/TYPE] [price/PRICE] [budget/BUDGET] [t/TAG]…​`<br> e.g., `edit 2 p/91234567 budget/8000`
+**Edit** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/TYPE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [t/TAG]…​`<br> e.g., `edit 2 p/91234567 budget/8000`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Link** | `link client/CLIENT_INDEX vendor/VENDOR_INDEX`<br> e.g., `link client/1 vendor/3`
 **Unlink** | `unlink client/CLIENT_INDEX vendor/VENDOR_INDEX`<br> e.g., `unlink client/1 vendor/3`
