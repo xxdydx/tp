@@ -14,14 +14,15 @@ import seedu.address.model.person.PersonType;
 public class Messages {
 
     public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command."
-        + "\n\nType 'help' for information on valid commands.";
+            + "\n\nType 'help' for information on valid commands.";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
     public static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The person index provided is invalid";
     public static final String MESSAGE_DUPLICATE_FIELDS =
             "Multiple values specified for the following single-valued field(s): ";
 
     /**
-     * Returns a message indicating the number of persons listed with correct pluralization.
+     * Returns a message indicating the number of persons listed with correct
+     * pluralization.
      */
     public static String getPersonsListedMessage(int count) {
         return count == 1 ? "1 person listed!" : String.format("%d persons listed!", count);
@@ -33,8 +34,8 @@ public class Messages {
     public static String getErrorMessageForDuplicatePrefixes(Prefix... duplicatePrefixes) {
         assert duplicatePrefixes.length > 0;
 
-        Set<String> duplicateFields =
-                Stream.of(duplicatePrefixes).map(Prefix::toString).collect(Collectors.toSet());
+        Set<String> duplicateFields = Stream.of(duplicatePrefixes).map(Prefix::toString)
+                .collect(Collectors.toSet());
 
         return MESSAGE_DUPLICATE_FIELDS + String.join(" ", duplicateFields);
     }
@@ -55,28 +56,25 @@ public class Messages {
                 .append(person.getAddress());
 
         // Add wedding date if present (clients only)
-        person.getWeddingDate().ifPresent(weddingDate ->
-                builder.append("; Wedding Date: ").append(weddingDate));
+        person.getWeddingDate()
+                .ifPresent(weddingDate -> builder.append("; Wedding Date: ").append(weddingDate));
 
         // Add price if present (vendors only)
-        person.getPrice().ifPresent(price ->
-                builder.append("; Price: ").append(price));
+        person.getPrice().ifPresent(price -> builder.append("; Price: ").append(price));
 
         // Add budget if present (clients only)
-        person.getBudget().ifPresent(budget ->
-                builder.append("; Budget: ").append(budget));
+        person.getBudget().ifPresent(budget -> builder.append("; Budget: ").append(budget));
 
         // Add partner if present (clients only)
-        person.getPartner().ifPresent(partner ->
-                builder.append("; Partner: ").append(partner));
+        person.getPartner().ifPresent(partner -> builder.append("; Partner: ").append(partner));
 
-        // Add tags if person is a vendor and has tags
-        if (person.getType() == PersonType.VENDOR && !person.getTags().isEmpty()) {
-            builder.append("; Tags: ");
-            String tags = person.getTags().stream()
-                    .map(tag -> tag.tagName)
+        // Add categories if person is a vendor and has categories
+        if (person.getType() == PersonType.VENDOR && !person.getCategories().isEmpty()) {
+            builder.append("; Categories: ");
+            String categories = person.getCategories().stream()
+                    .map(category -> category.categoryName)
                     .collect(Collectors.joining(", "));
-            builder.append(tags);
+            builder.append(categories);
         }
 
         return builder.toString();

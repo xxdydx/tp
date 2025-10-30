@@ -69,10 +69,10 @@ public class LinkCommandTest {
 
         // Manually link them in expected model
         Person updatedClient = new Person(client.getName(), client.getPhone(), client.getEmail(),
-                client.getAddress(), client.getWeddingDate().orElse(null), client.getType(), client.getTags(),
+                client.getAddress(), client.getWeddingDate().orElse(null), client.getType(), client.getCategories(),
                 java.util.Set.of(vendor), null, client.getPartner());
         Person updatedVendor = new Person(vendor.getName(), vendor.getPhone(), vendor.getEmail(),
-                vendor.getAddress(), vendor.getType(), vendor.getTags(),
+                vendor.getAddress(), vendor.getType(), vendor.getCategories(),
                 java.util.Set.of(client), vendor.getPrice().orElse(null));
         expectedModel.setPerson(client, updatedClient);
         expectedModel.setPerson(vendor, updatedVendor);

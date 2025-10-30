@@ -109,7 +109,7 @@ public class UnlinkCommand extends Command {
                     person.getEmail(),
                     person.getAddress(),
                     person.getType(),
-                    person.getTags(),
+                    person.getCategories(),
                     updatedLinks,
                     person.getPrice().orElse(null));
         } else {
@@ -120,7 +120,7 @@ public class UnlinkCommand extends Command {
                     person.getAddress(),
                     person.getWeddingDate().orElse(null),
                     person.getType(),
-                    person.getTags(),
+                    person.getCategories(),
                     updatedLinks,
                     person.getPrice().orElse(null),
                     person.getBudget().orElse(null),

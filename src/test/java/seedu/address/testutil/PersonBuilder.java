@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import seedu.address.model.category.Category;
 import seedu.address.model.date.WeddingDate;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Budget;
@@ -14,7 +15,6 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
-import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
 /**
@@ -34,7 +34,7 @@ public class PersonBuilder {
     private Email email;
     private Address address;
     private WeddingDate weddingDate;
-    private Set<Tag> tags;
+    private Set<Category> categories;
     private PersonType type;
     private Price price;
     private Budget budget;
@@ -50,7 +50,7 @@ public class PersonBuilder {
         email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
         weddingDate = WeddingDate.parse(DEFAULT_WEDDING_DATE);
-        tags = new HashSet<>();
+        categories = new HashSet<>();
         type = DEFAULT_TYPE;
         price = null;
         budget = null;
@@ -66,7 +66,7 @@ public class PersonBuilder {
         email = personToCopy.getEmail();
         address = personToCopy.getAddress();
         weddingDate = personToCopy.getWeddingDate().orElse(null);
-        tags = new HashSet<>(personToCopy.getTags());
+        categories = new HashSet<>(personToCopy.getCategories());
         type = personToCopy.getType();
         price = personToCopy.getPrice().orElse(null);
         budget = personToCopy.getBudget().orElse(null);
@@ -82,10 +82,10 @@ public class PersonBuilder {
     }
 
     /**
-     * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code Person} that we are building.
+     * Parses the {@code categories} into a {@code Set<Category>} and set it to the {@code Person} that we are building.
      */
-    public PersonBuilder withTags(String ... tags) {
-        this.tags = SampleDataUtil.getTagSet(tags);
+    public PersonBuilder withTags(String ... categories) {
+        this.categories = SampleDataUtil.getCategorySet(categories);
         return this;
     }
 
@@ -205,12 +205,12 @@ public class PersonBuilder {
             if (partner != null && partner.isPresent()) {
                 throw new IllegalArgumentException("Vendors cannot have a partner");
             }
-            return new Person(name, phone, email, address, type, tags, price);
+            return new Person(name, phone, email, address, type, categories, price);
         } else {
             if (partner == null || partner.isEmpty()) {
                 throw new IllegalArgumentException("Clients must have a partner");
             }
-            return new Person(name, phone, email, address, weddingDate, type, tags, price, budget, partner);
+            return new Person(name, phone, email, address, weddingDate, type, categories, price, budget, partner);
         }
     }
 
