@@ -149,7 +149,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
                     .sorted(Comparator.comparing(t -> t.tagName))
                     .map(t -> t.tagName)
                     .collect(Collectors.joining(", "));
-            tagsLine.setText("Tags: " + tagsCsv);
+            tagsLine.setText("Category: " + tagsCsv);
             tagsLine.setVisible(true);
             tagsLine.setManaged(true);
         }
