@@ -98,11 +98,11 @@ public class PersonCard extends UiPart<Region> {
             budget.setManaged(false);
         }
 
-        // Display tags only for vendors
+        // Display categories only for vendors
         if (person.getType() == PersonType.VENDOR) {
-            person.getTags().stream()
-                    .sorted(Comparator.comparing(tag -> tag.tagName))
-                    .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+            person.getCategories().stream()
+                    .sorted(Comparator.comparing(category -> category.categoryName))
+                    .forEach(category -> tags.getChildren().add(new Label(category.categoryName)));
             tags.setVisible(true);
             tags.setManaged(true);
         } else {

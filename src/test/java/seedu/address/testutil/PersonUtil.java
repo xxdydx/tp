@@ -2,12 +2,12 @@ package seedu.address.testutil;
 
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PARTNER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
 
@@ -15,9 +15,9 @@ import java.util.Set;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
+import seedu.address.model.category.Category;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
-import seedu.address.model.tag.Tag;
 
 /**
  * A utility class for Person.
@@ -53,7 +53,8 @@ public class PersonUtil {
         person.getPartner().ifPresent(partner ->
                 sb.append(PREFIX_PARTNER).append(partner.value).append(" "));
 
-        person.getTags().forEach(tag -> sb.append(PREFIX_TAG).append(tag.tagName).append(" "));
+        person.getCategories().forEach(category ->
+                sb.append(PREFIX_CATEGORY).append(category.categoryName).append(" "));
 
         return sb.toString().trim();
     }
@@ -74,12 +75,12 @@ public class PersonUtil {
         descriptor.getPrice().ifPresent(price -> sb.append(PREFIX_PRICE).append(price.toString()).append(" "));
         descriptor.getBudget().ifPresent(budget -> sb.append(PREFIX_BUDGET).append(budget.toString()).append(" "));
         descriptor.getPartner().ifPresent(partner -> sb.append(PREFIX_PARTNER).append(partner.value).append(" "));
-        if (descriptor.getTags().isPresent()) {
-            Set<Tag> tags = descriptor.getTags().get();
-            if (tags.isEmpty()) {
-                sb.append(PREFIX_TAG);
+        if (descriptor.getCategories().isPresent()) {
+            Set<Category> categories = descriptor.getCategories().get();
+            if (categories.isEmpty()) {
+                sb.append(PREFIX_CATEGORY);
             } else {
-                tags.forEach(s -> sb.append(PREFIX_TAG).append(s.tagName).append(" "));
+                categories.forEach(s -> sb.append(PREFIX_CATEGORY).append(s.categoryName).append(" "));
             }
         }
         return sb.toString().trim();

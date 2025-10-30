@@ -17,8 +17,8 @@ public class CategoryMatchesPredicate implements Predicate<Person> {
 
     @Override
     public boolean test(Person person) {
-        return person.getTags().stream()
-                .anyMatch(tag -> tag.tagName.equalsIgnoreCase(category));
+        return person.getCategories().stream()
+                .anyMatch(category -> category.categoryName.equalsIgnoreCase(this.category));
     }
 
     @Override
@@ -41,4 +41,3 @@ public class CategoryMatchesPredicate implements Predicate<Person> {
         return new ToStringBuilder(this).add("category", category).toString();
     }
 }
-

@@ -3,12 +3,12 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PARTNER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
@@ -26,6 +26,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.category.Category;
 import seedu.address.model.date.WeddingDate;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Budget;
@@ -36,7 +37,6 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
-import seedu.address.model.tag.Tag;
 
 /**
  * Edits the details of an existing person in the address book.
@@ -58,15 +58,15 @@ public class EditCommand extends Command {
             + "[" + PREFIX_TYPE + "(client|vendor)] "
             + "[" + PREFIX_PRICE + "PRICE] "
             + "[" + PREFIX_BUDGET + "BUDGET] "
-            + "[" + PREFIX_TAG + "TAG]...\n"
+            + "[" + PREFIX_CATEGORY + "CATEGORY]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_PERSON =
-            "This person already exists in the address book (same phone number).";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book "
+            + "(same phone number).";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -124,7 +124,8 @@ public class EditCommand extends Command {
         WeddingDate updatedWeddingDate = editPersonDescriptor.getWeddingDate()
                 .orElse(personToEdit.getWeddingDate().orElse(null));
         PersonType updatedType = editPersonDescriptor.getType().orElse(personToEdit.getType());
-        Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        Set<Category> updatedCategories = editPersonDescriptor.getCategories()
+                .orElse(personToEdit.getCategories());
         Price updatedPrice = editPersonDescriptor.getPrice().orElse(personToEdit.getPrice().orElse(null));
         Budget updatedBudget = editPersonDescriptor.getBudget().orElse(personToEdit.getBudget().orElse(null));
         Optional<Partner> updatedPartner = editPersonDescriptor.getPartner().map(Optional::of)
@@ -150,17 +151,17 @@ public class EditCommand extends Command {
             throw new CommandException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
         }
 
-        // Validate tags - only vendors can have tags
-        if (updatedType == PersonType.CLIENT && !updatedTags.isEmpty()) {
+        // Validate categories - only vendors can have categories
+        if (updatedType == PersonType.CLIENT && !updatedCategories.isEmpty()) {
             throw new CommandException(Person.MSG_TAGS_FORBIDDEN_FOR_CLIENT);
         }
 
         if (updatedType == PersonType.VENDOR) {
-            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedType, updatedTags,
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedType, updatedCategories,
                     updatedPrice);
         } else {
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedWeddingDate,
-                    updatedType, updatedTags, updatedPrice, updatedBudget, updatedPartner);
+                    updatedType, updatedCategories, updatedPrice, updatedBudget, updatedPartner);
         }
     }
 
@@ -202,7 +203,7 @@ public class EditCommand extends Command {
         private PersonType type;
         private Price price;
         private Budget budget;
-        private Set<Tag> tags;
+        private Set<Category> categories;
         private Partner partner;
 
         public EditPersonDescriptor() {
@@ -210,7 +211,7 @@ public class EditCommand extends Command {
 
         /**
          * Copy constructor.
-         * A defensive copy of {@code tags} is used internally.
+         * A defensive copy of {@code categories} is used internally.
          */
         public EditPersonDescriptor(EditPersonDescriptor toCopy) {
             setName(toCopy.name);
@@ -222,7 +223,7 @@ public class EditCommand extends Command {
             setPrice(toCopy.price);
             setBudget(toCopy.budget);
             setPartner(toCopy.partner);
-            setTags(toCopy.tags);
+            setCategories(toCopy.categories);
         }
 
         /**
@@ -230,7 +231,7 @@ public class EditCommand extends Command {
          */
         public boolean isAnyFieldEdited() {
             return CollectionUtil.isAnyNonNull(name, phone, email, address, weddingDate, type, price, budget,
-                    partner, tags);
+                    partner, categories);
         }
 
         public void setName(Name name) {
@@ -306,21 +307,21 @@ public class EditCommand extends Command {
         }
 
         /**
-         * Sets {@code tags} to this object's {@code tags}.
-         * A defensive copy of {@code tags} is used internally.
+         * Sets {@code categories} to this object's {@code categories}.
+         * A defensive copy of {@code categories} is used internally.
          */
-        public void setTags(Set<Tag> tags) {
-            this.tags = (tags != null) ? new HashSet<>(tags) : null;
+        public void setCategories(Set<Category> categories) {
+            this.categories = (categories != null) ? new HashSet<>(categories) : null;
         }
 
         /**
-         * Returns an unmodifiable tag set, which throws
+         * Returns an unmodifiable category set, which throws
          * {@code UnsupportedOperationException}
          * if modification is attempted.
-         * Returns {@code Optional#empty()} if {@code tags} is null.
+         * Returns {@code Optional#empty()} if {@code categories} is null.
          */
-        public Optional<Set<Tag>> getTags() {
-            return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
+        public Optional<Set<Category>> getCategories() {
+            return (categories != null) ? Optional.of(Collections.unmodifiableSet(categories)) : Optional.empty();
         }
 
         @Override
@@ -344,7 +345,7 @@ public class EditCommand extends Command {
                     && Objects.equals(price, otherEditPersonDescriptor.price)
                     && Objects.equals(budget, otherEditPersonDescriptor.budget)
                     && Objects.equals(partner, otherEditPersonDescriptor.partner)
-                    && Objects.equals(tags, otherEditPersonDescriptor.tags);
+                    && Objects.equals(categories, otherEditPersonDescriptor.categories);
         }
 
         @Override
@@ -359,7 +360,7 @@ public class EditCommand extends Command {
                     .add("price", price)
                     .add("budget", budget)
                     .add("partner", partner)
-                    .add("tags", tags)
+                    .add("categories", categories)
                     .toString();
         }
     }

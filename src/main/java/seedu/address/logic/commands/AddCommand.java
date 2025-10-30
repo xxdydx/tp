@@ -3,12 +3,12 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PARTNER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
 
@@ -41,9 +41,10 @@ public class AddCommand extends Command {
             + "[" + PREFIX_PARTNER + "PARTNER] "
             + "[" + PREFIX_PRICE + "PRICE] "
             + "[" + PREFIX_BUDGET + "BUDGET] "
-            + "[" + PREFIX_TAG + "TAG]...\n"
+            + "[" + PREFIX_CATEGORY + "CATEGORY]...\n"
             + "  For clients only: [" + PREFIX_BUDGET + "BUDGET] (e.g., 5000 or 5000-10000)\n"
-            + "  For vendors only: [" + PREFIX_PRICE + "PRICE] (e.g., 1000 or 1000-2000)\n\n"
+            + "  For vendors only: [" + PREFIX_PRICE + "PRICE] (e.g., 1000 or 1000-2000), [" + PREFIX_CATEGORY
+            + "CATEGORY]\n\n"
             + "Example 1 (Client): " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
@@ -61,11 +62,11 @@ public class AddCommand extends Command {
             + PREFIX_ADDRESS + "123 Orchard Road, #03-45 "
             + PREFIX_TYPE + "vendor "
             + PREFIX_PRICE + "1500 "
-            + PREFIX_TAG + "photographer";
+            + PREFIX_CATEGORY + "photographer";
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON =
-            "This person already exists in the address book (same phone number)";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book "
+            + "(same phone number)";
 
     private final Person toAdd;
 

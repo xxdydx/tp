@@ -70,8 +70,8 @@ public class EditPersonDescriptorTest {
                 + editPersonDescriptor.getType().orElse(null) + ", price="
                 + editPersonDescriptor.getPrice().orElse(null) + ", budget="
                 + editPersonDescriptor.getBudget().orElse(null) + ", partner="
-                + editPersonDescriptor.getBudget().orElse(null) + ", tags="
-                + editPersonDescriptor.getTags().orElse(null) + "}";
+                + editPersonDescriptor.getBudget().orElse(null) + ", categories="
+                + editPersonDescriptor.getCategories().orElse(null) + "}";
         assertEquals(expected, editPersonDescriptor.toString());
     }
 }

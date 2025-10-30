@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.category.Category;
 import seedu.address.model.date.WeddingDate;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Budget;
@@ -21,7 +22,6 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
-import seedu.address.model.tag.Tag;
 
 /**
  * Jackson-friendly version of {@link Person}.
@@ -38,7 +38,7 @@ class JsonAdaptedPerson {
     private final String type;
     private final String price;
     private final String budget;
-    private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final List<JsonAdaptedCategory> tags = new ArrayList<>();
     private final String partner;
     private final List<String> linkedPersonNames = new ArrayList<>();
 
@@ -50,7 +50,7 @@ class JsonAdaptedPerson {
             @JsonProperty("email") String email, @JsonProperty("address") String address,
             @JsonProperty("weddingDate") String weddingDate, @JsonProperty("type") String type,
             @JsonProperty("price") String price, @JsonProperty("budget") String budget,
-            @JsonProperty("partner") String partner, @JsonProperty("tags") List<JsonAdaptedTag> tags,
+            @JsonProperty("partner") String partner, @JsonProperty("tags") List<JsonAdaptedCategory> tags,
             @JsonProperty("linkedPersonNames") List<String> linkedPersonNames) {
         this.name = name;
         this.phone = phone;
@@ -84,8 +84,8 @@ class JsonAdaptedPerson {
         price = source.getPrice().map(p -> p.value).orElse(null);
         budget = source.getBudget().map(b -> b.value).orElse(null);
         this.partner = source.getPartner().map(p -> p.value).orElse(null);
-        tags.addAll(source.getTags().stream()
-                .map(JsonAdaptedTag::new)
+        tags.addAll(source.getCategories().stream()
+                .map(JsonAdaptedCategory::new)
                 .collect(Collectors.toList()));
         linkedPersonNames.addAll(source.getLinkedPersons().stream()
                 .map(person -> person.getName().fullName)
@@ -107,9 +107,9 @@ class JsonAdaptedPerson {
      *                               the adapted person.
      */
     public Person toModelType() throws IllegalValueException {
-        final List<Tag> personTags = new ArrayList<>();
-        for (JsonAdaptedTag tag : tags) {
-            personTags.add(tag.toModelType());
+        final List<Category> personCategories = new ArrayList<>();
+        for (JsonAdaptedCategory category : tags) {
+            personCategories.add(category.toModelType());
         }
 
         if (name == null) {
@@ -166,7 +166,7 @@ class JsonAdaptedPerson {
             throw new IllegalValueException("Type must be 'client' or 'vendor'.");
         }
 
-        final Set<Tag> modelTags = new HashSet<>(personTags);
+        final Set<Category> modelCategories = new HashSet<>(personCategories);
 
         final Price modelPrice;
         if (price != null && !price.isEmpty()) {
@@ -206,10 +206,10 @@ class JsonAdaptedPerson {
         }
 
         if (modelType == PersonType.VENDOR) {
-            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelType, modelTags, modelPrice);
+            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelType, modelCategories, modelPrice);
         } else {
-            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelType, modelTags,
-                    modelPrice, modelBudget, modelPartner);
+            return new Person(modelName, modelPhone, modelEmail, modelAddress, modelWeddingDate, modelType,
+                    modelCategories, modelPrice, modelBudget, modelPartner);
         }
     }
 
