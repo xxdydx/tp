@@ -9,8 +9,10 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Tag {
 
-    public static final String MESSAGE_CONSTRAINTS = "Tags must start with alphanumeric character and can contain "
-            + "spaces, hyphens, ampersands, periods, apostrophes, slashes, and parentheses";
+    public static final String MESSAGE_CONSTRAINTS = "Tags must only contain alphanumeric characters and can contain "
+            + "spaces, hyphens, ampersands, periods, apostrophes, slashes, and parentheses. "
+            + "Tags should start with an alphanumeric character. "
+            + "Enter a blank tag to remove a tag.";
     public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} \\-&.'/()\u0020]+";
 
     public final String tagName;
