@@ -45,7 +45,7 @@ public class AddCommand extends Command {
             + "  For clients only: " + PREFIX_WEDDING_DATE + "DATE, " + PREFIX_PARTNER + "PARTNER, ["
             + PREFIX_BUDGET + "BUDGET] (e.g., 5000 or 5000-10000)\n"
             + "  For vendors only: [" + PREFIX_PRICE + "PRICE] (e.g., 1000 or 1000-2000), ["
-            + PREFIX_CATEGORY + "CATEGORY] (max 1)\n\n"
+            + PREFIX_CATEGORY + "CATEGORY] \n\n"
             + "Example 1 (Client): " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
