@@ -169,14 +169,14 @@ public class EditCommand extends Command {
 
         java.util.Set<Person> existingLinks = new java.util.HashSet<>(personToEdit.getLinkedPersons());
 
-        if (updatedType == PersonType.VENDOR) {
+        if (unchangedType == PersonType.VENDOR) {
             // Preserve links for vendor
-            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedType, updatedTags,
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, unchangedType, updatedTags,
                     existingLinks, updatedPrice);
         } else {
             // Preserve links and budget/partner for client
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedWeddingDate,
-                    updatedType, updatedTags, existingLinks, updatedPrice, updatedBudget, updatedPartner);
+                    unchangedType, updatedTags, existingLinks, updatedPrice, updatedBudget, updatedPartner);
         }
     }
 
