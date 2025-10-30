@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
@@ -68,14 +69,14 @@ public class LinkCommandParserTest {
     public void parse_invalidIndex_throwsParseException() {
         // Negative index
         assertParseFailure(parser, " client/-1 vendor/2",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, LinkCommand.MESSAGE_USAGE));
+                MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
 
         // Zero index
         assertParseFailure(parser, " client/0 vendor/2",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, LinkCommand.MESSAGE_USAGE));
+                MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
 
         // Non-numeric index
         assertParseFailure(parser, " client/a vendor/2",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, LinkCommand.MESSAGE_USAGE));
+                MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
 }
