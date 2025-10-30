@@ -168,13 +168,14 @@ public class PersonDetailsPanel extends UiPart<Region> {
                         String prefix = null;
                         if (person.getType() == PersonType.VENDOR && p.getType() == PersonType.CLIENT) {
                             prefix = fmtDate(p);
-                        } else {
-                            // Use the first category if present, preserving original casing; otherwise use type
+                        } else if (p.getType() == PersonType.VENDOR) {
+                            // Use the first category if present, preserving original casing
+                            // If no category exists, prefix remains null (no prefix shown)
                             prefix = p.getCategories().stream()
                                     .sorted(Comparator.comparing(c -> c.categoryName))
                                     .findFirst()
                                     .map(c -> c.categoryName)
-                                    .orElse(p.getType().display());
+                                    .orElse(null);
                         }
                         String displayName = (p.getType() == PersonType.CLIENT)
                                 ? DisplayFormat.nameAndPartner(p)
