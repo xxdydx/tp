@@ -2,6 +2,7 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
@@ -45,8 +46,21 @@ public class EditCommandParser implements Parser<EditCommand> {
         Index index;
 
         try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
+            String preamble = argMultimap.getPreamble().trim();
+            if (preamble.isEmpty()) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+            }
+            String[] preambleTokens = preamble.split("\\s+");
+            String indexToken = preambleTokens[0];
+            if (preambleTokens.length > 1) {
+                // extra text after index (likely unknown prefix) → invalid command format
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+            }
+            index = ParserUtil.parseIndex(indexToken);
         } catch (ParseException pe) {
+            if (ParserUtil.MESSAGE_INVALID_INDEX.equals(pe.getMessage())) {
+                throw new ParseException(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX, pe);
+            }
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE), pe);
         }
 

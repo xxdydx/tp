@@ -11,9 +11,9 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Category {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Category must start with an alphanumeric character, can contain spaces, hyphens, "
-            + "ampersands, periods, apostrophes, slashes, and parentheses, and must be between "
-            + "2 and 30 characters long.";
+            "Category must start with an alphanumeric character, can contain alphanumeric "
+            + "characters, spaces, hyphens, ampersands, periods, apostrophes, slashes, "
+            + "and parentheses, and must be between 2 and 30 characters long.";
     public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} \\-&.'/()\u0020]+";
 
     public final String categoryName;

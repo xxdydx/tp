@@ -10,14 +10,19 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
+import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
+import seedu.address.testutil.PersonBuilder;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for
@@ -107,6 +112,70 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = new DeleteCommand(targetIndex);
         String expected = DeleteCommand.class.getCanonicalName() + "{targetIndex=" + targetIndex + "}";
         assertEquals(expected, deleteCommand.toString());
+    }
+
+    @Test
+    public void execute_deletePersonWithLinkedPersons_removesFromLinkedPersons() {
+        // Create a fresh model with linked persons
+        AddressBook ab = new AddressBook();
+        Model model = new ModelManager(ab, new UserPrefs());
+
+        // Create a client
+        Person client = new PersonBuilder().withName("John Client")
+                .withPhone("91234567").withEmail("john@client.com")
+                .withAddress("123 Client St")
+                .withWeddingDate("01-01-2025")
+                .withType(seedu.address.model.person.PersonType.CLIENT)
+                .withPartner("Jane Smith")
+                .build();
+
+        // Create a vendor
+        Person vendor = new PersonBuilder().withName("Alice Vendor")
+                .withPhone("98765432").withEmail("alice@vendor.com")
+                .withAddress("456 Vendor Ave")
+                .withType(seedu.address.model.person.PersonType.VENDOR)
+                .withPrice("1000-2000")
+                .build();
+
+        // Add both to the address book first
+        model.addPerson(client);
+        model.addPerson(vendor);
+
+        // Now create linked versions
+        Set<Person> clientLinks = new HashSet<>();
+        clientLinks.add(vendor);
+
+        Set<Person> vendorLinks = new HashSet<>();
+        vendorLinks.add(client);
+
+        // Create updated persons with links
+        Person linkedClient = new PersonBuilder(client).withLinkedPersons(clientLinks).build();
+        Person linkedVendor = new PersonBuilder(vendor).withLinkedPersons(vendorLinks).build();
+
+        // Update both in the model
+        model.setPerson(client, linkedClient);
+        model.setPerson(vendor, linkedVendor);
+
+        // Verify the link exists before deletion
+        Person clientInModel = model.getFilteredPersonList().stream()
+                .filter(p -> p.getPhone().equals(linkedClient.getPhone()))
+                .findFirst().get();
+        assertTrue(clientInModel.isLinkedTo(linkedVendor));
+
+        // Delete the vendor
+        DeleteCommand deleteCommand = new DeleteCommand(Index.fromOneBased(2));
+        try {
+            deleteCommand.execute(model);
+        } catch (Exception e) {
+            throw new AssertionError("Execution of command should not fail.", e);
+        }
+
+        // Verify the client no longer has the vendor in linked persons
+        Person updatedClient = model.getFilteredPersonList().stream()
+                .filter(p -> p.getPhone().equals(linkedClient.getPhone()))
+                .findFirst().get();
+        assertFalse(updatedClient.isLinkedTo(linkedVendor));
+        assertEquals(0, updatedClient.getLinkedPersons().size());
     }
 
     /**

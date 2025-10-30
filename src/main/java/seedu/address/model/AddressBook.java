@@ -156,9 +156,43 @@ public class AddressBook implements ReadOnlyAddressBook {
     /**
      * Removes {@code key} from this {@code AddressBook}.
      * {@code key} must exist in the address book.
+     * Also removes the person from all other persons' linked persons.
      */
     public void removePerson(Person key) {
+        // First, remove the person from all other persons' linked persons
+        removeLinkedPersonReferences(key);
+
+        // Then remove the person from the address book
         persons.remove(key);
+    }
+
+    /**
+     * Removes {@code personToRemove} from all other persons' linkedPersons sets.
+     */
+    private void removeLinkedPersonReferences(Person personToRemove) {
+        List<Person> personList = persons.asUnmodifiableObservableList();
+
+        for (Person person : personList) {
+            // Skip the person we're removing
+            if (person.isSamePerson(personToRemove)) {
+                continue;
+            }
+
+            // Check if this person has the person to remove in their linked persons
+            if (person.getLinkedPersons().stream().anyMatch(p -> p.isSamePerson(personToRemove))) {
+                // Create a new set without the person to remove
+                java.util.Set<Person> updatedLinkedPersons = new java.util.HashSet<>();
+                for (Person linkedPerson : person.getLinkedPersons()) {
+                    if (!linkedPerson.isSamePerson(personToRemove)) {
+                        updatedLinkedPersons.add(linkedPerson);
+                    }
+                }
+
+                // Create updated person with the removed link
+                Person updatedPerson = createPersonWithUpdatedLinks(person, updatedLinkedPersons);
+                persons.setPerson(person, updatedPerson);
+            }
+        }
     }
 
     //// util methods
