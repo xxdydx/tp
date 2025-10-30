@@ -1,8 +1,8 @@
 package seedu.address.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static seedu.address.testutil.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -92,7 +92,7 @@ public class JsonSerializableAddressBookTest {
     }
 
     @Test
-    public void toModelType_duplicatePhone_inMemory_throws() {
+    public void toModelType_duplicatePhoneInMemory_throws() {
         JsonAdaptedPerson a = makeClient("Alice A", "11111111");
         JsonAdaptedPerson b = makeVendor("Vendor V", "11111111", Collections.emptyList());
         JsonSerializableAddressBook book = new JsonSerializableAddressBook(Arrays.asList(a, b));
