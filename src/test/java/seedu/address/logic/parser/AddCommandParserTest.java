@@ -245,7 +245,7 @@ public class AddCommandParserTest {
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
                         + INVALID_WEDDING_DATE_DESC + TYPE_DESC_CLIENT + PARTNER_DESC_BOB + TAG_DESC_HUSBAND
                         + TAG_DESC_FRIEND,
-                WeddingDate.MESSAGE_CONSTRAINTS);
+                WeddingDate.MESSAGE_INVALID_DATE_VALUES);
 
         // invalid tag
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
