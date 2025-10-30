@@ -139,22 +139,22 @@ public class PersonDetailsPanel extends UiPart<Region> {
             budget.setManaged(false);
         }
 
-        // Display tags only for vendors
-        if (person.getType() == PersonType.CLIENT || person.getTags().isEmpty()) {
+        // Display categories only for vendors
+        if (person.getType() == PersonType.CLIENT || person.getCategories().isEmpty()) {
             tagsLine.setText("");
             tagsLine.setVisible(false);
             tagsLine.setManaged(false); // remove its layout space
         } else {
-            String tagsCsv = person.getTags().stream()
-                    .sorted(Comparator.comparing(t -> t.tagName))
-                    .map(t -> t.tagName)
+            String categoriesCsv = person.getCategories().stream()
+                    .sorted(Comparator.comparing(c -> c.categoryName))
+                    .map(c -> c.categoryName)
                     .collect(Collectors.joining(", "));
             tagsLine.setText("Category: " + tagsCsv);
             tagsLine.setVisible(true);
             tagsLine.setManaged(true);
         }
 
-        // Display linked persons with their type (CLIENT/VENDOR) and tags
+        // Display linked persons with their type (CLIENT/VENDOR) and categories
         if (person.getLinkedPersons().isEmpty()) {
             linkedPersonsLine.setText("");
             linkedPersonsLine.setVisible(false);
@@ -169,10 +169,10 @@ public class PersonDetailsPanel extends UiPart<Region> {
                             prefix = fmtDate(p);
                         } else {
                             // fallback to your existing category/type label
-                            prefix = p.getTags().stream()
-                                    .sorted(Comparator.comparing(t -> t.tagName))
+                            prefix = p.getCategories().stream()
+                                    .sorted(Comparator.comparing(c -> c.categoryName))
                                     .findFirst()
-                                    .map(t -> capitalize(t.tagName))
+                                    .map(c -> capitalize(c.categoryName))
                                     .orElse(p.getType().display());
                         }
 
