@@ -5,6 +5,7 @@ import static seedu.address.testutil.TypicalPersons.ALICE;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
@@ -139,7 +140,7 @@ public class EditCommandEdgeCasesTest {
     public void execute_clientWithTags_throws() {
         ModelStub model = new ModelStub(ALICE); // client
         EditCommand.EditPersonDescriptor d = new EditCommand.EditPersonDescriptor();
-        d.setTags(new HashSet<>(Arrays.asList(new Tag("Photography"))));
+        d.setTags(Set.of(new seedu.address.model.tag.Tag("Photography")));
         EditCommand cmd = new EditCommand(Index.fromOneBased(1), d);
         assertThrows(CommandException.class, () -> cmd.execute(model));
     }
