@@ -103,6 +103,7 @@ public class EditCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
+        // Replace the edited person, preserving their links on the edited instance
         model.setPerson(personToEdit, editedPerson);
 
         // Update all counterparts that previously linked to the old person to now link

@@ -147,6 +147,7 @@ public class AddressBook implements ReadOnlyAddressBook {
                     person.getTags(),
                     updatedLinkedPersons,
                     person.getPrice().orElse(null),
+                    person.getBudget().orElse(null),
                     person.getPartner()
             );
         }
