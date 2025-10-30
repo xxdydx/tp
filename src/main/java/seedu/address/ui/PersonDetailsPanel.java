@@ -176,12 +176,9 @@ public class PersonDetailsPanel extends UiPart<Region> {
                                     .map(c -> c.categoryName)
                                     .orElse(p.getType().display());
                         }
-
-                        // For clients, keep Name & Partner; for vendors, just Name
                         String displayName = (p.getType() == PersonType.CLIENT)
                                 ? DisplayFormat.nameAndPartner(p)
                                 : p.getName().fullName;
-
                         String namePhone = displayName + " (" + fmtPhone(p.getPhone().value) + ")";
                         return prefix != null ? "• " + prefix + ": " + namePhone : "• " + namePhone;
                     })
@@ -190,7 +187,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
             // Determine if linked persons are vendors or clients
             String label = person.getLinkedPersons().stream()
                     .findFirst()
-                    .map(p -> p.getType().display() + "s")
+                    .map(p -> p.getType().display() + "(s)")
                     .orElse("Linked");
 
             linkedPersonsLine.setText(label + ":\n" + linkedPersonsText);
