@@ -60,8 +60,8 @@ The app window should appear in a few seconds with some sample wedding contacts 
 * `help` - Opens a help window showing all available commands
 * `list` - Shows all your contacts (clients and vendors)
 * `cat florist` - Shows only florist vendors
-* `add n/Jane Smith p/91234567 e/jane@flowers.com a/123 Orchard Road type/vendor price/1500 c/florist` - Adds a new florist vendor
-* `add n/John & Mary p/98765432 e/john@example.com a/311 Clementi Ave w/15-06-2026 type/client budget/10000` - Adds a new client couple
+* `add n/Jane Smith p/91234567 e/jane@flowers.com a/123 Orchard Road type/vendor price/1500 t/florist` - Adds a new florist vendor
+* `add n/John Doe p/98765432 e/johnd@example.com a/311 Clementi Ave type/client w/15-06-2026 pr/Jane Doe budget/10000 t/friends` - Adds a new client couple
 * `delete 3` - Deletes the 3rd contact in the current list
 * `exit` - Closes the app
 
@@ -120,31 +120,57 @@ Format: `help`
 
 Adds a client or vendor contact to KnotBook.
 
-Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/TYPE [price/PRICE] [budget/BUDGET] [c/CATEGORY]…​`
+**Format for adding a client:**
+`add n/NAME p/PHONE e/EMAIL a/ADDRESS type/client w/WEDDING_DATE pr/PARTNER [budget/BUDGET]​`
+
+**Format for adding a vendor:**
+`add n/NAME p/PHONE e/EMAIL a/ADDRESS type/vendor [price/PRICE] [c/CATEGORY]​`
 
 **Parameters:**
 * `n/NAME` - Contact name (required)
-* `p/PHONE` - Phone number, must be 8 digits (required)
+  * Can contain alphanumeric characters, spaces, and special characters like commas (`,`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
+  * Example: `John & Mary`, `O'Brien Catering`, `Flowers, Etc.`
+* `p/PHONE` - Phone number (required)
+  * Must be exactly 8 digits
+  * Only Singapore phone numbers are accepted
+  * No spaces, hyphens, or other formatting characters allowed
+  * Example: `91234567`, `98765432`
 * `e/EMAIL` - Email address (required)
+  * Email addresses must use standard internet email rules—KnotBook checks emails using a validator that follows the general requirements of RFC 5322 and common email providers. The email must contain one @, a valid domain (like .com, .net), and no spaces or special symbols not allowed in real email addresses.For more technical details, see:[Apache Commons Validator EmailValidator Documentation](https://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/EmailValidator.html)
+  * Example: `john@example.com`, `contact.us@blooming-flowers.sg`
 * `a/ADDRESS` - Physical address (required)
-* `w/WEDDING_DATE` - Wedding date in DD-MM-YYYY format (required)
-* `type/TYPE` - Either `client` or `vendor` (required)
-* `price/PRICE` - Vendor pricing, can be a single value or range like `1000-2000` (optional, for vendors)
-* `budget/BUDGET` - Client budget, can be a single value or range like `5000-10000` (optional, for clients)
-* `c/CATEGORY` - Category labels like `florist`, `photographer`, `premium` (optional, can have multiple)
+  * Can contain any characters
+* `w/WEDDING_DATE` - Wedding date (required)
+  * Accepts formats: `DD-MM-YYYY` or `YYYY-MM-DD`
+  * Must be a valid date
+  * Example: `15-06-2026` or `2026-06-15`
+* `type/TYPE` - Either `client` or `vendor` (required, case-insensitive)
+* `price/PRICE` - Vendor pricing (optional, for vendors only)
+  * Must be a positive integer (whole numbers only, no cents/decimals)
+  * Can be a single value (e.g., `1000`) or range (e.g., `1000-2000`)
+  * Range values must be separated by a hyphen with no spaces
+  * Maximum value: 2,147,483,647
+* `budget/BUDGET` - Client budget (optional, for clients only)
+  * Must be a positive integer (whole numbers only, no cents/decimals)
+  * Can be a single value (e.g., `5000`) or range (e.g., `5000-10000`)
+  * Range values must be separated by a hyphen with no spaces
+  * Maximum value: 2,147,483,647
+* `c/CATEGORY` - Category tags (optional, can have multiple)
+  * Can only contain alphanumeric characters (no spaces or special characters)
+  * Example: `florist`, `photographer`, `friends`, `vip`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tips:**
-* For clients (wedding couples), include their wedding date and budget
-* For vendors (service providers), include pricing and use categories to classify them (e.g., `florist`, `caterer`, `photographer`)
+* For clients (wedding couples), wedding date and partner name is required. You can also include their budget
+* For vendors (service providers), you may include pricing and use categories to classify them (e.g., `florist`, `caterer`, `photographer`)
 * You can add multiple categories by repeating `c/CATEGORY`
 </div>
 
 **Examples:**
 * **Adding a client:**<br>
-  `add n/John & Mary Tan p/98765432 e/john@example.com a/311 Clementi Ave 2 w/15-06-2026 type/client budget/5000-10000`
+  `add n/John Doe p/98765432 e/johnd@example.com a/311, Clementi Ave 2, #02-25 type/client w/15-06-2020 pr/Jane Doe budget/5000-10000`
 
 * **Adding a vendor:**<br>
-  `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Road w/20-07-2026 type/vendor price/1000-2000 c/florist`
+  `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Road type/vendor price/1000-2000 c/florist`
 
 ### Listing all contacts : `list`
 
@@ -161,7 +187,7 @@ Note: Dates shown in the contacts list are formatted as `YYYY-MM-DD` (e.g., `202
 
 Edits an existing contact in KnotBook.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/TYPE] [price/PRICE] [budget/BUDGET] [c/CATEGORY]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/TYPE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​`
 
 
 **How it works:**
@@ -305,7 +331,7 @@ _Details coming soon ..._
 **A**: A **client** is a couple planning their wedding (your customers). A **vendor** is a service provider like a florist, caterer, or photographer.
 
 **Q**: Can I add a contact without a wedding date?<br>
-**A**: No, the wedding date field (`w/`) is required for all contacts. This helps you track and organize weddings by their dates.
+**A**: For clients, the wedding date field (`w/`) is required as it's essential to track when their wedding is. For vendors, the wedding date is optional since vendors may not be associated with a specific wedding until they are linked to a client.
 
 **Q**: How do I see which vendors are linked to a specific client?<br>
 **A**: Click on a client contact in the list to view their details, which will show all linked vendors.
@@ -319,7 +345,6 @@ _Details coming soon ..._
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
-3. **Phone numbers** must be 8 digits. If you need to store international numbers with special characters, you may need to remove the formatting (e.g., use `6591234567` instead of `+65 9123 4567`).
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -327,12 +352,12 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add Client** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/client [budget/BUDGET]` <br> e.g., `add n/John & Mary p/98765432 e/john@example.com a/311 Clementi Ave w/15-06-2026 type/client budget/10000`
-**Add Vendor** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/vendor [price/PRICE] [c/CATEGORY]…​` <br> e.g., `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Rd w/20-07-2026 type/vendor price/1500 c/florist`
+**Add Client** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS type/client w/WEDDING_DATE pr/PARTNER [budget/BUDGET]​` <br> e.g., `add n/John Doe p/98765432 e/johnd@example.com a/311 Clementi Ave type/client w/15-06-2026 pr/Jane Doe budget/10000`
+**Add Vendor** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS type/vendor [price/PRICE] [c/CATEGORY]​` <br> e.g., `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Rd type/vendor price/1500 c/florist`
 **List** | `list` - Shows all contacts
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find John Blooming`
 **Filter by Category** | `cat CATEGORY`<br> e.g., `cat florist`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/TYPE] [price/PRICE] [budget/BUDGET] [c/CATEGORY]…​`<br> e.g., `edit 2 p/91234567 budget/8000`
+**Edit** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/TYPE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​`<br> e.g., `edit 2 p/91234567 budget/8000`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Link** | `link client/CLIENT_INDEX vendor/VENDOR_INDEX`<br> e.g., `link client/1 vendor/3`
 **Unlink** | `unlink client/CLIENT_INDEX vendor/VENDOR_INDEX`<br> e.g., `unlink client/1 vendor/3`
