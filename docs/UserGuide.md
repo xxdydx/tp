@@ -1,10 +1,9 @@
 ---
 layout: page
-title: User Guide
+title: KnotBook User Guide
 pageNav: 3
 ---
 
-# KnotBook User Guide
 KnotBook is a desktop app designed exclusively for **wedding planners** to manage client and vendor contacts, keeping track of every wedding and connection you coordinate throughout your planning journey. As a wedding planner, you can add new clients and vendors to the app via a simple to use **Command Line Interface (CLI)**. Furthermore, you can link vendors to clients, edit contact details, and organize everything in one centralized place. You will never lose track of which florist is working on which wedding or miss important client details after using KnotBook!
 
 * Table of Contents
@@ -43,7 +42,7 @@ KnotBook needs Java 17 or newer to run. Think of Java as the engine that powers 
    - Type `cd ` (with a space after cd)
    - Drag and drop your KnotBook folder into the terminal window
    - Press Enter
-3. Run KnotBook by typing: `java -jar knotbook.jar` and press Enter
+3. Run KnotBook by typing: `java -jar KnotBook.jar` and press Enter
 
 ### Step 4: Start Using KnotBook
 The app window should appear in a few seconds with some sample wedding contacts to help you get started.
@@ -110,9 +109,7 @@ Action | Format, Examples
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
-
-* Dates displayed in the contacts list use the format `YYYY-MM-DD` to avoid ambiguity. Input for `w/WEDDING_DATE` accepts `DD-MM-YYYY` or `YYYY-MM-DD`.
-  
+ 
 * Commands must be entered on a single line. Newlines are not supported.<br>
   If you copy a command that appears on multiple lines, join it into one line before pressing Enter.
   Pasting multi-line commands into the command box will fail; replace line breaks with spaces.
@@ -199,8 +196,8 @@ Format: `help`
 * Clients and vendors share the same pool. You can’t have a client and a vendor with the same phone number.
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tips:**
-* For clients (wedding couples), wedding date and partner name is required. You can also include their budget.
-* For vendors (service providers), you may include pricing and use categories to classify them (e.g., `florist`, `makeup artist`, `photographer`)
+- For clients (wedding couples), wedding date and partner name is required. You can also include their budget.
+- For vendors (service providers), you may include pricing and use categories to classify them (e.g., `florist`, `makeup artist`, `photographer`)
 </div>
 
 **Examples:**
@@ -226,7 +223,7 @@ Note: Dates shown in the contacts list are formatted as `YYYY-MM-DD` (e.g., `202
 
 Made a typo? Client changed their wedding date? Vendor updated their pricing? Use this command to quickly update any contact details in KnotBook!
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/TYPE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​`
 
 **How it works:**
 * Edits the contact at the specified `INDEX` (the number shown in the contact list)
@@ -274,7 +271,7 @@ Need to find a photographer for an upcoming wedding? Want to see all your catere
 Format: `cat CATEGORY`
 
 **How it works:**
-* Shows only contacts with categories matching the specified category
+* Shows only vendors with categories matching the specified category
 * The search is case-insensitive (e.g., `florist` matches `Florist`)
 * Useful for quickly viewing all vendors of a specific type
 
@@ -325,7 +322,7 @@ Format: `unlink client/CLIENT_INDEX vendor/VENDOR_INDEX`
 
 **Examples:**
 * `unlink client/1 vendor/3` - Removes the link between the client at index 1 and vendor at index 3
-* `unlink client/2 vendor/5` - Removes the link between the client at index 2 and vendor at index 3
+* `unlink client/2 vendor/5` - Removes the link between the client at index 2 and vendor at index 5
 
 <div markdown="span" class="alert alert-warning">:exclamation: <strong>Warning:</strong>
 Both <code>CLIENT_INDEX</code> and <code>VENDOR_INDEX</code> refer to the <em>currently displayed</em> list (after <code>find</code> or <code>cat</code> as well). 
@@ -359,9 +356,7 @@ This action cannot be undone! Make sure you're deleting the right contact.
 
 <div markdown="span" class="alert alert-primary">:bulb: <strong>Tips:</strong>
 <ul>
-  <li>Run <code>list</code> first to reset the view, then delete by the index you see.</li>
   <li>Indices refer to the <em>currently displayed</em> list (after <code>find</code>, <code>cat</code>, etc.).</li>
-  <li>If a contact is linked, consider <code>unlink</code> first so you’re sure which records remain.</li>
 </ul>
 </div>
 
