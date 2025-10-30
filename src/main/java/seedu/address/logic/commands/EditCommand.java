@@ -167,6 +167,11 @@ public class EditCommand extends Command {
             throw new CommandException(Person.MSG_TAGS_FORBIDDEN_FOR_CLIENT);
         }
 
+        // Validate that vendors have at most 1 category
+        if (unchangedType == PersonType.VENDOR && updatedCategories.size() > 1) {
+            throw new CommandException(Person.MSG_MAX_ONE_CATEGORY_FOR_VENDOR);
+        }
+
         java.util.Set<Person> existingLinks = new java.util.HashSet<>(personToEdit.getLinkedPersons());
 
         if (unchangedType == PersonType.VENDOR) {

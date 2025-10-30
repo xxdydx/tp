@@ -149,7 +149,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
                     .sorted(Comparator.comparing(c -> c.categoryName))
                     .map(c -> c.categoryName)
                     .collect(Collectors.joining(", "));
-            tagsLine.setText("Categories : " + categoriesCsv);
+            tagsLine.setText("Category: " + categoriesCsv);
             tagsLine.setVisible(true);
             tagsLine.setManaged(true);
         }
@@ -163,16 +163,17 @@ public class PersonDetailsPanel extends UiPart<Region> {
             String linkedPersonsText = person.getLinkedPersons().stream()
                     .sorted(Comparator.comparing(p -> p.getName().fullName))
                     .map(p -> {
-                        // Prefix = wedding date when the selected person is a VENDOR and the linked is a CLIENT
-                        String prefix;
+                        // Prefix = wedding date when the selected person is a VENDOR and the linked is
+                        // a CLIENT
+                        String prefix = null;
                         if (person.getType() == PersonType.VENDOR && p.getType() == PersonType.CLIENT) {
                             prefix = fmtDate(p);
                         } else {
-                            // fallback to your existing category/type label
+                            // Use the first category if present, preserving original casing; otherwise use type
                             prefix = p.getCategories().stream()
                                     .sorted(Comparator.comparing(c -> c.categoryName))
                                     .findFirst()
-                                    .map(c -> capitalize(c.categoryName))
+                                    .map(c -> c.categoryName)
                                     .orElse(p.getType().display());
                         }
 
@@ -182,10 +183,9 @@ public class PersonDetailsPanel extends UiPart<Region> {
                                 : p.getName().fullName;
 
                         String namePhone = displayName + " (" + fmtPhone(p.getPhone().value) + ")";
-                        return "• " + prefix + ": " + namePhone;
+                        return prefix != null ? "• " + prefix + ": " + namePhone : "• " + namePhone;
                     })
                     .collect(Collectors.joining("\n"));
-
 
             // Determine if linked persons are vendors or clients
             String label = person.getLinkedPersons().stream()
@@ -197,15 +197,5 @@ public class PersonDetailsPanel extends UiPart<Region> {
             linkedPersonsLine.setVisible(true);
             linkedPersonsLine.setManaged(true);
         }
-    }
-
-    /**
-     * Capitalizes the first letter of a string.
-     */
-    private String capitalize(String str) {
-        if (str == null || str.isEmpty()) {
-            return str;
-        }
-        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }

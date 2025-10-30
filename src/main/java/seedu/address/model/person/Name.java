@@ -64,6 +64,7 @@ public class Name {
 
     @Override
     public int hashCode() {
+        // Must align with equals: case-insensitive
         return fullName.hashCode();
     }
 
