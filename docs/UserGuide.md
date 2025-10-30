@@ -96,6 +96,7 @@ The app window should appear in a few seconds with some sample wedding contacts 
 * Commands must be entered on a single line. Newlines are not supported.<br>
   If you copy a command that appears on multiple lines, join it into one line before pressing Enter.
   Pasting multi-line commands into the command box will fail; replace line breaks with spaces.
+* Dates displayed in the contacts list use the format `YYYY-MM-DD` to avoid ambiguity. Input for `w/WEDDING_DATE` accepts `DD-MM-YYYY` or `YYYY-MM-DD`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </div>
