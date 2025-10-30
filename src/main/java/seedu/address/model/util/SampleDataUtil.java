@@ -35,7 +35,7 @@ public class SampleDataUtil {
                         new Budget("8000-15000"), Optional.of(new Partner("Jackson Wang"))),
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
                         new Address("Blk 11 Ang Mo Kio Street 74, #11-04"),
-                        WeddingDate.parse("10-12-2021"), PersonType.VENDOR, getTagSet("Photography & Videography"),
+                        null, PersonType.VENDOR, getTagSet("Photography & Videography"),
                         new Price("500-1000"), null, Optional.empty()),
             new Person(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
                         new Address("Blk 436 Serangoon Gardens Street 26, #16-43"),
@@ -47,7 +47,7 @@ public class SampleDataUtil {
                         new Budget("10000-15000"), Optional.of(new Partner("Siti Nur"))),
             new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
                         new Address("Blk 45 Aljunied Street 85, #11-31"),
-                        WeddingDate.parse("25-09-2020"), PersonType.VENDOR, getTagSet("Wedding Planning & Events"),
+                        null, PersonType.VENDOR, getTagSet("Wedding Planning & Events"),
                         new Price("2000-3500"), null, Optional.empty())
         };
     }
