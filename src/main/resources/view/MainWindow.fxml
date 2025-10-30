@@ -43,7 +43,8 @@
                 </bottom>
 
                 <center>
-                    <SplitPane orientation="HORIZONTAL" dividerPositions="0.40" BorderPane.alignment="CENTER">
+                    <SplitPane fx:id="splitPane" orientation="HORIZONTAL" dividerPositions="0.40"
+                               BorderPane.alignment="CENTER">
                         <items>
                             <VBox fx:id="personList"
                                   fillWidth="true"

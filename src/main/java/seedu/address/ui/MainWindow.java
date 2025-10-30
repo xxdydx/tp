@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seedu.address.commons.core.GuiSettings;
@@ -50,6 +51,25 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane personDetailsPlaceholder;
+
+    @FXML
+    private SplitPane splitPane;
+
+    @FXML
+    private void initialize() {
+        final double MIN = 0.40;
+        final double MAX = 0.60;
+        SplitPane.Divider d = splitPane.getDividers().get(0);
+
+        d.positionProperty().addListener((obs, oldV, newV) -> {
+            double v = newV.doubleValue();
+            if (v < MIN) d.setPosition(MIN);
+            else if (v > MAX) d.setPosition(MAX);
+        });
+
+        d.setPosition(Math.max(MIN, Math.min(MAX, 0.40)));
+    }
+
 
     /**
      * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
