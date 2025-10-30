@@ -220,6 +220,7 @@ Format: `list`
 **Example:**
 * `list` - Displays all your wedding contacts
 
+![list.png](images/list.png)
 Note: Dates shown in the contacts list are formatted as `YYYY-MM-DD` (e.g., `2026-07-15`).
 
 ### Editing a contact : `edit` ✍️
@@ -256,12 +257,89 @@ Format: `find KEYWORD`
 
 **Examples:**
 * `find tan` - Returns contacts like `Alex Tan`, `Tan Wei Ling`; also matches a client whose partner is Tan Jun Hao.
-* `find han ` - Returns `Hannah Ong`, `Hans Chia`; does not match Johanna Lim (because han isn’t at a word start).<br>
+* `find ch` - Returns `Charlotte K Photography`; also matches a client whose partner is Jack Chia.<br>
+![find.png](images/find.png)
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tips:**
 <ul>
   <li>After using <code>find</code>, run <code>list</code> to show all contacts again.</li>
   <li><code>link</code>/<code>unlink</code> use the currently displayed list - if unsure, <code>list</code> first.</li>
+</ul>
+</div>
+
+
+### Filtering by category : `cat`  🏷️
+
+Need to find a photographer for an upcoming wedding? Want to see all your caterers at once? Filter contacts by category to instantly view all vendors of a specific type!
+
+Format: `cat CATEGORY`
+
+**How it works:**
+* Shows only contacts with categories matching the specified category
+* The search is case-insensitive (e.g., `florist` matches `Florist`)
+* Useful for quickly viewing all vendors of a specific type
+
+**Examples:**
+* `cat florist` - Shows all vendors categorized as florist
+* `cat photographer` - Shows all photographers
+* `cat caterer` - Shows all catering services
+![cat.png](images/cat.png)
+
+<div markdown="span" class="alert alert-primary">:bulb: <strong>Tips:</strong>
+  <ul>
+    <li><strong>Only vendors</strong> have categories - clients won’t show up in <code>cat</code> results.</li>
+    <li>Category matching is <strong>case-insensitive</strong>.</li>
+    <li>In a filtered view (after <code>cat</code> or <code>find</code>), commands like <code>delete INDEX</code> use the index from the <em>filtered list</em>.</li>
+    <li>To reset the view, run <code>list</code> before taking actions like <code>delete</code>, <code>link</code>, or <code>unlink</code>.</li>
+  </ul>
+</div>
+
+
+### Linking a vendor to a client : `link` 🔗
+
+Hired a photographer for the Johnson wedding? Use this command to connect vendors with their clients, so you can easily track which vendors are working on which weddings!
+
+Format: `link client/CLIENT_INDEX vendor/VENDOR_INDEX`
+
+**How it works:**
+* Links the client at `CLIENT_INDEX` with the vendor at `VENDOR_INDEX`
+* Both indexes refer to the numbers shown in the currently displayed list
+* Both indexes **must be a positive integer** (1, 2, 3, …) and **must not exceed the total number of contacts** in the displayed list
+* Helps you track which vendors are assigned to which weddings
+
+**Examples:**
+* `link client/1 vendor/3` - Links the 1st client with the 3rd vendor
+* `link client/2 vendor/5` - Links the 2nd client with the 5th vendor
+
+![link1.png](images/link1.png)
+![link2.png](images/link2.png)
+
+### Unlinking a vendor from a client : `unlink` ⛓️‍💥
+
+Client switched photographers? Vendor cancelled? Use this command to remove the connection between a client and vendor when plans change.
+
+Format: `unlink client/CLIENT_INDEX vendor/VENDOR_INDEX`
+
+**How it works:**
+* Removes the link between the client at `CLIENT_INDEX` and the vendor at `VENDOR_INDEX`
+* Useful when a vendor is changed or a service is cancelled
+
+**Examples:**
+* `unlink client/1 vendor/3` - Removes the link between the 1st client and 3rd vendor
+* `unlink client/2 vendor/5` - Removes the link between the 2nd client and 5th vendor
+
+<div markdown="span" class="alert alert-warning">:exclamation: <strong>Warning:</strong>
+Both <code>CLIENT_INDEX</code> and <code>VENDOR_INDEX</code> refer to the <em>currently displayed</em> list (after <code>find</code> or <code>cat</code> as well). 
+Ensure the chosen indices point to a <strong>client</strong> and a <strong>vendor</strong> respectively, or the command will fail.
+</div>
+
+<div markdown="span" class="alert alert-primary">:bulb: <strong>Tips for link/unlink:</strong>
+<ul>
+  <li>After using <code>find</code> or <code>cat</code>, run <code>list</code> to reset the view if you’re unsure about indices.</li>
+  <li>You can pick indices from any filtered view (e.g., <code>find tan</code> then <code>link client/1 vendor/2</code>) - the indices come from that filtered list.</li>
+  <li><strong>link:</strong> If the client and vendor are already linked, running <code>link</code> again will show an “already linked” message.</li>
+  <li><strong>unlink:</strong> If the pair isn’t currently linked, <code>unlink</code> will show a “not linked” message.</li>
+  <li>Both commands update <em>both</em> records (the client’s linked vendors and the vendor’s linked clients stay in sync).</li>
 </ul>
 </div>
 
@@ -292,76 +370,6 @@ This action cannot be undone! Make sure you're deleting the right contact.
 * `list` followed by `delete 2` - Deletes the 2nd contact in the full list
 * `find Blooming` followed by `delete 1` - Deletes the 1st contact in the search results
 * `cat florist` followed by `delete 3` - Deletes the 3rd contact in the filtered list
-
-### Filtering by category : `cat`  🏷️
-
-Need to find a photographer for an upcoming wedding? Want to see all your caterers at once? Filter contacts by category to instantly view all vendors of a specific type!
-
-Format: `cat CATEGORY` 
-
-**How it works:**
-* Shows only contacts with categories matching the specified category
-* The search is case-insensitive (e.g., `florist` matches `Florist`)
-* Useful for quickly viewing all vendors of a specific type
-
-**Examples:**
-* `cat florist` - Shows all vendors categorized as florist
-* `cat photographer` - Shows all photographers
-* `cat caterer` - Shows all catering services
-
-<div markdown="span" class="alert alert-primary">:bulb: <strong>Tips:</strong>
-  <ul>
-    <li><strong>Only vendors</strong> have categories - clients won’t show up in <code>cat</code> results.</li>
-    <li>Category matching is <strong>case-insensitive</strong>.</li>
-    <li>In a filtered view (after <code>cat</code> or <code>find</code>), commands like <code>delete INDEX</code> use the index from the <em>filtered list</em>.</li>
-    <li>To reset the view, run <code>list</code> before taking actions like <code>delete</code>, <code>link</code>, or <code>unlink</code>.</li>
-  </ul>
-</div>
-
-### Linking a vendor to a client : `link` 🔗
-
-Hired a photographer for the Johnson wedding? Use this command to connect vendors with their clients, so you can easily track which vendors are working on which weddings!
-
-Format: `link client/CLIENT_INDEX vendor/VENDOR_INDEX`
-
-**How it works:**
-* Links the client at `CLIENT_INDEX` with the vendor at `VENDOR_INDEX`
-* Both indexes refer to the numbers shown in the currently displayed list
-* Both indexes **must be a positive integer** (1, 2, 3, …) and **must not exceed the total number of contacts** in the displayed list
-* Helps you track which vendors are assigned to which weddings
-
-**Examples:**
-* `link client/1 vendor/3` - Links the 1st client with the 3rd vendor
-* `link client/2 vendor/5` - Links the 2nd client with the 5th vendor
-
-### Unlinking a vendor from a client : `unlink` ⛓️‍💥
-
-Client switched photographers? Vendor cancelled? Use this command to remove the connection between a client and vendor when plans change.
-
-Format: `unlink client/CLIENT_INDEX vendor/VENDOR_INDEX`
-
-**How it works:**
-* Removes the link between the client at `CLIENT_INDEX` and the vendor at `VENDOR_INDEX`
-* Useful when a vendor is changed or a service is cancelled
-
-**Examples:**
-* `unlink client/1 vendor/3` - Removes the link between the 1st client and 3rd vendor
-* `unlink client/2 vendor/5` - Removes the link between the 2nd client and 5th vendor
-
-<div markdown="span" class="alert alert-warning">:exclamation: <strong>Warning:</strong>
-Both <code>CLIENT_INDEX</code> and <code>VENDOR_INDEX</code> refer to the <em>currently displayed</em> list (after <code>find</code> or <code>cat</code> as well). 
-Ensure the chosen indices point to a <strong>client</strong> and a <strong>vendor</strong> respectively, or the command will fail.
-</div>
-
-<div markdown="span" class="alert alert-primary">:bulb: <strong>Tips for link/unlink:</strong>
-<ul>
-  <li>After using <code>find</code> or <code>cat</code>, run <code>list</code> to reset the view if you’re unsure about indices.</li>
-  <li>You can pick indices from any filtered view (e.g., <code>find tan</code> then <code>link client/1 vendor/2</code>) - the indices come from that filtered list.</li>
-  <li><strong>link:</strong> If the client and vendor are already linked, running <code>link</code> again will show an “already linked” message.</li>
-  <li><strong>unlink:</strong> If the pair isn’t currently linked, <code>unlink</code> will show a “not linked” message.</li>
-  <li>Both commands update <em>both</em> records (the client’s linked vendors and the vendor’s linked clients stay in sync).</li>
-</ul>
-</div>
 
 ### Clearing all entries : `clear` 🧹
 
