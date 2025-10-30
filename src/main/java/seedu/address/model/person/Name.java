@@ -59,12 +59,13 @@ public class Name {
         }
 
         Name otherName = (Name) other;
-        return fullName.equals(otherName.fullName);
+        return fullName.equalsIgnoreCase(otherName.fullName);
     }
 
     @Override
     public int hashCode() {
-        return fullName.hashCode();
+        // Must align with equals: case-insensitive
+        return fullName.toLowerCase().hashCode();
     }
 
 }
