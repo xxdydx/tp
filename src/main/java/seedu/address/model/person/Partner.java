@@ -8,7 +8,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  * Represents a person's partner name in the address book.
  * */
 public class Partner {
-    public static final String MESSAGE_CONSTRAINTS = "Partner name must be 1–100 visible chars.";
+    public static final String MESSAGE_CONSTRAINTS = Name.MESSAGE_CONSTRAINTS;
     public final String value;
 
     /**
@@ -16,7 +16,7 @@ public class Partner {
      * */
     public Partner(String value) {
         requireNonNull(value);
-        checkArgument(!value.isBlank() && value.strip().length() <= 100, MESSAGE_CONSTRAINTS);
+        checkArgument(Name.isValidName(value.strip()), MESSAGE_CONSTRAINTS);
         this.value = value.strip();
     }
     @Override public String toString() {

@@ -9,11 +9,12 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Tag {
 
+    public static final int MAX_LENGTH = 30;
     public static final String MESSAGE_CONSTRAINTS = "Tags must only contain alphanumeric characters and can contain "
             + "spaces, hyphens, ampersands, periods, apostrophes, slashes, and parentheses. "
-            + "Tags should start with an alphanumeric character. "
+            + "Tags should start with an alphanumeric character and be at most " + MAX_LENGTH + " characters. "
             + "Enter a blank tag to remove a tag.";
-    public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} \\-&.'/()\u0020]+";
+    public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} \\-&.'()/\\u0020]+";
 
     public final String tagName;
 
@@ -32,7 +33,7 @@ public class Tag {
      * Returns true if a given string is a valid tag name.
      */
     public static boolean isValidTagName(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test.matches(VALIDATION_REGEX) && test.length() <= MAX_LENGTH;
     }
 
     @Override
