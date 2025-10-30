@@ -7,7 +7,7 @@ pageNav: 3
 KnotBook is a desktop app designed exclusively for **wedding planners** to manage client and vendor contacts, keeping track of every wedding and connection you coordinate throughout your planning journey. As a wedding planner, you can add new clients and vendors to the app via a simple to use **Command Line Interface (CLI)**. Furthermore, you can link vendors to clients, edit contact details, and organize everything in one centralized place. You will never lose track of which florist is working on which wedding or miss important client details after using KnotBook!
 
 * Table of Contents
-{:toc}
+  {:toc}
 --------------------------------------------------------------------------------------------------------------------
 ## Quick start
 
@@ -15,14 +15,14 @@ KnotBook is a desktop app designed exclusively for **wedding planners** to manag
 KnotBook needs Java 17 or newer to run. Think of Java as the engine that powers the app.
 
 1. **Check if you already have Java:**
-   - **Windows:** Open Command Prompt (search "cmd" in Start menu), type `java -version` and press Enter.
-   - **Mac:** Open Terminal (search "Terminal" in Spotlight) (open Spotlight by simply pressing Command + Spacebar), type `java -version` and press Enter.
-   - If you see "java version 17" or higher, you're good to go! Skip to Step 2.
-   - If you see an error or a lower version, continue below.
+    - **Windows:** Open Command Prompt (search "cmd" in Start menu), type `java -version` and press Enter.
+    - **Mac:** Open Terminal (search "Terminal" in Spotlight) (open Spotlight by simply pressing Command + Spacebar), type `java -version` and press Enter.
+    - If you see "java version 17" or higher, you're good to go! Skip to Step 2.
+    - If you see an error or a lower version, continue below.
 
 2. **Install Java 17:**
-   - **Windows/Linux:** Download from [Oracle](https://www.oracle.com/java/technologies/downloads/#java17)
-   - **Mac:** Follow [this guide](https://se-education.org/guides/tutorials/javaInstallationMac.html) for the exact version needed
+    - **Windows/Linux:** Download from [Oracle](https://www.oracle.com/java/technologies/downloads/#java17)
+    - **Mac:** Follow [this guide](https://se-education.org/guides/tutorials/javaInstallationMac.html) for the exact version needed
 
 ### Step 2: Download KnotBook
 1. Download the latest `KnotBook.jar` file from [our releases page](https://github.com/AY2526S1-CS2103T-T16-3/tp/releases): scroll down until you see the latest "Assets" section, then simply click on `KnotBook.jar` to download it
@@ -36,12 +36,12 @@ KnotBook needs Java 17 or newer to run. Think of Java as the engine that powers 
 
 **Command line way:**
 1. Open your command terminal:
-   - **Windows:** Search for "Command Prompt" or "PowerShell" in the Start menu
-   - **Mac:** Search for "Terminal" in Spotlight (Cmd + Space)
+    - **Windows:** Search for "Command Prompt" or "PowerShell" in the Start menu
+    - **Mac:** Search for "Terminal" in Spotlight (Cmd + Space)
 2. Navigate to your KnotBook folder:
-   - Type `cd ` (with a space after cd)
-   - Drag and drop your KnotBook folder into the terminal window
-   - Press Enter
+    - Type `cd ` (with a space after cd)
+    - Drag and drop your KnotBook folder into the terminal window
+    - Press Enter
 3. Run KnotBook by typing: `java -jar KnotBook.jar` and press Enter
 
 ### Step 4: Start Using KnotBook
@@ -61,7 +61,7 @@ The app window should appear in a few seconds with some sample wedding contacts 
 **Need more help?** Type `help` and press Enter to see detailed instructions for all commands!
 
 ### Step 5: Understanding Your Data
-- All your contact data is automatically saved in a file called `addressbook.json` in the `data` folder next to your `knotbook.jar`
+- All your contact data is automatically saved in a file called `addressbook.json` in the `data` folder next to your `KnotBook.jar`
 - You don't need to manually save - KnotBook saves automatically after every change
 - To backup your data, just copy the entire `data` folder to a safe location
 
@@ -78,7 +78,7 @@ Action | Format, Examples
 **Add Client** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS type/client w/WEDDING_DATE pr/PARTNER [budget/BUDGET]​` <br> e.g., `add n/John Doe p/98765432 e/johnd@example.com a/311 Clementi Ave type/client w/15-06-2026 pr/Jane Doe budget/10000`
 **Add Vendor** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS type/vendor [price/PRICE] [c/CATEGORY]​` <br> e.g., `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Rd type/vendor price/1500 c/florist`
 **List All Contacts** | `list`
-**Find a Contact** | `find KEYWORD`<br> e.g., `find John Blooming`
+**Find a Contact** | `find <keyword>`<br> e.g., `find John Blooming`
 **Filter by Category** | `cat CATEGORY`<br> e.g., `cat florist`
 **Edit Contact** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​`<br> e.g., `edit 2 p/91234567 budget/8000`
 **Delete Contact** | `delete INDEX`<br> e.g., `delete 3`
@@ -100,7 +100,7 @@ Action | Format, Examples
   e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
 
 * Items in square brackets are optional.<br>
-  e.g `n/NAME [c/CATEGORY]` can be used as `n/The Bloom Boutique c/florise` or as `n/The Bloom Boutique`.
+  e.g `n/NAME [c/CATEGORY]` can be used as `n/The Bloom Boutique c/florist` or as `n/The Bloom Boutique`.
 
 * For all commands, the command word is case-sensitive.
 
@@ -109,7 +109,7 @@ Action | Format, Examples
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
- 
+
 * Commands must be entered on a single line. Newlines are not supported.<br>
   If you copy a command that appears on multiple lines, join it into one line before pressing Enter.
   Pasting multi-line commands into the command box will fail; replace line breaks with spaces.
@@ -142,62 +142,66 @@ Format: `help`
 
 **Parameters:**
 * `n/NAME` - Contact name (required)
-  * Can contain alphanumeric characters, spaces, and special characters like commas (`,`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
-  * Must start with an alphanumeric character
-  * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
+    * Can contain alphanumeric characters, spaces, and special characters like commas (`,`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
+    * Must start with an alphanumeric character
+    * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
 * `p/PHONE` - Phone number (required)
-  * Must be exactly 8 digits
-  * No letters, spaces, hyphens, or other special characters allowed
-  * Example: `91234567`, `98765432`
+    * Must be exactly 8 digits
+    * No letters, spaces, hyphens, or other special characters allowed
+    * Example: `91234567`, `98765432`
 * `e/EMAIL` - Email address (required)
     * Must follow standard internet email format (specifically RFC 5322 standard), meaning:
-       * Must contain exactly one `@` symbol
-       * Must have a valid domain (e.g., `.com`, `.net`, `.sg`)
-       * No spaces
+        * Must contain exactly one `@` symbol
+        * Must have a valid domain (e.g., `.com`, `.net`, `.sg`)
+        * No spaces
     * Example: `john@example.com`, `contact.us@blooming-flowers.sg`
     * *Technical details:* KnotBook uses [Apache Commons Validator EmailValidator](https://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/EmailValidator.html)
 * `a/ADDRESS` - Physical address (required)
-  * Can contain any characters
-  * Example: `123 Orchard Road, #05-01`
+    * Can contain any characters
+    * Example: `123 Orchard Road, #05-01`
 * `type/TYPE` - Either `client` or `vendor` (required, case-insensitive)
 * `w/WEDDING_DATE` - Wedding date (required, for clients only)
-  * Accepts formats: `DD-MM-YYYY` or `YYYY-MM-DD`
-  * Must be a valid, real date whereby
-     * `DD` ranges from `01` to either `28` or `29` for February (depending on leap years), and to `30` or `31` (depending on the month) for other months
-     * `MM` ranges from `01` to `12`
-     * `YYYY` ranges from `0000` to `9999` (only four-digit years supported)
-  * Example: `15-06-2026` or `2026-06-15`
+    * Accepts formats: `DD-MM-YYYY` or `YYYY-MM-DD`
+    * Must be a valid, real date whereby
+        * `DD` ranges from `01` to either `28` or `29` for February (depending on leap years), and to `30` or `31` (depending on the month) for other months
+        * `MM` ranges from `01` to `12`
+        * `YYYY` ranges from `0000` to `9999` (only four-digit years supported)
+    * Example: `15-06-2026` or `2026-06-15`
 * `pr/PARTNER` - Partner name (required, for clients only)
-  * Can contain alphanumeric characters, spaces, and special characters like commas (`,`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
-  * Must start with an alphanumeric character
-  * Example: `Jane Wang`
+    * Can contain alphanumeric characters, spaces, and special characters like commas (`,`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
+    * Must start with an alphanumeric character
+    * Example: `Jane Wang`
 * `price/PRICE` - Vendor pricing (optional, for vendors only)
-  * Must be a positive integer (whole numbers only, no cents/decimals, no commas and no fullstops)
-  * Can be a single value (e.g., `1000`) or range (e.g., `1000-2000`)
-  * Range values must be separated by a hyphen with no spaces
-  * Maximum value: 999,999,999
+    * Must be a positive integer (whole numbers only, no cents/decimals, no commas and no fullstops)
+    * Can be a single value (e.g., `1000`) or range (e.g., `1000-2000`)
+    * Range values must be separated by a hyphen with no spaces
+    * Maximum value: 999,999,999
 * `budget/BUDGET` - Client budget (optional, for clients only)
-  * Must be a positive integer (whole numbers only, no cents/decimals, no commas and no fullstops)
-  * Can be a single value (e.g., `5000`) or range (e.g., `5000-10000`)
-  * Range values must be separated by a hyphen with no spaces
-  * Maximum value: 999,999,999
+    * Must be a positive integer (whole numbers only, no cents/decimals, no commas and no fullstops)
+    * Can be a single value (e.g., `5000`) or range (e.g., `5000-10000`)
+    * Range values must be separated by a hyphen with no spaces
+    * Maximum value: 999,999,999
 * `c/CATEGORY` - Category tags (optional, for vendors only)
-  * Must start with an alphanumeric character
-  * Can contain spaces, hyphens (`-`), ampersands (`&`), periods (`.`), apostrophes (`'`), slashes (`/`), and parentheses (`()`)
-  * Limit of 30 characters and a minimum of 2 characters
-  * Example: `makeup artist`, `photographer`
+    * Must start with an alphanumeric character
+    * Can contain spaces, hyphens (`-`), ampersands (`&`), periods (`.`), apostrophes (`'`), slashes (`/`), and parentheses (`()`)
+    * Limit of 30 characters and a minimum of 2 characters
+    * Example: `makeup artist`, `photographer`
 
 **Note:**
-* When you type in an `add` command after a `find` command, the displayed list will reset from the filtered results.
 * The name of the contact is case-sensitive so Blooming Bouquets and BLOOMING Bouquets are treated as 2 different contacts; Be careful in inputting names!
+* When you type in an `add` command after a `find` command, the displayed list will reset from the filtered results.
 
 **Duplicate contacts:**
-* If a new contact has a phone that already exists in KnotBook, the add will be rejected. This is because we assume each person has a unique phone number. 
+* If a new contact has a phone that already exists in KnotBook, the add will be rejected. This is because we assume each person has a unique phone number.
 * Clients and vendors share the same pool. You can’t have a client and a vendor with the same phone number.
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tips:**
-- For clients (wedding couples), wedding date and partner name is required. You can also include their budget.
-- For vendors (service providers), you may include pricing and use categories to classify them (e.g., `florist`, `makeup artist`, `photographer`)
+<div markdown="block" class="alert alert-primary">
+
+:bulb: **Tips:**
+
+* For **clients** (wedding couples), wedding date and partner name are required. You can also include their budget.
+* For **vendors** (service providers), you may include pricing and use categories to classify them (e.g., `florist`, `makeup artist`, `photographer`).
+
 </div>
 
 **Examples:**
@@ -211,7 +215,7 @@ Format: `help`
 
 Shows a list of all contacts (both clients and vendors) in KnotBook.
 
-Format: `list` 
+Format: `list`
 
 **Example:**
 * `list` - Displays all your wedding contacts
@@ -243,7 +247,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [p
 
 Looking for a specific client or vendor? Quickly search by name - and for clients, the search also checks the partner’s name - with this handy command!
 
-Format: `find KEYWORD`
+Format: `find <keyword>`
 
 **How it works:**
 * The search is case-insensitive (e.g., `hans` will match `Hans`)
@@ -254,13 +258,15 @@ Format: `find KEYWORD`
 **Examples:**
 * `find tan` - Returns contacts like `Alex Tan`, `Tan Wei Ling`; also matches a client whose partner is Tan Jun Hao.
 * `find ch` - Returns `Charlotte K Photography`; also matches a client whose partner is `Jack Chia`.<br>
-![find.png](images/find.png)
+  ![find.png](images/find.png)
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tips:**
-<ul>
-  <li>After using <code>find</code>, run <code>list</code> to show all contacts again.</li>
-  <li><code>link</code>/<code>unlink</code> use the currently displayed list - if unsure, <code>list</code> first.</li>
-</ul>
+<div markdown="block" class="alert alert-primary">
+
+:bulb: **Tips:**
+
+* After using `find`, run `list` to show all contacts again.
+* `link`/`unlink` use the currently displayed list - if unsure, `list` first.
+
 </div>
 
 
@@ -279,17 +285,18 @@ Format: `cat CATEGORY`
 * `cat florist` - Shows all vendors categorized as florist
 * `cat photographer` - Shows all photographers
 * `cat caterer` - Shows all catering services
-![cat.png](images/cat.png)
+  ![cat.png](images/cat.png)
 
-<div markdown="span" class="alert alert-primary">:bulb: <strong>Tips:</strong>
-  <ul>
-    <li><strong>Only vendors</strong> have categories - clients won’t show up in <code>cat</code> results.</li>
-    <li>Category matching is <strong>case-insensitive</strong>.</li>
-    <li>In a filtered view (after <code>cat</code> or <code>find</code>), commands like <code>delete INDEX</code> use the index from the <em>filtered list</em>.</li>
-    <li>To reset the view, run <code>list</code>.</li>
-  </ul>
+<div markdown="block" class="alert alert-primary">
+
+:bulb: **Tips:**
+
+* **Only vendors** have categories - clients won’t show up in `cat` results.
+* Category matching is **case-insensitive**.
+* In a filtered view (after `cat` or `find`), commands like `delete INDEX` use the index from the *filtered list*.
+* To reset the view, run `list`.
+
 </div>
-
 
 ### Linking a vendor to a client : `link` 🔗
 
@@ -299,8 +306,8 @@ Format: `link client/CLIENT_INDEX vendor/VENDOR_INDEX`
 
 **How it works:**
 * Links the client at `CLIENT_INDEX` with the vendor at `VENDOR_INDEX`
-* Both indexes refer to the numbers shown in the currently displayed list
-* Both indexes **must be a positive integer** (1, 2, 3, …) and **must not exceed the total number of contacts** in the displayed list
+* Both indices refer to the numbers shown in the currently displayed list
+* Both indices **must be a positive integer** (1, 2, 3, …) and **must not exceed the total number of contacts** in the displayed list
 * Helps you track which vendors are assigned to which weddings
 
 **Examples:**
@@ -324,19 +331,24 @@ Format: `unlink client/CLIENT_INDEX vendor/VENDOR_INDEX`
 * `unlink client/1 vendor/3` - Removes the link between the client at index 1 and vendor at index 3
 * `unlink client/2 vendor/5` - Removes the link between the client at index 2 and vendor at index 5
 
-<div markdown="span" class="alert alert-warning">:exclamation: <strong>Warning:</strong>
-Both <code>CLIENT_INDEX</code> and <code>VENDOR_INDEX</code> refer to the <em>currently displayed</em> list (after <code>find</code> or <code>cat</code> as well). 
-Ensure the chosen indices point to a <strong>client</strong> and a <strong>vendor</strong> respectively, or the command will fail.
+<div markdown="block" class="alert alert-warning">
+
+:exclamation: **Warning:**  
+Both `CLIENT_INDEX` and `VENDOR_INDEX` refer to the **currently displayed** list (including after `find` or `cat`).  
+Ensure the chosen indices point to a **client** and a **vendor** respectively, or the command will fail.
+
 </div>
 
-<div markdown="span" class="alert alert-primary">:bulb: <strong>Tips for link/unlink:</strong>
-<ul>
-  <li>After using <code>find</code> or <code>cat</code>, run <code>list</code> to reset the view if you’re unsure about indices.</li>
-  <li>You can pick indices from any filtered view (e.g., <code>find tan</code> then <code>link client/1 vendor/2</code>) - the indices come from that filtered list.</li>
-  <li><strong>link:</strong> If the client and vendor are already linked, running <code>link</code> again will show an “already linked” message.</li>
-  <li><strong>unlink:</strong> If the pair isn’t currently linked, <code>unlink</code> will show a “not linked” message.</li>
-  <li>Both commands update <em>both</em> records (the client’s linked vendors and the vendor’s linked clients stay in sync).</li>
-</ul>
+<div markdown="block" class="alert alert-primary">
+
+:bulb: **Tips for link/unlink:**
+
+* After `find` or `cat`, run `list` if you’re unsure about indices.
+* You can pick indices from any filtered view (e.g., `find tan` then `link client/1 vendor/2`) - the indices come from that filtered list.
+* **link:** If the client and vendor are already linked, you’ll see an “already linked” message.
+* **unlink:** If the pair isn’t currently linked, you’ll see a “not linked” message.
+* Both commands update *both* records (the client’s linked vendors and the vendor’s linked clients stay in sync).
+
 </div>
 
 ### Deleting a contact : `delete` 🗑️
@@ -350,14 +362,19 @@ Format: `delete INDEX`
 * The index refers to the number shown in the currently displayed contact list
 * The index **must be a positive integer** (1, 2, 3, …) and **must not exceed the total number of contacts** in the displayed list
 
-<div markdown="span" class="alert alert-warning">:exclamation: **Warning:**
+<div markdown="block" class="alert alert-warning">
+
+:exclamation: **Warning:**  
 This action cannot be undone! Make sure you're deleting the right contact.
+
 </div>
 
-<div markdown="span" class="alert alert-primary">:bulb: <strong>Tips:</strong>
-<ul>
-  <li>Indices refer to the <em>currently displayed</em> list (after <code>find</code>, <code>cat</code>, etc.).</li>
-</ul>
+<div markdown="block" class="alert alert-primary">
+
+:bulb: **Tips:**
+* Indices refer to the *currently displayed* list (after `find`, `cat`, etc.).
+* If you're unsure about indices, run `list` to reset the view before deleting.
+
 </div>
 
 **Examples:**
@@ -372,7 +389,7 @@ Need a clean slate? This command deletes ALL contacts from KnotBook at once.
 Format: `clear`
 
 <div markdown="span" class="alert alert-warning">:exclamation: **Warning:**
-This will delete ALL your contacts permanently! Make sure to backup your data first.
+This will delete ALL your contacts permanently! Make sure to back up your data first.
 </div>
 
 ### Exiting the program : `exit` 👋
