@@ -18,7 +18,7 @@ Class Address
 Class Email
 Class Name
 Class Phone
-Class Tag
+Class Category
 Class WeddingDate
 Class PersonType
 Class Price
@@ -46,7 +46,7 @@ Person *--> Name
 Person *--> Phone
 Person *--> Email
 Person *--> Address
-Person *--> "*" Tag
+Person *--> "*" Category
 Person *--> WeddingDate
 Person *--> PersonType
 Person *--> Price
