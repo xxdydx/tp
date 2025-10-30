@@ -28,6 +28,8 @@ public class Person {
 
     public static final String MSG_TAGS_FORBIDDEN_FOR_CLIENT = "Categories are not allowed for clients. "
             + "Only vendors can have categories.";
+    public static final String MSG_MAX_ONE_CATEGORY_FOR_VENDOR =
+              "Vendors can have at most one category.";
 
     // Identity fields
     private final Name name;
@@ -233,7 +235,8 @@ public class Person {
         if (type == PersonType.CLIENT) {
             return categories.isEmpty();
         }
-        return true; // Vendors can have categories
+        // Vendors can have at most 1 category
+        return categories.size() <= 1;
     }
 
     /**

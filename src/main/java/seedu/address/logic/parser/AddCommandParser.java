@@ -110,6 +110,11 @@ public class AddCommandParser implements Parser<AddCommand> {
             throw new ParseException(Person.MSG_TAGS_FORBIDDEN_FOR_CLIENT);
         }
 
+        // Validate that vendors have at most 1 category
+        if (type == PersonType.VENDOR && categoryList.size() > 1) {
+            throw new ParseException(Person.MSG_MAX_ONE_CATEGORY_FOR_VENDOR);
+        }
+
         // required iff type == CLIENT
         Optional<Partner> partner = Optional.empty();
         if (argMultimap.getValue(PREFIX_PARTNER).isPresent()) {
