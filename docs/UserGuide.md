@@ -16,23 +16,23 @@ KnotBook is a desktop app designed exclusively for **wedding planners** to manag
 KnotBook needs Java 17 or newer to run. Think of Java as the engine that powers the app.
 
 1. **Check if you already have Java:**
-   - **Windows:** Open Command Prompt (search "cmd" in Start menu), type `java -version` and press Enter
-   - **Mac:** Open Terminal (search "Terminal" in Spotlight), type `java -version` and press Enter
+   - **Windows:** Open Command Prompt (search "cmd" in Start menu), type `java -version` and press Enter.
+   - **Mac:** Open Terminal (search "Terminal" in Spotlight) (open Spotlight by simply pressing Command + Spacebar), type `java -version` and press Enter.
    - If you see "java version 17" or higher, you're good to go! Skip to Step 2.
    - If you see an error or a lower version, continue below.
 
 2. **Install Java 17:**
-   - **Windows/Linux:** Download from [Oracle](https://www.oracle.com/java/technologies/downloads/#java17) or [Adoptium](https://adoptium.net/)
+   - **Windows/Linux:** Download from [Oracle](https://www.oracle.com/java/technologies/downloads/#java17)
    - **Mac:** Follow [this guide](https://se-education.org/guides/tutorials/javaInstallationMac.html) for the exact version needed
 
 ### Step 2: Download KnotBook
-1. Download the latest `knotbook.jar` file from [our releases page](https://github.com/AY2526S1-CS2103T-T16-3/tp/releases)
+1. Download the latest `KnotBook.jar` file from [our releases page](https://github.com/AY2526S1-CS2103T-T16-3/tp/releases): scroll down until you see the latest "Assets" section, then simply click on `KnotBook.jar` to download it
 2. Create a new folder on your computer where you want to keep KnotBook and all its data (e.g., `Documents/KnotBook`)
-3. Move the downloaded `knotbook.jar` file into this folder
+3. Move the downloaded `KnotBook.jar` file into this folder
 
 ### Step 3: Run KnotBook
 **Easy way (Double-click):**
-- Simply double-click the `knotbook.jar` file
+- Simply double-click the `KnotBook.jar` file
 - If this doesn't work, try the command line method below
 
 **Command line way:**
@@ -67,7 +67,7 @@ The app window should appear in a few seconds with some sample wedding contacts 
 - To backup your data, just copy the entire `data` folder to a safe location
 
 <div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
-IMPORTANT: Take note that you should never edit the JSON file in your directory directly.
+IMPORTANT: Take note that you should only use our app to edit your data and never edit the JSON file in your directory directly.
 </div>
 
 --------------------------------------------------------------------------------------------------------------------
@@ -122,8 +122,6 @@ Action | Format, Examples
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </div>
 
-* The limit of the command length is 2000 characters. Anything beyond that might cause the app to crash.
-
 ### Viewing help : `help` 💡
 
 Opens a help window with detailed information about all available commands in an easy-to-navigate accordion interface.
@@ -137,7 +135,7 @@ Format: `help`
 ### Adding a contact: `add` 👯‍♀️
 
 * Clients: When a new couple signs with you, use this to create their client profile in KnotBook!
-* Vendors: When you onboard a vendor (e.g., photographer, florist, venue), use this to add their vendor profile!
+* Vendors: When you onboard a vendor (e.g., photographer, florist, venue), use this command to add their vendor profile!
 
 **Format for adding a client:**
 `add n/NAME p/PHONE e/EMAIL a/ADDRESS type/client w/WEDDING_DATE pr/PARTNER [budget/BUDGET]​`
@@ -148,17 +146,17 @@ Format: `help`
 **Parameters:**
 * `n/NAME` - Contact name (required)
   * Can contain alphanumeric characters, spaces, and special characters like commas (`,`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
+  * Must start with an alphanumeric character
   * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
 * `p/PHONE` - Phone number (required)
   * Must be exactly 8 digits
-  * Only Singapore phone numbers are accepted
-  * No spaces, hyphens, or other formatting characters allowed
+  * No letters, spaces, hyphens, or other special characters allowed
   * Example: `91234567`, `98765432`
 * `e/EMAIL` - Email address (required)
-    * Must follow standard internet email format (RFC 5322)
-    * Must contain exactly one `@` symbol
-    * Must have a valid domain (e.g., `.com`, `.net`, `.sg`)
-    * No spaces or special symbols not allowed in real email addresses
+    * Must follow standard internet email format (specifically RFC 5322 standard), meaning:
+       * Must contain exactly one `@` symbol
+       * Must have a valid domain (e.g., `.com`, `.net`, `.sg`)
+       * No spaces
     * Example: `john@example.com`, `contact.us@blooming-flowers.sg`
     * *Technical details:* KnotBook uses [Apache Commons Validator EmailValidator](https://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/EmailValidator.html)
 * `a/ADDRESS` - Physical address (required)
@@ -167,26 +165,29 @@ Format: `help`
 * `type/TYPE` - Either `client` or `vendor` (required, case-insensitive)
 * `w/WEDDING_DATE` - Wedding date (required, for clients only)
   * Accepts formats: `DD-MM-YYYY` or `YYYY-MM-DD`
-  * Must be a valid date
+  * Must be a valid, real date whereby
+     * `DD` ranges from `01` to either `28` or `29` for February (depending on leap years), and to `30` or `31` (depending on the month) for other months
+     * `MM` ranges from `01` to `12`
+     * `YYYY` ranges from `0000` to `9999` (only four-digit years supported)
   * Example: `15-06-2026` or `2026-06-15`
 * `pr/PARTNER` - Partner name (required, for clients only)
   * Can contain alphanumeric characters, spaces, and special characters like commas (`,`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
+  * Must start with an alphanumeric character
   * Example: `Jane Wang`
 * `price/PRICE` - Vendor pricing (optional, for vendors only)
-  * Must be a positive integer (whole numbers only, no cents/decimals)
-  * No commas or periods allowed
+  * Must be a positive integer (whole numbers only, no cents/decimals, no commas and no fullstops)
   * Can be a single value (e.g., `1000`) or range (e.g., `1000-2000`)
   * Range values must be separated by a hyphen with no spaces
-  * Maximum value: 10,000,000,000
+  * Maximum value: 999,999,999
 * `budget/BUDGET` - Client budget (optional, for clients only)
   * Must be a positive integer (whole numbers only, no cents/decimals, no commas and no fullstops)
   * Can be a single value (e.g., `5000`) or range (e.g., `5000-10000`)
   * Range values must be separated by a hyphen with no spaces
-  * Maximum value: 10,000,000,000
+  * Maximum value: 999,999,999
 * `c/CATEGORY` - Category tags (optional, for vendors only)
   * Must start with an alphanumeric character
   * Can contain spaces, hyphens (`-`), ampersands (`&`), periods (`.`), apostrophes (`'`), slashes (`/`), and parentheses (`()`)
-  * Limit of 30 characters
+  * Limit of 30 characters and a minimum of 2 characters
   * Example: `makeup artist`, `photographer`
 
 **Note:**
@@ -194,9 +195,7 @@ Format: `help`
 * The name of the contact is case-sensitive so Blooming Bouquets and BLOOMING Bouquets are treated as 2 different contacts; Be careful in inputting names!
 
 **Duplicate contacts:**
-* Exact same phone number = duplicate. If a new contact has a phone that already exists in KnotBook, the add will be rejected. 
-* Name, email, address, categories, etc. do not affect duplicate checks. 
-  * “John Doe” and “JoHn DoE” are allowed only if their phone numbers differ; if the phones are the same, it’s a duplicate.
+* If a new contact has a phone that already exists in KnotBook, the add will be rejected. This is because we assume each person has a unique phone number. 
 * Clients and vendors share the same pool. You can’t have a client and a vendor with the same phone number.
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tips:**
@@ -257,7 +256,7 @@ Format: `find KEYWORD`
 
 **Examples:**
 * `find tan` - Returns contacts like `Alex Tan`, `Tan Wei Ling`; also matches a client whose partner is Tan Jun Hao.
-* `find ch` - Returns `Charlotte K Photography`; also matches a client whose partner is Jack Chia.<br>
+* `find ch` - Returns `Charlotte K Photography`; also matches a client whose partner is `Jack Chia`.<br>
 ![find.png](images/find.png)
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tips:**
@@ -290,7 +289,7 @@ Format: `cat CATEGORY`
     <li><strong>Only vendors</strong> have categories - clients won’t show up in <code>cat</code> results.</li>
     <li>Category matching is <strong>case-insensitive</strong>.</li>
     <li>In a filtered view (after <code>cat</code> or <code>find</code>), commands like <code>delete INDEX</code> use the index from the <em>filtered list</em>.</li>
-    <li>To reset the view, run <code>list</code> before taking actions like <code>delete</code>, <code>link</code>, or <code>unlink</code>.</li>
+    <li>To reset the view, run <code>list</code>.</li>
   </ul>
 </div>
 
@@ -325,8 +324,8 @@ Format: `unlink client/CLIENT_INDEX vendor/VENDOR_INDEX`
 * Useful when a vendor is changed or a service is cancelled
 
 **Examples:**
-* `unlink client/1 vendor/3` - Removes the link between the 1st client and 3rd vendor
-* `unlink client/2 vendor/5` - Removes the link between the 2nd client and 5th vendor
+* `unlink client/1 vendor/3` - Removes the link between the client at index 1 and vendor at index 3
+* `unlink client/2 vendor/5` - Removes the link between the client at index 2 and vendor at index 3
 
 <div markdown="span" class="alert alert-warning">:exclamation: <strong>Warning:</strong>
 Both <code>CLIENT_INDEX</code> and <code>VENDOR_INDEX</code> refer to the <em>currently displayed</em> list (after <code>find</code> or <code>cat</code> as well). 
