@@ -41,7 +41,7 @@ public class EditCommandParser implements Parser<EditCommand> {
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
-                PREFIX_ADDRESS, PREFIX_TYPE, PREFIX_PRICE, PREFIX_BUDGET,
+                PREFIX_ADDRESS, PREFIX_PRICE, PREFIX_BUDGET, PREFIX_TYPE,
                 PREFIX_WEDDING_DATE, PREFIX_CATEGORY, PREFIX_PARTNER);
 
         Index index;
@@ -53,7 +53,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                PREFIX_WEDDING_DATE, PREFIX_TYPE, PREFIX_PRICE, PREFIX_BUDGET, PREFIX_PARTNER);
+                PREFIX_WEDDING_DATE, PREFIX_PRICE, PREFIX_BUDGET, PREFIX_PARTNER);
 
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
 
@@ -70,17 +70,11 @@ public class EditCommandParser implements Parser<EditCommand> {
             editPersonDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
         }
         if (argMultimap.getValue(PREFIX_WEDDING_DATE).isPresent()) {
-            String weddingDateValue = argMultimap.getValue(PREFIX_WEDDING_DATE).get().trim();
-            if (weddingDateValue.isEmpty()) {
-                // Empty wedding date - set to null to indicate removal
-                editPersonDescriptor.setWeddingDate(null);
-            } else {
-                editPersonDescriptor.setWeddingDate(ParserUtil.parseWeddingDate(weddingDateValue));
-            }
+            editPersonDescriptor.setWeddingDate(ParserUtil.parseWeddingDate(argMultimap
+                    .getValue(PREFIX_WEDDING_DATE).get()));
         }
         if (argMultimap.getValue(PREFIX_TYPE).isPresent()) {
-            editPersonDescriptor.setType(ParserUtil.parsePersonType(argMultimap.getValue(
-                    PREFIX_TYPE).get()));
+            throw new ParseException(EditCommand.MESSAGE_TYPE_IMMUTABLE);
         }
         if (argMultimap.getValue(PREFIX_PRICE).isPresent()) {
             editPersonDescriptor.setPrice(ParserUtil.parsePrice(argMultimap.getValue(PREFIX_PRICE).get()));
@@ -97,23 +91,8 @@ public class EditCommandParser implements Parser<EditCommand> {
                 .ifPresent(editPersonDescriptor::setCategories);
 
         if (argMultimap.getValue(PREFIX_WEDDING_DATE).isPresent()) {
-            String weddingDateValue = argMultimap.getValue(PREFIX_WEDDING_DATE).get().trim();
-
-            // If type is being changed to vendor and wedding date is provided (not empty)
-            if (editPersonDescriptor.getType().isPresent()
-                    && editPersonDescriptor.getType().get() == PersonType.VENDOR) {
-                if (!weddingDateValue.isEmpty()) {
-                    throw new ParseException(Person.MSG_WEDDING_DATE_FORBIDDEN_FOR_VENDOR);
-                }
-            }
-
-            // If wedding date is being removed (empty) and type is being changed to client
-            if (editPersonDescriptor.getType().isPresent()
-                    && editPersonDescriptor.getType().get() == PersonType.CLIENT) {
-                if (weddingDateValue.isEmpty()) {
-                    throw new ParseException(Person.MSG_WEDDING_DATE_REQUIRED_FOR_CLIENT);
-                }
-            }
+            editPersonDescriptor.setWeddingDate(ParserUtil.parseWeddingDate(argMultimap
+                    .getValue(PREFIX_WEDDING_DATE).get()));
         }
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {

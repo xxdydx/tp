@@ -123,6 +123,7 @@ public class UnlinkCommand extends Command {
                     person.getCategories(),
                     updatedLinks,
                     person.getPrice().orElse(null),
+                    person.getBudget().orElse(null),
                     person.getPartner());
         }
     }

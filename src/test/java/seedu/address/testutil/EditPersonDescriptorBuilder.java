@@ -13,7 +13,6 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Partner;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
 
@@ -42,7 +41,6 @@ public class EditPersonDescriptorBuilder {
         descriptor.setEmail(person.getEmail());
         descriptor.setAddress(person.getAddress());
         descriptor.setWeddingDate(person.getWeddingDate().orElse(null));
-        descriptor.setType(person.getType());
         descriptor.setPrice(person.getPrice().orElse(null));
         descriptor.setBudget(person.getBudget().orElse(null));
         descriptor.setPartner(person.getPartner().orElse(null));

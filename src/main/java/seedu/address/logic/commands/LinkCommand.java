@@ -123,6 +123,7 @@ public class LinkCommand extends Command {
                     person.getCategories(),
                     updatedLinks,
                     person.getPrice().orElse(null),
+                    person.getBudget().orElse(null),
                     person.getPartner());
         }
     }
