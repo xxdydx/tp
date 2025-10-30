@@ -111,7 +111,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         }
 
         // Validate that vendors have at most 1 category
-        if (type == PersonType.VENDOR && tagList.size() > 1) {
+        if (type == PersonType.VENDOR && categoryList.size() > 1) {
             throw new ParseException(Person.MSG_MAX_ONE_CATEGORY_FOR_VENDOR);
         }
 

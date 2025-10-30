@@ -236,7 +236,7 @@ public class Person {
             return categories.isEmpty();
         }
         // Vendors can have at most 1 category
-        return tags.size() <= 1;
+        return categories.size() <= 1;
     }
 
     /**

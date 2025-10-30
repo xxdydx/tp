@@ -168,7 +168,7 @@ public class EditCommand extends Command {
         }
 
         // Validate that vendors have at most 1 category
-        if (unchangedType == PersonType.VENDOR && updatedTags.size() > 1) {
+        if (unchangedType == PersonType.VENDOR && updatedCategories.size() > 1) {
             throw new CommandException(Person.MSG_MAX_ONE_CATEGORY_FOR_VENDOR);
         }
 
