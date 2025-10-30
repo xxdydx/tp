@@ -128,10 +128,7 @@ Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/TYPE [price/PR
   * No spaces, hyphens, or other formatting characters allowed
   * Example: `91234567`, `98765432`
 * `e/EMAIL` - Email address (required)
-  * Must be in valid email format: `local-part@domain`
-  * Local part should only contain alphanumeric characters and these special characters: `+`, `_`, `.`, `-`
-  * Local part cannot start or end with special characters
-  * Domain must have at least 2 characters and contain only alphanumeric characters, periods, and hyphens
+  * Email addresses must use standard internet email rules—KnotBook checks emails using a validator that follows the general requirements of RFC 5322 and common email providers. The email must contain one @, a valid domain (like .com, .net), and no spaces or special symbols not allowed in real email addresses.For more technical details, see:[Apache Commons Validator EmailValidator Documentation](https://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/EmailValidator.html)
   * Example: `john@example.com`, `contact.us@blooming-flowers.sg`
 * `a/ADDRESS` - Physical address (required)
   * Can contain any characters
