@@ -120,14 +120,39 @@ Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/TYPE [price/PR
 
 **Parameters:**
 * `n/NAME` - Contact name (required)
-* `p/PHONE` - Phone number, must be 8 digits (required)
+  * Can contain alphanumeric characters, spaces, and special characters like commas (`,`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
+  * Example: `John & Mary`, `O'Brien Catering`, `Flowers, Etc.`
+* `p/PHONE` - Phone number (required)
+  * Must be exactly 8 digits
+  * Only Singapore phone numbers are accepted
+  * No spaces, hyphens, or other formatting characters allowed
+  * Example: `91234567`, `98765432`
 * `e/EMAIL` - Email address (required)
+  * Must be in valid email format: `local-part@domain`
+  * Local part should only contain alphanumeric characters and these special characters: `+`, `_`, `.`, `-`
+  * Local part cannot start or end with special characters
+  * Domain must have at least 2 characters and contain only alphanumeric characters, periods, and hyphens
+  * Example: `john@example.com`, `contact.us@blooming-flowers.sg`
 * `a/ADDRESS` - Physical address (required)
-* `w/WEDDING_DATE` - Wedding date in DD-MM-YYYY format (required)
-* `type/TYPE` - Either `client` or `vendor` (required)
-* `price/PRICE` - Vendor pricing, can be a single value or range like `1000-2000` (optional, for vendors)
-* `budget/BUDGET` - Client budget, can be a single value or range like `5000-10000` (optional, for clients)
-* `t/TAG` - Category tags like `florist`, `photographer`, `friends` (optional, can have multiple)
+  * Can contain any characters
+* `w/WEDDING_DATE` - Wedding date (required)
+  * Accepts formats: `DD-MM-YYYY` or `YYYY-MM-DD`
+  * Must be a valid date
+  * Example: `15-06-2026` or `2026-06-15`
+* `type/TYPE` - Either `client` or `vendor` (required, case-insensitive)
+* `price/PRICE` - Vendor pricing (optional, for vendors only)
+  * Must be a positive integer (whole numbers only, no cents/decimals)
+  * Can be a single value (e.g., `1000`) or range (e.g., `1000-2000`)
+  * Range values must be separated by a hyphen with no spaces
+  * Maximum value: 2,147,483,647
+* `budget/BUDGET` - Client budget (optional, for clients only)
+  * Must be a positive integer (whole numbers only, no cents/decimals)
+  * Can be a single value (e.g., `5000`) or range (e.g., `5000-10000`)
+  * Range values must be separated by a hyphen with no spaces
+  * Maximum value: 2,147,483,647
+* `t/TAG` - Category tags (optional, can have multiple)
+  * Can only contain alphanumeric characters (no spaces or special characters)
+  * Example: `florist`, `photographer`, `friends`, `vip`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tips:**
 * For clients (wedding couples), include their wedding date and budget
@@ -315,7 +340,6 @@ _Details coming soon ..._
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
-3. **Phone numbers** must be 8 digits. If you need to store international numbers with special characters, you may need to remove the formatting (e.g., use `6591234567` instead of `+65 9123 4567`).
 
 --------------------------------------------------------------------------------------------------------------------
 
