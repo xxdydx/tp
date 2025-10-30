@@ -117,4 +117,26 @@ public class JsonSerializableAddressBookTest {
         assertTrue(vendorModel.isLinkedTo(clientModel));
     }
 
+    @Test
+    public void toModelType_nonexistentLinkedNames_ignoredGracefully() throws Exception {
+        JsonAdaptedPerson client = makeClient("Client D", "44444444");
+        // Link to a name that does not exist along with one that does
+        JsonAdaptedPerson vendor = makeVendor("Vendor W", "55555555",
+                Arrays.asList("Missing Name", "Client D"));
+
+        JsonSerializableAddressBook book = new JsonSerializableAddressBook(Arrays.asList(client, vendor));
+        AddressBook model = book.toModelType();
+
+        assertEquals(2, model.getPersonList().size());
+        Person clientModel = model.getPersonList().stream()
+                .filter(p -> p.getName().fullName.equals("Client D"))
+                .findFirst().orElseThrow();
+        Person vendorModel = model.getPersonList().stream()
+                .filter(p -> p.getName().fullName.equals("Vendor W"))
+                .findFirst().orElseThrow();
+
+        // The missing name should be ignored, but the existing one should be linked
+        assertTrue(vendorModel.isLinkedTo(clientModel));
+    }
+
 }
