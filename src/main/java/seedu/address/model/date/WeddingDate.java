@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.Locale;
 
@@ -14,7 +15,11 @@ import java.util.Locale;
 public class WeddingDate {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Invalid wedding date. Use DD-MM-YYYY (e.g., 12-10-2025) or YYYY-MM-DD (e.g., 2025-10-12).";
+            "Invalid wedding date format. Use DD-MM-YYYY (e.g., 12-10-2025) or YYYY-MM-DD (e.g., 2025-10-12).";
+
+    public static final String MESSAGE_INVALID_DATE_VALUES =
+            "Invalid date values. Please check that day, month, and year are valid "
+            + "(e.g., day should be 1-31, month should be 1-12).";
 
     private static final DateTimeFormatter DMY_DASH = new DateTimeFormatterBuilder()
             .parseStrict()
@@ -40,9 +45,20 @@ public class WeddingDate {
     public static WeddingDate parse(String input) {
         requireNonNull(input);
         String s = input.trim().replaceAll("\\s+", " ");
+
+        // Check if input matches DD-MM-YYYY or YYYY-MM-DD format pattern
+        boolean matchesDmyFormat = s.matches("\\d{2}-\\d{2}-\\d{4}");
+        boolean matchesIsoFormat = s.matches("\\d{4}-\\d{2}-\\d{2}");
+
+        if (!matchesDmyFormat && !matchesIsoFormat) {
+            throw new IllegalArgumentException(MESSAGE_CONSTRAINTS);
+        }
+
+        // Try to parse the date
         LocalDate parsed = tryParse(s);
         if (parsed == null) {
-            throw new IllegalArgumentException(MESSAGE_CONSTRAINTS);
+            // Format is correct but date values are invalid
+            throw new IllegalArgumentException(MESSAGE_INVALID_DATE_VALUES);
         }
         return new WeddingDate(parsed);
     }
@@ -50,13 +66,13 @@ public class WeddingDate {
     private static LocalDate tryParse(String s) {
         try {
             return LocalDate.parse(s, DMY_DASH);
-        } catch (Exception ignore) {
+        } catch (DateTimeParseException ignore) {
             /* try next accepted format */
         }
 
         try {
             return LocalDate.parse(s, ISO);
-        } catch (Exception ignore) {
+        } catch (DateTimeParseException ignore) {
             /* no more formats to try */
         }
 

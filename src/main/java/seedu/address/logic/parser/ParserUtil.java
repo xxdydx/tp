@@ -142,7 +142,7 @@ public class ParserUtil {
         try {
             return WeddingDate.parse(weddingDate);
         } catch (IllegalArgumentException ex) {
-            throw new ParseException(WeddingDate.MESSAGE_CONSTRAINTS);
+            throw new ParseException(ex.getMessage());
         }
     }
 

@@ -151,7 +151,7 @@ class JsonAdaptedPerson {
             try {
                 modelWeddingDate = WeddingDate.parse(weddingDate);
             } catch (IllegalArgumentException e) {
-                throw new IllegalValueException(WeddingDate.MESSAGE_CONSTRAINTS);
+                throw new IllegalValueException(e.getMessage());
             }
         }
 
