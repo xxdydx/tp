@@ -3,7 +3,11 @@ layout: page
 title: User Guide
 ---
 
-KnotBook is a **desktop app for wedding planners to manage client and vendor contacts**. It's optimized for use via typing commands (Command Line Interface/CLI) while still having the benefits of a visual interface (Graphical User Interface/GUI). If you can type fast, KnotBook can help you manage your wedding planning contacts faster than traditional apps with lots of clicking.
+KnotBook is a **desktop app for wedding p* Items in square brackets are optional.<br>
+  e.g `n/NAME [c/CATEGORY]` can be used as `n/John Doe c/florist` or as `n/John Doe`.
+
+* Items with `…`​ after them can be used multiple times including zero times.<br>
+  e.g. `[c/CATEGORY]…​` can be used as ` ` (i.e. 0 times), `c/florist`, `c/florist c/premium` etc.rs to manage client and vendor contacts**. It's optimized for use via typing commands (Command Line Interface/CLI) while still having the benefits of a visual interface (Graphical User Interface/GUI). If you can type fast, KnotBook can help you manage your wedding planning contacts faster than traditional apps with lots of clicking.
 
 * Table of Contents
 {:toc}
@@ -56,8 +60,8 @@ The app window should appear in a few seconds with some sample wedding contacts 
 * `help` - Opens a help window showing all available commands
 * `list` - Shows all your contacts (clients and vendors)
 * `cat florist` - Shows only florist vendors
-* `add n/Jane Smith p/91234567 e/jane@flowers.com a/123 Orchard Road type/vendor price/1500 t/florist` - Adds a new florist vendor
-* `add n/John & Mary p/98765432 e/john@example.com a/311 Clementi Ave w/15-06-2026 type/client budget/10000 t/friends` - Adds a new client couple
+* `add n/Jane Smith p/91234567 e/jane@flowers.com a/123 Orchard Road type/vendor price/1500 c/florist` - Adds a new florist vendor
+* `add n/John & Mary p/98765432 e/john@example.com a/311 Clementi Ave w/15-06-2026 type/client budget/10000` - Adds a new client couple
 * `delete 3` - Deletes the 3rd contact in the current list
 * `exit` - Closes the app
 
@@ -116,7 +120,7 @@ Format: `help`
 
 Adds a client or vendor contact to KnotBook.
 
-Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/TYPE [price/PRICE] [budget/BUDGET] [t/TAG]…​`
+Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/TYPE [price/PRICE] [budget/BUDGET] [c/CATEGORY]…​`
 
 **Parameters:**
 * `n/NAME` - Contact name (required)
@@ -127,20 +131,20 @@ Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/TYPE [price/PR
 * `type/TYPE` - Either `client` or `vendor` (required)
 * `price/PRICE` - Vendor pricing, can be a single value or range like `1000-2000` (optional, for vendors)
 * `budget/BUDGET` - Client budget, can be a single value or range like `5000-10000` (optional, for clients)
-* `t/TAG` - Category tags like `florist`, `photographer`, `friends` (optional, can have multiple)
+* `c/CATEGORY` - Category labels like `florist`, `photographer`, `premium` (optional, can have multiple)
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tips:**
 * For clients (wedding couples), include their wedding date and budget
-* For vendors (service providers), include pricing and use tags to categorize them (e.g., `florist`, `caterer`, `photographer`)
-* You can add multiple tags by repeating `t/TAG`
+* For vendors (service providers), include pricing and use categories to classify them (e.g., `florist`, `caterer`, `photographer`)
+* You can add multiple categories by repeating `c/CATEGORY`
 </div>
 
 **Examples:**
 * **Adding a client:**<br>
-  `add n/John & Mary Tan p/98765432 e/john@example.com a/311 Clementi Ave 2 w/15-06-2026 type/client budget/5000-10000 t/friends`
+  `add n/John & Mary Tan p/98765432 e/john@example.com a/311 Clementi Ave 2 w/15-06-2026 type/client budget/5000-10000`
 
 * **Adding a vendor:**<br>
-  `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Road w/20-07-2026 type/vendor price/1000-2000 t/florist`
+  `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Road w/20-07-2026 type/vendor price/1000-2000 c/florist`
 
 ### Listing all contacts : `list`
 
@@ -157,7 +161,7 @@ Note: Dates shown in the contacts list are formatted as `YYYY-MM-DD` (e.g., `202
 
 Edits an existing contact in KnotBook.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/TYPE] [price/PRICE] [budget/BUDGET] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/TYPE] [price/PRICE] [budget/BUDGET] [c/CATEGORY]…​`
 
 
 **How it works:**
@@ -165,12 +169,12 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [t
 * The index **must be a positive integer** 1, 2, 3, …​
 * At least one optional field must be provided
 * Existing values will be replaced with the new input values
-* When editing tags, all existing tags will be removed and replaced with the new ones
-* To remove all tags, type `t/` without specifying any tags after it
+* When editing categories, all existing categories will be removed and replaced with the new ones
+* To remove all categories, type `c/` without specifying any categories after it
 
 **Examples:**
 * `edit 1 p/91234567 e/newemail@example.com` - Updates the phone and email of the 1st contact
-* `edit 2 n/Blooming Flowers Studio t/florist t/decorator` - Changes the name and replaces all tags
+* `edit 2 n/Blooming Flowers Studio c/florist c/decorator` - Changes the name and replaces all categories
 * `edit 3 price/1500-2500` - Updates the pricing for a vendor
 * `edit 4 budget/8000` - Updates the budget for a client
 
@@ -213,17 +217,17 @@ This action cannot be undone! Make sure you're deleting the right contact.
 
 ### Filtering by category : `cat`
 
-Filters and displays contacts by their category/tag.
+Filters and displays contacts by their category.
 
 Format: `cat CATEGORY`
 
 **How it works:**
-* Shows only contacts with tags matching the specified category
+* Shows only contacts with categories matching the specified category
 * The search is case-insensitive (e.g., `florist` matches `Florist`)
 * Useful for quickly viewing all vendors of a specific type
 
 **Examples:**
-* `cat florist` - Shows all contacts tagged as florist
+* `cat florist` - Shows all contacts categorized as florist
 * `cat photographer` - Shows all photographers
 * `cat caterer` - Shows all catering services
 
@@ -323,12 +327,12 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add Client** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/client [budget/BUDGET] [t/TAG]…​` <br> e.g., `add n/John & Mary p/98765432 e/john@example.com a/311 Clementi Ave w/15-06-2026 type/client budget/10000 t/friends`
-**Add Vendor** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/vendor [price/PRICE] [t/TAG]…​` <br> e.g., `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Rd w/20-07-2026 type/vendor price/1500 t/florist`
+**Add Client** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/client [budget/BUDGET]` <br> e.g., `add n/John & Mary p/98765432 e/john@example.com a/311 Clementi Ave w/15-06-2026 type/client budget/10000`
+**Add Vendor** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS w/WEDDING_DATE type/vendor [price/PRICE] [c/CATEGORY]…​` <br> e.g., `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Rd w/20-07-2026 type/vendor price/1500 c/florist`
 **List** | `list` - Shows all contacts
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find John Blooming`
 **Filter by Category** | `cat CATEGORY`<br> e.g., `cat florist`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/TYPE] [price/PRICE] [budget/BUDGET] [t/TAG]…​`<br> e.g., `edit 2 p/91234567 budget/8000`
+**Edit** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [type/TYPE] [price/PRICE] [budget/BUDGET] [c/CATEGORY]…​`<br> e.g., `edit 2 p/91234567 budget/8000`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Link** | `link client/CLIENT_INDEX vendor/VENDOR_INDEX`<br> e.g., `link client/1 vendor/3`
 **Unlink** | `unlink client/CLIENT_INDEX vendor/VENDOR_INDEX`<br> e.g., `unlink client/1 vendor/3`

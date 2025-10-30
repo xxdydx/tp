@@ -8,14 +8,15 @@ import seedu.address.model.Model;
 import seedu.address.model.person.CategoryMatchesPredicate;
 
 /**
- * Finds and lists all persons in address book whose tags contain the specified category.
+ * Finds and lists all persons in address book whose categories contain the
+ * specified category.
  * Category matching is case insensitive.
  */
 public class CatCommand extends Command {
 
     public static final String COMMAND_WORD = "cat";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose tags contain "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose categories contain "
             + "the specified category (case-insensitive) and displays them as a list with index numbers.\n"
             + "Parameters: CATEGORY\n"
             + "Example: " + COMMAND_WORD + " florist\n"
@@ -59,4 +60,3 @@ public class CatCommand extends Command {
                 .toString();
     }
 }
-
