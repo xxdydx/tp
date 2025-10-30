@@ -55,7 +55,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_WEDDING_DATE + "WEDDING_DATE] "
             + "[" + PREFIX_PRICE + "PRICE] "
             + "[" + PREFIX_BUDGET + "BUDGET] "
-            + "[" + PREFIX_CATEGORY + "CATEGORY]...\n"
+            + "[" + PREFIX_CATEGORY + "CATEGORY] (max 1 for vendors)\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com \n"
@@ -164,6 +164,11 @@ public class EditCommand extends Command {
         // Validate tags - only vendors can have tags
         if (unchangedType == PersonType.CLIENT && !updatedTags.isEmpty()) {
             throw new CommandException(Person.MSG_TAGS_FORBIDDEN_FOR_CLIENT);
+        }
+
+        // Validate that vendors have at most 1 category
+        if (unchangedType == PersonType.VENDOR && updatedTags.size() > 1) {
+            throw new CommandException(Person.MSG_MAX_ONE_CATEGORY_FOR_VENDOR);
         }
 
         java.util.Set<Person> existingLinks = new java.util.HashSet<>(personToEdit.getLinkedPersons());

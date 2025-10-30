@@ -30,7 +30,6 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PRICE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_WEDDING_DATE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.WEDDING_DATE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.WEDDING_DATE_DESC_BOB;
@@ -86,14 +85,14 @@ public class AddCommandParserTest {
                         + ADDRESS_DESC_BOB + TYPE_DESC_VENDOR + PRICE_DESC_BOB + TAG_DESC_FRIEND,
                 new AddCommand(expectedPerson));
 
-        // multiple tags - all accepted for vendors
-        Person expectedPersonMultipleTags = new PersonBuilder(BOB)
-                .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND)
+        // multiple tags - only 1 allowed for vendors
+        Person expectedPersonOneTag = new PersonBuilder(BOB)
+                .withTags(VALID_TAG_FRIEND)
                 .withType(PersonType.VENDOR).withPrice(VALID_PRICE_BOB).withoutPartner().build();
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + TYPE_DESC_VENDOR + PRICE_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
-                new AddCommand(expectedPersonMultipleTags));
+                        + TYPE_DESC_VENDOR + PRICE_DESC_BOB + TAG_DESC_FRIEND,
+                new AddCommand(expectedPersonOneTag));
     }
 
     @Test
@@ -280,12 +279,12 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_typeVendor_successCaseInsensitive() {
-        Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND)
+        Person expected = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND)
                 .withType(PersonType.VENDOR).withoutPrice().withoutPartner().build();
 
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + TAG_DESC_HUSBAND + TAG_DESC_FRIEND + TYPE_DESC_VENDOR_UPPER,
+                        + TAG_DESC_FRIEND + TYPE_DESC_VENDOR_UPPER,
                 new AddCommand(expected));
     }
 
@@ -488,5 +487,13 @@ public class AddCommandParserTest {
                 + WEDDING_DATE_DESC_AMY + TYPE_DESC_CLIENT + PARTNER_DESC_AMY + TAG_DESC_FRIEND;
 
         assertParseFailure(parser, userInput, Person.MSG_TAGS_FORBIDDEN_FOR_CLIENT);
+    }
+
+    @Test
+    public void parse_vendorWithMultipleCategories_failure() {
+        String userInput = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + TYPE_DESC_VENDOR + TAG_DESC_FRIEND + TAG_DESC_HUSBAND;
+
+        assertParseFailure(parser, userInput, Person.MSG_MAX_ONE_CATEGORY_FOR_VENDOR);
     }
 }
