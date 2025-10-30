@@ -116,20 +116,6 @@ public class EditPersonDescriptorBuilder {
     }
 
     /**
-     * Sets the {@code PersonType} from a string like "client" or "vendor".
-     * Accepts any case; trims and normalises before parsing.
-     */
-    public EditPersonDescriptorBuilder withType(String type) {
-        String normalised = type == null ? null : type.trim().toLowerCase();
-        if (normalised != null) {
-            descriptor.setType(PersonType.parse(normalised));
-        } else {
-            descriptor.setType(null);
-        }
-        return this;
-    }
-
-    /**
      * Parses the {@code categories} into a {@code Set<Category>} and set it to the {@code EditPersonDescriptor}
      * that we are building.
      */

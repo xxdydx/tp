@@ -9,7 +9,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PARTNER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
 
 import java.util.Collections;
@@ -172,7 +171,7 @@ public class EditCommand extends Command {
 
         if (unchangedType == PersonType.VENDOR) {
             // Preserve links for vendor
-            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, unchangedType, updatedTags,
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, unchangedType, updatedCategories,
                     existingLinks, updatedPrice);
         } else {
             // Preserve links and budget/partner for client
@@ -197,7 +196,7 @@ public class EditCommand extends Command {
                     original.getEmail(),
                     original.getAddress(),
                     original.getType(),
-                    original.getTags(),
+                    original.getCategories(),
                     updatedLinks,
                     original.getPrice().orElse(null)
             );
@@ -209,7 +208,7 @@ public class EditCommand extends Command {
                     original.getAddress(),
                     original.getWeddingDate().orElse(null),
                     original.getType(),
-                    original.getTags(),
+                    original.getCategories(),
                     updatedLinks,
                     original.getPrice().orElse(null),
                     original.getBudget().orElse(null),

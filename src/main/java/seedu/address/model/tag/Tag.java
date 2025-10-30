@@ -10,7 +10,8 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Tag {
 
-    public static final String MESSAGE_CONSTRAINTS = "Categories must only contain alphanumeric characters and can contain "
+    public static final String MESSAGE_CONSTRAINTS =
+            "Categories must only contain alphanumeric characters and can contain "
             + "spaces, hyphens, ampersands, periods, apostrophes, slashes, and parentheses. "
             + "Categories should start with an alphanumeric character. "
             + "Enter a blank category to remove a category.";
