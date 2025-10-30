@@ -11,7 +11,8 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Tag {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Categories must be between 2 and 30 characters, start with an alphanumeric character, and can contain spaces, hyphens, ampersands, periods, apostrophes, slashes, and parentheses. "
+            "Categories must be at most 30 characters, start with an alphanumeric character, and can "
+            + "contain spaces, hyphens, ampersands, periods, apostrophes, slashes, and parentheses. "
             + "Enter a blank category to remove a category.";
     public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} \\-&.'/()\u0020]+";
 
@@ -32,7 +33,8 @@ public class Tag {
      * Returns true if a given string is a valid tag name.
      */
     public static boolean isValidTagName(String test) {
-        return test != null && test.length() >= 2 && test.length() <= 30 && test.matches(VALIDATION_REGEX);
+        requireNonNull(test);
+        return test.length() >= 2 && test.length() <= 30 && test.matches(VALIDATION_REGEX);
     }
 
     @Override

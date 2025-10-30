@@ -10,7 +10,10 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Category {
 
-    public static final String MESSAGE_CONSTRAINTS = "Category must start with an alphanumeric character, can contain spaces, hyphens, ampersands, periods, apostrophes, slashes, and parentheses, and must be between 2 and 30 characters long.";
+    public static final String MESSAGE_CONSTRAINTS =
+            "Category must start with an alphanumeric character, can contain spaces, hyphens, "
+            + "ampersands, periods, apostrophes, slashes, and parentheses, and must be between "
+            + "2 and 30 characters long.";
     public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} \\-&.'/()\u0020]+";
 
     public final String categoryName;
@@ -30,7 +33,8 @@ public class Category {
      * Returns true if a given string is a valid category name.
      */
     public static boolean isValidCategoryName(String test) {
-        return test != null && test.length() >= 2 && test.length() <= 30 && test.matches(VALIDATION_REGEX);
+        requireNonNull(test);
+        return test.length() >= 2 && test.length() <= 30 && test.matches(VALIDATION_REGEX);
     }
 
     @Override
