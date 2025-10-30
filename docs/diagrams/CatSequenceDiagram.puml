@@ -1,0 +1,66 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":CatCommandParser" as CatCommandParser LOGIC_COLOR
+participant "c:CatCommand" as CatCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("cat florist")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("cat florist")
+activate AddressBookParser
+
+create CatCommandParser
+AddressBookParser -> CatCommandParser
+activate CatCommandParser
+CatCommandParser --> AddressBookParser
+deactivate CatCommandParser
+
+AddressBookParser -> CatCommandParser : parse("florist")
+activate CatCommandParser
+
+create CatCommand
+CatCommandParser -> CatCommand
+activate CatCommand
+CatCommand --> CatCommandParser
+deactivate CatCommand
+
+CatCommandParser --> AddressBookParser : c
+deactivate CatCommandParser
+CatCommandParser -[hidden]-> AddressBookParser
+destroy CatCommandParser
+
+AddressBookParser --> LogicManager : c
+deactivate AddressBookParser
+
+LogicManager -> CatCommand : execute(m)
+activate CatCommand
+CatCommand -> Model : updateFilteredPersonList(categoryPredicate)
+activate Model
+Model --> CatCommand
+deactivate Model
+
+create CommandResult
+CatCommand -> CommandResult
+activate CommandResult
+CommandResult --> CatCommand
+deactivate CommandResult
+
+CatCommand --> LogicManager : r
+deactivate CatCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml
+
+

@@ -1,0 +1,66 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":UnlinkCommandParser" as UnlinkCommandParser LOGIC_COLOR
+participant "u:UnlinkCommand" as UnlinkCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("unlink client/1 vendor/3")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("unlink client/1 vendor/3")
+activate AddressBookParser
+
+create UnlinkCommandParser
+AddressBookParser -> UnlinkCommandParser
+activate UnlinkCommandParser
+UnlinkCommandParser --> AddressBookParser
+deactivate UnlinkCommandParser
+
+AddressBookParser -> UnlinkCommandParser : parse("client/1 vendor/3")
+activate UnlinkCommandParser
+
+create UnlinkCommand
+UnlinkCommandParser -> UnlinkCommand
+activate UnlinkCommand
+UnlinkCommand --> UnlinkCommandParser
+deactivate UnlinkCommand
+
+UnlinkCommandParser --> AddressBookParser : u
+deactivate UnlinkCommandParser
+UnlinkCommandParser -[hidden]-> AddressBookParser
+destroy UnlinkCommandParser
+
+AddressBookParser --> LogicManager : u
+deactivate AddressBookParser
+
+LogicManager -> UnlinkCommand : execute(m)
+activate UnlinkCommand
+UnlinkCommand -> Model : unlink(clientIndex, vendorIndex)
+activate Model
+Model --> UnlinkCommand
+deactivate Model
+
+create CommandResult
+UnlinkCommand -> CommandResult
+activate CommandResult
+CommandResult --> UnlinkCommand
+deactivate CommandResult
+
+UnlinkCommand --> LogicManager : r
+deactivate UnlinkCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml
+
+

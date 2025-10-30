@@ -3,7 +3,43 @@ layout: page
 title: Developer Guide
 ---
 * Table of Contents
-{:toc}
+  - [Acknowledgements](#acknowledgements)
+  - [Setting up, getting started](#setting-up-getting-started)
+  - [About KnotBook](#about-knotbook)
+  - [Purpose of this Developer Guide](#purpose-of-this-developer-guide)
+  - [Design](#design)
+    - [Architecture](#architecture)
+    - [UI component](#ui-component)
+    - [Logic component](#logic-component)
+    - [Model component](#model-component)
+    - [Storage component](#storage-component)
+    - [Common classes](#common-classes)
+  - [Implementation](#implementation)
+    - [Person Type Feature](#person-type-feature)
+    - [Wedding Date Feature](#wedding-date-feature)
+    - [Category Filter (Cat Command) Feature](#category-filter-cat-command-feature)
+    - [Link/Unlink Feature](#linkunlink-feature)
+    - [Enhanced Help Window Feature](#enhanced-help-window-feature)
+    - [Person Details Panel Rendering](#person-details-panel-rendering)
+    - [Error Handling for Indices and Command Format](#error-handling-for-indices-and-command-format)
+    - [Proposed Undo/redo feature](#proposed-undoredo-feature)
+    - [Proposed Data archiving](#proposed-data-archiving)
+  - [Documentation, logging, testing, configuration, dev-ops](#documentation-logging-testing-configuration-dev-ops)
+  - [Appendix: Requirements](#appendix-requirements)
+    - [Product scope](#product-scope)
+    - [User stories](#user-stories)
+    - [Use cases](#use-cases)
+    - [Non-Functional Requirements](#non-functional-requirements)
+    - [Glossary](#glossary)
+  - [Appendix: Instructions for manual testing](#appendix-instructions-for-manual-testing)
+    - [Launch and shutdown](#launch-and-shutdown)
+    - [Deleting a person](#deleting-a-person)
+    - [Filtering contacts by category](#filtering-contacts-by-category)
+    - [Linking a client to a vendor](#linking-a-client-to-a-vendor)
+    - [Unlinking a client from a vendor](#unlinking-a-client-from-a-vendor)
+    - [Viewing help information](#viewing-help-information)
+    - [Adding a contact with person type](#adding-a-contact-with-person-type)
+    - [Saving data](#saving-data)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -16,6 +52,23 @@ title: Developer Guide
 ## **Setting up, getting started**
 
 Refer to the guide [_Setting up and getting started_](SettingUp.md).
+
+--------------------------------------------------------------------------------------------------------------------
+
+## **About KnotBook**
+
+KnotBook is a desktop contact management application tailored for wedding planners. Built upon the SE‑EDU AddressBook Level 3 foundation, it extends the base application with wedding‑planning concepts such as distinct person types (clients and vendors), categories (e.g., florist, delivery), linking clients to vendors for specific weddings, budget and price tracking, and a details panel optimized for wedding workflows. KnotBook is designed to be fast for keyboard‑driven power users while keeping the codebase approachable and extensible for student developers.
+
+## **Purpose of this Developer Guide**
+
+This guide explains how KnotBook is designed and how to work within the codebase. It is written for developers who want to:
+
+* Understand the system architecture and major components (UI, Logic, Model, Storage, Commons)
+* Learn the implementation details behind key features (e.g., categories, link/unlink, details panel)
+* Contribute new features while maintaining consistency with existing patterns and coding standards
+* Write tests, follow logging/configuration practices, and reason about design trade‑offs
+
+Read this guide together with the User Guide to understand the user‑facing behavior and command syntax. When in doubt, prefer the patterns documented here (e.g., parser patterns, error handling policy) to keep the codebase cohesive.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -178,6 +231,10 @@ The Person Type feature allows KnotBook to distinguish between clients and vendo
 
 The enum approach was chosen for better type safety and to ensure data consistency across the application.
 
+#### Sequence Diagram (Add Command)
+
+<img src="images/AddSequenceDiagram.png" width="700" />
+
 ### Wedding Date Feature
 
 #### Implementation
@@ -200,6 +257,10 @@ The Wedding Date feature stores the date of a client's wedding event. This is im
   * Cons: Less control over validation and formatting
 
 The dedicated class approach provides better encapsulation and allows for custom validation rules specific to wedding planning.
+
+#### Sequence Diagram (Edit Command)
+
+<img src="images/EditSequenceDiagram.png" width="700" />
 
 ### Category Filter (Cat Command) Feature
 
@@ -231,6 +292,10 @@ This command filters and displays all contacts categorized as "florist".
 
 Case-insensitive matching was chosen to improve user experience and reduce input errors.
 
+#### Sequence Diagram (Cat Command)
+
+<img src="images/CatSequenceDiagram.png" width="700" />
+
 ### Link/Unlink Feature
 
 #### Implementation
@@ -248,18 +313,13 @@ link client/1, vendor/3
 unlink client/1, vendor/3
 ```
 
-**Sequence Diagram for Link Command:**
+**Sequence Diagram (Link Command):**
 
-The following sequence diagram shows how the link operation works:
+<img src="images/LinkSequenceDiagram.png" width="700" />
 
-1. User enters `link client/1, vendor/3`
-2. `AddressBookParser` creates a `LinkCommandParser`
-3. `LinkCommandParser` parses the indices and creates a `LinkCommand`
-4. `LinkCommand` is executed by `LogicManager`
-5. `LinkCommand` retrieves the client and vendor from the filtered list
-6. `LinkCommand` validates the indices
-7. Link is created (future implementation will update Person objects)
-8. Success message is returned
+**Sequence Diagram (Unlink Command):**
+
+<img src="images/UnlinkSequenceDiagram.png" width="700" />
 
 **Design Considerations:**
 
@@ -272,6 +332,49 @@ The following sequence diagram shows how the link operation works:
   * Cons: Requires users to remember/type full names or IDs
 
 Index-based linking was chosen for consistency with other commands (delete, edit) and ease of use.
+
+### Person Details Panel Rendering
+
+#### Implementation
+
+The details panel shows a richer view of a selected `Person` with logic that adapts based on `PersonType`.
+
+**Key Rules:**
+* Clients
+  * Show: name (with partner), phone, email, address, wedding date, and budget (if present)
+  * Linked persons section lists their vendors.
+* Vendors
+  * Show: name, phone, email, address, and price (if present)
+  * Show categories line when there are categories: `Categories : florist, delivery, ...`
+  * Linked persons section lists their clients. When a vendor is selected and linked to a client, the prefix shown before each linked name is the client's wedding date. Otherwise, we show the first available category of the linked person.
+
+**Casing policy:** Category names are displayed with their original casing throughout the UI. No auto-capitalization is applied in the linked persons section. This ensures consistency with category chips shown in lists.
+
+**Relevant classes:** `PersonDetailsPanel`, `PersonType`, `Category`.
+
+**Design Considerations:**
+* Preserve original category casing for fidelity with user input and to match chips.
+* Hide empty optional fields (price/budget) and unneeded rows to keep the layout compact.
+
+### Error Handling for Indices and Command Format
+
+#### Implementation
+
+Error messages were standardized across commands that accept indices (`edit`, `delete`, `link`, `unlink`).
+
+**Policy:**
+* Invalid index (non‑zero unsigned integer violation, e.g., negative, zero, or non-numeric) → `Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX` ("The person index provided is invalid").
+* Valid index followed by extra tokens in the preamble (e.g., `edit 2 invalid/invalid`) → `Messages.MESSAGE_INVALID_COMMAND_FORMAT` with the command's `MESSAGE_USAGE`.
+
+**Parsers updated:** `EditCommandParser`, `DeleteCommandParser`, `LinkCommandParser`, `UnlinkCommandParser`.
+
+**Key changes:**
+* `Edit`/`Delete`: Only the first preamble token is treated as the index; presence of additional tokens triggers invalid command format.
+* `Link`/`Unlink`: When parsing `client/INDEX` or `vendor/INDEX`, failures caused by invalid indices are mapped to the standardized invalid index message; other failures retain invalid command format.
+
+**Rationale:**
+* Provides consistent feedback to users regardless of command, reducing confusion.
+* Separates syntactic errors (format) from semantic errors (invalid index values).
 
 ### Enhanced Help Window Feature
 
@@ -302,94 +405,9 @@ The Help Window has been enhanced to display all command formats in an accordion
 
 The accordion approach was chosen to reduce visual clutter and improve user experience, especially for new users who may be overwhelmed by seeing all commands at once.
 
-### \[Proposed\] Undo/redo feature
+#### Sequence Diagram (Help Command)
 
-#### Proposed Implementation
-
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
-
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
-
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
-
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
-
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
-
-![UndoRedoState0](images/UndoRedoState0.png)
-
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
-
-![UndoRedoState1](images/UndoRedoState1.png)
-
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
-
-![UndoRedoState2](images/UndoRedoState2.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
-
-</div>
-
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
-
-![UndoRedoState3](images/UndoRedoState3.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
-
-</div>
-
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
-
-![UndoSequenceDiagram](images/UndoSequenceDiagram-Logic.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
-</div>
-
-Similarly, how an undo operation goes through the `Model` component is shown below:
-
-![UndoSequenceDiagram](images/UndoSequenceDiagram-Model.png)
-
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-</div>
-
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
-
-![UndoRedoState4](images/UndoRedoState4.png)
-
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
-
-![UndoRedoState5](images/UndoRedoState5.png)
-
-The following activity diagram summarizes what happens when a user executes a new command:
-
-<img src="images/CommitActivityDiagram.png" width="250" />
-
-#### Design considerations:
-
-**Aspect: How undo & redo executes:**
-
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
-
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
-
+<img src="images/HelpSequenceDiagram.png" width="700" />
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -761,7 +779,15 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+1. Launch via command line
+
+   1. Open PowerShell in the folder containing the JAR and run `java -jar tp.jar`<br>
+      Expected: App launches successfully with the same content as double‑click launch.
+
+1. Preference persistence
+
+   1. Move and resize the window, close the app, relaunch.<br>
+      Expected: Window size and position are restored.
 
 ### Deleting a person
 
@@ -778,7 +804,14 @@ testers are expected to do more *exploratory* testing.
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
+1. Test case: `delete -1`<br>
+   Expected: Error message "The person index provided is invalid". No deletion.
+
+1. Test case: `delete 10000` (assuming list is much smaller)<br>
+   Expected: Error message "The person index provided is invalid". No deletion.
+
+1. Test case: `delete 1 extra`<br>
+   Expected: Error message "Invalid command format".
 
 ### Filtering contacts by category
 
@@ -866,6 +899,13 @@ testers are expected to do more *exploratory* testing.
 
 1. Dealing with missing/corrupted data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+   1. Close the app. Navigate to the data folder `data/` and open `addressbook.json` in a text editor. Delete a closing brace or add random text to corrupt the JSON. Relaunch the app.<br>
+      Expected: App starts with an empty dataset and shows an error about failing to read storage. A new valid file will be created on exit.
 
-1. _{ more test cases …​ }_
+   1. Delete `addressbook.json` entirely and relaunch.<br>
+      Expected: App recreates the file with sample or empty data without crashing.
+
+1. Persistence across sessions
+
+   1. Add a new contact, close the app, relaunch.<br>
+      Expected: The newly added contact is still present (data saved to disk).
