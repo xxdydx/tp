@@ -5,14 +5,16 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Tag in the address book.
- * Guarantees: immutable; name is valid as declared in {@link #isValidTagName(String)}
+ * Guarantees: immutable; name is valid as declared in
+ * {@link #isValidTagName(String)}
  */
 public class Tag {
 
-    public static final String MESSAGE_CONSTRAINTS = "Tags must only contain alphanumeric characters and can contain "
+    public static final String MESSAGE_CONSTRAINTS =
+            "Categories must only contain alphanumeric characters and can contain "
             + "spaces, hyphens, ampersands, periods, apostrophes, slashes, and parentheses. "
-            + "Tags should start with an alphanumeric character. "
-            + "Enter a blank tag to remove a tag.";
+            + "Categories should start with an alphanumeric character. "
+            + "Enter a blank category to remove a category.";
     public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} \\-&.'/()\u0020]+";
 
     public final String tagName;

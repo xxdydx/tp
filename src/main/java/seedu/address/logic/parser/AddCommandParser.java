@@ -4,12 +4,12 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PARTNER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRICE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TYPE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WEDDING_DATE;
 
@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.category.Category;
 import seedu.address.model.date.WeddingDate;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Budget;
@@ -29,7 +30,6 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonType;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Price;
-import seedu.address.model.tag.Tag;
 
 /**
  * Parses input arguments and creates a new AddCommand object
@@ -48,7 +48,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
                 PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_WEDDING_DATE,
-                PREFIX_TAG, PREFIX_TYPE, PREFIX_PRICE, PREFIX_BUDGET, PREFIX_PARTNER);
+                PREFIX_CATEGORY, PREFIX_TYPE, PREFIX_PRICE, PREFIX_BUDGET, PREFIX_PARTNER);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TYPE)
                 || !argMultimap.getPreamble().isEmpty()) {
@@ -63,7 +63,8 @@ public class AddCommandParser implements Parser<AddCommand> {
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
-        Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+        // parse categories (supports both t/ and c/ since PREFIX_CATEGORY = "c/" = old PREFIX_TAG)
+        Set<Category> categoryList = ParserUtil.parseCategories(argMultimap.getAllValues(PREFIX_CATEGORY));
 
         String rawType = argMultimap.getValue(PREFIX_TYPE).get().trim();
         String normalisedType = rawType.toLowerCase();
@@ -104,8 +105,8 @@ public class AddCommandParser implements Parser<AddCommand> {
             budget = ParserUtil.parseBudget(argMultimap.getValue(PREFIX_BUDGET).get());
         }
 
-        // Validate tags - only vendors can have tags
-        if (type == PersonType.CLIENT && !tagList.isEmpty()) {
+        // Validate categories - only vendors can have categories
+        if (type == PersonType.CLIENT && !categoryList.isEmpty()) {
             throw new ParseException(Person.MSG_TAGS_FORBIDDEN_FOR_CLIENT);
         }
 
@@ -123,9 +124,9 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         Person person;
         if (type == PersonType.VENDOR) {
-            person = new Person(name, phone, email, address, type, tagList, price);
+            person = new Person(name, phone, email, address, type, categoryList, price);
         } else {
-            person = new Person(name, phone, email, address, weddingDate, type, tagList, price, budget, partner);
+            person = new Person(name, phone, email, address, weddingDate, type, categoryList, price, budget, partner);
         }
         return new AddCommand(person);
     }
