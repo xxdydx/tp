@@ -114,6 +114,16 @@ Action | Format, Examples
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </div>
 
+<div markdown="block" class="alert alert-warning">
+:exclamation: **Warning:**  
+Some commands permanently change or delete data. Read carefully before running:
+
+* `delete INDEX`: Deletes a contact and can’t be undone.
+* `clear`: Deletes all contacts, not just what’s filtered; saves immediately.
+* `edit`: Changes take effect right away; `c/` alone removes all categories.
+* `add`: You can’t change `type/TYPE` later with `edit` (you have to delete and re-add).
+</div>
+
 ### Viewing help : `help` 💡
 
 Opens a help window with detailed information about all available commands in an easy-to-navigate accordion interface.
