@@ -47,6 +47,7 @@ KnotBook needs Java 17 or newer to run. Think of Java as the engine that powers 
 ### Step 4: Start Using KnotBook
 The app window should appear in a few seconds with some sample wedding contacts to help you get started.
 
+**Figure 1: Main window**
 ![Ui](images/Ui.png)
 
 **Try these commands** by typing them in the command box at the top and pressing Enter:
@@ -96,25 +97,19 @@ Action | Format, Examples
 
 **:information_source: Notes about the command format:**<br>
 
-* Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+* Replace words in `UPPER_CASE` with your own details. For example, in `add n/NAME`, you might type `add n/Jane Ong`.
 
-* Items in square brackets are optional.<br>
-  e.g `n/NAME [c/CATEGORY]` can be used as `n/The Bloom Boutique c/florist` or as `n/The Bloom Boutique`.
+* Items in square brackets `[ ]` are optional. For example, `n/NAME [c/CATEGORY]` requires a name; the category can be omitted.
 
-* For all commands, the command word is case-sensitive.
+* Commands are case-sensitive — watch your capitals.
 
-* Parameters can be in any order.<br>
-  e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+* You can enter parameters in any order. For example, `n/NAME p/PHONE` works the same as `p/PHONE n/NAME`.
 
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
-  e.g. if the command specifies `help 123`, it will be interpreted as `help`.
+* For very simple commands like `help`, `list`, `exit` and `clear`, any extra text is politely ignored.
 
-* Commands must be entered on a single line. Newlines are not supported.<br>
-  If you copy a command that appears on multiple lines, join it into one line before pressing Enter.
-  Pasting multi-line commands into the command box will fail; replace line breaks with spaces.
+* Each command must be entered on a single line. If you copy something that looks like several lines, simply join them before pressing Enter.
 
-* Dates displayed in the contacts list use the format `YYYY-MM-DD` to avoid ambiguity. Input for `w/WEDDING_DATE` accepts `DD-MM-YYYY` or `YYYY-MM-DD`.
+* Dates in the app appear as `YYYY-MM-DD`, though when typing a date you may use either `DD-MM-YYYY` or `YYYY-MM-DD`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </div>
@@ -250,10 +245,10 @@ Looking for a specific client or vendor? Quickly search by name - and for client
 Format: `find <keyword>`
 
 **How it works:**
-* The search is case-insensitive (e.g., `hans` will match `Hans`)
-* The entire input is treated as one query. Spaces are not split into separate keywords (e.g., `roy b` is treated as the single query `"roy b"`).
+* The search is case-insensitive (e.g., `hans` matches `Hans`).
+* Your entire input is treated as one query; spaces are not split into separate keywords (e.g., `roy b` is treated as `"roy b"`).
 * Only the name field is searched; for clients, the partner’s name is also checked.
-* Matches the start of any word (first name, last name, etc.). It’s **prefix**, not substring (e.g., `Han` matches `Hans`, but `an` does not match `Hans`).
+* Matches the start of any word (prefix match). For example, `Han` matches `Hans`, but `an` does not match `Hans`.
 
 **Examples:**
 * `find tan` - Returns contacts like `Alex Tan`, `Tan Wei Ling`; also matches a client whose partner is Tan Jun Hao.
@@ -400,11 +395,11 @@ Format: `exit`
 
 ### Saving the data
 
-KnotBook data is saved to your hard disk automatically after any command that changes the data. There is no need to save manually.
+Your data is saved automatically to your hard disk after every change — no manual saving needed.
 
 ### Editing the data file
 
-KnotBook data is saved automatically as a JSON file `[JAR file location]/data/addressbook.json`.
+KnotBook data is saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Use the app to make changes; editing the JSON directly may corrupt your data.
 
 --------------------------------------------------------------------------------------------------------------------
 
