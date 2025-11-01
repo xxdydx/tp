@@ -318,7 +318,7 @@ Format: `cat CATEGORY`
 
 Hired a photographer for the Johnson wedding? Use this command to connect vendors with their clients, so you can easily track which vendors are working on which weddings!
 
-Format: `link client/CLIENT_INDEX vendor/VENDOR_INDEX` (uses [INDEX](#contact-index))
+Format: `link client/CLIENT_INDEX vendor/VENDOR_INDEX`
 
 **How it works:**
 * Links the client at `CLIENT_INDEX` with the vendor at `VENDOR_INDEX`
