@@ -128,6 +128,7 @@ Some commands permanently change or delete data. Read carefully before running:
 
 Opens a help window with detailed information about all available commands in an easy-to-navigate accordion interface.
 
+**Figure 2: Help window**
 ![help.png](images/help.png)
 
 Format: `help`
@@ -225,6 +226,7 @@ Format: `list`
 **Example:**
 * `list` - Displays all your wedding contacts
 
+**Figure 3: List view**
 ![list.png](images/list.png)
 Note: Dates shown in the contacts list are formatted as `YYYY-MM-DD` (e.g., `2026-07-15`).
 
@@ -263,6 +265,7 @@ Format: `find <keyword>`
 **Examples:**
 * `find tan` - Returns contacts like `Alex Tan`, `Tan Wei Ling`; also matches a client whose partner is Tan Jun Hao.
 * `find ch` - Returns `Charlotte K Photography`; also matches a client whose partner is `Jack Chia`.<br>
+  **Figure 4: Find results**
   ![find.png](images/find.png)
 
 <div markdown="block" class="alert alert-primary">
@@ -290,6 +293,8 @@ Format: `cat CATEGORY`
 * `cat florist` - Shows all vendors categorized as florist
 * `cat photographer` - Shows all photographers
 * `cat caterer` - Shows all catering services
+
+  **Figure 5: Category results**
   ![cat.png](images/cat.png)
 
 <div markdown="block" class="alert alert-primary">
@@ -316,10 +321,11 @@ Format: `link client/CLIENT_INDEX vendor/VENDOR_INDEX`
 * Helps you track which vendors are assigned to which weddings
 
 **Examples:**
-* `link client/1 vendor/3` - Links the 1st client with the 3rd vendor
-* `link client/2 vendor/5` - Links the 2nd client with the 5th vendor
+* `link client/2 vendor/3` - Links the 2nd contact (which is a client contact) with the 3rd contact (which is a vendor)
 
+**Figure 6: Linking example (view of 2nd contact which is of client type)**
 ![link1.png](images/link1.png)
+**Figure 7: Linking example (view of 3rd contact which is of vendor type)**
 ![link2.png](images/link2.png)
 
 ### Unlinking a vendor from a client : `unlink` ⛓️‍💥
