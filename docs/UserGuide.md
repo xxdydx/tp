@@ -50,6 +50,12 @@ The app window should appear in a few seconds with some sample wedding contacts 
 **Figure 1: Main window**
 ![Ui](images/Ui.png)
 
+**Legend — numbered callouts in Figure 1**
+1. **Contact details panel**: The panel on the right shows the full details of the selected contact. Click any contact in the list to view their information here — including linked vendors/clients when available.
+2. **Command results**: This area displays feedback for every command you run (e.g., success messages, errors, and helpful hints). Use it to confirm what changed after each action.
+3. **Command box**: Type your commands here (like `add`, `edit`, `find`, `cat`, `link`, `unlink`, `delete`). Press Enter to run the command.
+4. <span id="contact-index"></span>**Contact index (`INDEX`)**: The numbers on the left of the contact list are the indices you use in commands such as `edit INDEX`, `delete INDEX`, `link client/CLIENT_INDEX vendor/VENDOR_INDEX`, and `unlink ...`. Indices always refer to the currently displayed list (even when the currently displayed list changes after a `find` or `cat` command).
+
 **Try these commands** by typing them in the command box at the top and pressing Enter:
 * `help` - Opens a help window showing all available commands
 * `list` - Shows all your contacts (clients and vendors)
@@ -81,7 +87,7 @@ Action | Format, Examples
 **List All Contacts** | `list`
 **Find a Contact** | `find <keyword>`<br> e.g., `find John Blooming`
 **Filter by Category** | `cat CATEGORY`<br> e.g., `cat florist`
-**Edit Contact** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​`<br> e.g., `edit 2 p/91234567 budget/8000`
+**Edit Contact** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​` (see [INDEX](#contact-index))<br> e.g., `edit 2 p/91234567 budget/8000`
 **Delete Contact** | `delete INDEX`<br> e.g., `delete 3`
 **Link Client with Vendor** | `link client/CLIENT_INDEX vendor/VENDOR_INDEX`<br> e.g., `link client/1 vendor/3`
 **Unlink Client with Vendor** | `unlink client/CLIENT_INDEX vendor/VENDOR_INDEX`<br> e.g., `unlink client/1 vendor/3`
@@ -118,7 +124,7 @@ Action | Format, Examples
 :exclamation: **Warning:**  
 Some commands permanently change or delete data. Read carefully before running:
 
-* `delete INDEX`: Deletes a contact and can’t be undone.
+* `delete INDEX` (see [INDEX](#contact-index)): Deletes a contact and can’t be undone.
 * `clear`: Deletes all contacts, not just what’s filtered; saves immediately.
 * `edit`: Changes take effect right away; `c/` alone removes all categories.
 * `add`: You can’t change `type/TYPE` later with `edit` (you have to delete and re-add).
@@ -234,7 +240,7 @@ Note: Dates shown in the contacts list are formatted as `YYYY-MM-DD` (e.g., `202
 
 Made a typo? Client changed their wedding date? Vendor updated their pricing? Use this command to quickly update any contact details in KnotBook!
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​` (see [INDEX](#contact-index))
 
 **How it works:**
 * Edits the contact at the specified `INDEX` (the number shown in the contact list)
@@ -303,7 +309,7 @@ Format: `cat CATEGORY`
 
 * **Only vendors** have categories - clients won’t show up in `cat` results.
 * Category matching is **case-insensitive**.
-* In a filtered view (after `cat` or `find`), commands like `delete INDEX` use the index from the *filtered list*.
+* In a filtered view (after `cat` or `find`), commands like `delete INDEX` use the [index](#contact-index) from the *filtered list*.
 * To reset the view, run `list`.
 
 </div>
@@ -312,7 +318,7 @@ Format: `cat CATEGORY`
 
 Hired a photographer for the Johnson wedding? Use this command to connect vendors with their clients, so you can easily track which vendors are working on which weddings!
 
-Format: `link client/CLIENT_INDEX vendor/VENDOR_INDEX`
+Format: `link client/CLIENT_INDEX vendor/VENDOR_INDEX` (uses [INDEX](#contact-index))
 
 **How it works:**
 * Links the client at `CLIENT_INDEX` with the vendor at `VENDOR_INDEX`
@@ -332,7 +338,7 @@ Format: `link client/CLIENT_INDEX vendor/VENDOR_INDEX`
 
 Client switched photographers? Vendor cancelled? Use this command to remove the connection between a client and vendor when plans change.
 
-Format: `unlink client/CLIENT_INDEX vendor/VENDOR_INDEX`
+Format: `unlink client/CLIENT_INDEX vendor/VENDOR_INDEX` (uses [INDEX](#contact-index))
 
 **How it works:**
 * Removes the link between the client at `CLIENT_INDEX` and the vendor at `VENDOR_INDEX`
@@ -366,7 +372,7 @@ Ensure the chosen indices point to a **client** and a **vendor** respectively, o
 
 Need to remove a contact? Whether a vendor is no longer available or a client cancelled, use this command to delete any contact from KnotBook.
 
-Format: `delete INDEX`
+Format: `delete INDEX` (see [INDEX](#contact-index))
 
 **How it works:**
 * Deletes the contact at the specified `INDEX`
