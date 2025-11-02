@@ -184,15 +184,15 @@ Format: `help`
     * Must start with an alphanumeric character
     * Example: `Jane Wang`
 * `price/PRICE` - Vendor pricing (optional, for vendors only)
-    * Must be a positive integer (whole numbers only, no cents/decimals, no commas and no fullstops)
+    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas and no fullstops)
     * Can be a single value (e.g., `1000`) or range (e.g., `1000-2000`)
     * Range values must be separated by a hyphen with no spaces
-    * Maximum value: 999,999,999
+    * Maximum value: 9,999,999,999
 * `budget/BUDGET` - Client budget (optional, for clients only)
-    * Must be a positive integer (whole numbers only, no cents/decimals, no commas and no fullstops)
+    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas and no fullstops)
     * Can be a single value (e.g., `5000`) or range (e.g., `5000-10000`)
     * Range values must be separated by a hyphen with no spaces
-    * Maximum value: 999,999,999
+    * Maximum value: 9,999,999,999
 * `c/CATEGORY` - Category tags (optional, for vendors only)
     * Must start with an alphanumeric character
     * Can contain spaces, hyphens (`-`), ampersands (`&`), periods (`.`), apostrophes (`'`), slashes (`/`), and parentheses (`()`)
@@ -321,9 +321,11 @@ Hired a photographer for the Johnson wedding? Use this command to connect vendor
 Format: `link client/CLIENT_INDEX vendor/VENDOR_INDEX`
 
 **How it works:**
-* Links the client at `CLIENT_INDEX` with the vendor at `VENDOR_INDEX`
-* Both indices refer to the numbers shown in the currently displayed list
+* Running the `link` command links the client at `CLIENT_INDEX` with the vendor at `VENDOR_INDEX`
+  * `CLIENT_INDEX` is the [index](#contact-index) of a **client** contact in the currently displayed list
+  * `VENDOR_INDEX` is the index of a **vendor** contact in the currently displayed list
 * Both indices **must be a positive integer** (1, 2, 3, …) and **must not exceed the total number of contacts** in the displayed list
+* The contact at `CLIENT_INDEX` must be a client, and the contact at `VENDOR_INDEX` must be a vendor
 * Helps you track which vendors are assigned to which weddings
 
 **Examples:**
