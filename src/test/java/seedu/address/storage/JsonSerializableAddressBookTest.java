@@ -76,7 +76,7 @@ public class JsonSerializableAddressBookTest {
                 Collections.emptyList());
     }
 
-    private JsonAdaptedPerson makeVendor(String name, String phone, java.util.List<String> linkedNames) {
+    private JsonAdaptedPerson makeVendor(String name, String phone, java.util.List<String> linkedPhones) {
         return new JsonAdaptedPerson(
                 name,
                 phone,
@@ -88,7 +88,7 @@ public class JsonSerializableAddressBookTest {
                 null,
                 null,
                 Collections.emptyList(),
-                linkedNames);
+                linkedPhones);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class JsonSerializableAddressBookTest {
     @Test
     public void toModelType_resolvesLinksWhenPresent_inMemory() throws Exception {
         JsonAdaptedPerson client = makeClient("Client C", "22222222");
-        JsonAdaptedPerson vendor = makeVendor("Vendor V", "33333333", Collections.singletonList("Client C"));
+        JsonAdaptedPerson vendor = makeVendor("Vendor V", "33333333", Collections.singletonList("22222222"));
 
         JsonSerializableAddressBook book = new JsonSerializableAddressBook(Arrays.asList(client, vendor));
         AddressBook model = book.toModelType();
@@ -118,11 +118,11 @@ public class JsonSerializableAddressBookTest {
     }
 
     @Test
-    public void toModelType_nonexistentLinkedNames_ignoredGracefully() throws Exception {
+    public void toModelType_nonexistentLinkedPhones_ignoredGracefully() throws Exception {
         JsonAdaptedPerson client = makeClient("Client D", "44444444");
-        // Link to a name that does not exist along with one that does
+        // Link to a phone that does not exist along with one that does
         JsonAdaptedPerson vendor = makeVendor("Vendor W", "55555555",
-                Arrays.asList("Missing Name", "Client D"));
+                Arrays.asList("99999999", "44444444"));
 
         JsonSerializableAddressBook book = new JsonSerializableAddressBook(Arrays.asList(client, vendor));
         AddressBook model = book.toModelType();
@@ -135,7 +135,7 @@ public class JsonSerializableAddressBookTest {
                 .filter(p -> p.getName().fullName.equals("Vendor W"))
                 .findFirst().orElseThrow();
 
-        // The missing name should be ignored, but the existing one should be linked
+        // The missing phone should be ignored, but the existing one should be linked
         assertTrue(vendorModel.isLinkedTo(clientModel));
     }
 

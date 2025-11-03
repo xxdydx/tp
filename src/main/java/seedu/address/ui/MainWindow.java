@@ -82,8 +82,7 @@ public class MainWindow extends UiPart<Stage> {
             double v = newV.doubleValue();
             if (v < min) {
                 d.setPosition(min);
-            }
-            else if (v > max) {
+            } else if (v > max) {
                 d.setPosition(max);
             }
         });

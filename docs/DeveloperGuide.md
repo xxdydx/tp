@@ -8,7 +8,11 @@ title: Developer Guide
   - [About KnotBook](#about-knotbook)
   - [Purpose of this Developer Guide](#purpose-of-this-developer-guide)
   - [Design](#design)
-    - [Architecture](#architecture)
+    - [A**Usage:**
+```
+link client/1 vendor/3
+unlink client/1 vendor/3
+```ecture](#architecture)
     - [UI component](#ui-component)
     - [Logic component](#logic-component)
     - [Model component](#model-component)
@@ -45,7 +49,8 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-* {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
+* This project is based on the AddressBook-Level3 project created by the [SE-EDU initiative](https://se-education.org).
+* Libraries used: [JavaFX](https://openjfx.io/), [Jackson](https://github.com/FasterXML/jackson), [JUnit5](https://github.com/junit-team/junit5), [Apache Commons Validator](https://commons.apache.org/proper/commons-validator/)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -240,7 +245,7 @@ The Wedding Date feature stores the date of a client's wedding event. This is im
 **Key Components:**
 * `WeddingDate` class - Validates and stores wedding dates
 * `Person` class - Contains a `WeddingDate` field
-* `AddCommandParser` - Parses the `date:` prefix to extract wedding dates
+* `AddCommandParser` - Parses the `w/` prefix to extract wedding dates
 
 **Design Considerations:**
 
@@ -490,6 +495,27 @@ Where `INDEX` is a positive integer representing the position of the person in t
 #### Command Feature Purpose
 
 The delete command allows users to remove a contact from KnotBook permanently.
+**Key Components:**
+* `LinkCommand` - Creates a link between a client and vendor
+* `UnlinkCommand` - Removes a link between a client and vendor
+* `LinkCommandParser` / `UnlinkCommandParser` - Parse client and vendor indices
+* `JsonAdaptedPerson` - Serializes links using phone numbers for persistence
+* `JsonSerializableAddressBook` - Resolves links by phone number when loading from JSON
+
+**Usage:**
+```
+link client/1 vendor/3
+unlink client/1 vendor/3
+```
+
+**Link Persistence:**
+
+Links are stored and resolved using **phone numbers** (not names) to ensure uniqueness and prevent incorrect associations when multiple persons share the same name. When the application saves data:
+* `JsonAdaptedPerson` stores a list of `linkedPersonPhones` for each person
+* When loading data, `JsonSerializableAddressBook` uses a phone-based lookup map to resolve links
+* This ensures that even if two vendors have identical names (e.g., "Bloom Co"), links are correctly resolved to the intended person by their unique phone number
+
+**Sequence Diagram (Link Command):**
 
 #### Key Components
 
@@ -589,7 +615,11 @@ We will be using the user input `link client/1 vendor/3` as an example.
   * Pros: More stable references
   * Cons: Requires users to remember/type full names or IDs
 
-Index-based linking was chosen for consistency with other commands (delete, edit) and ease of use.
+* **Alternative 3 (Current choice for persistence):** Store links by phone number instead of name
+  * Pros: Phone numbers are unique, prevents incorrect associations when names are duplicated
+  * Cons: Breaks compatibility with old JSON files using name-based links (requires data migration)
+
+Index-based linking was chosen for consistency with other commands (delete, edit) and ease of use. Phone-based persistence was chosen to ensure correct link resolution even when multiple persons share the same name.
 
 #### LinkCommand Implementation Sequence Diagram
 
@@ -808,7 +838,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | budget-conscious wedding planner           | view the price of each vendor                                     | compare costs and stay within the wedding budget                                     |
 | `* *`    | detail-oriented wedding planner            | store phone numbers for each contact                              | easily reach out to vendors and clients when needed                                  |
 | `*`      | experienced wedding planner                | prevent duplicate contact names                                   | avoid confusion between different vendors or clients                                 |
-| `*`      | wedding planner managing multiple events   | allow duplicate phone numbers and prices                          | accommodate cases where vendors share numbers or have similar pricing                |
+| `*`      | wedding planner managing multiple events   | allow duplicate prices                          | accommodate cases where vendors have similar pricing                |
 
 ### Use cases
 
@@ -841,39 +871,36 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  User requests to view all vendors
-2.  KnotBook shows a list of vendors
-3.  User searches for the specific vendor by name
-4.  KnotBook displays the vendor's details
-5.  User requests to view all clients
-6.  KnotBook shows a list of clients
-7.  User searches for the specific client by name
-8.  KnotBook displays the client's details
-9.  User requests to link the vendor to the client
-10. KnotBook confirms the link and updates both records
+1.  User requests to list persons
+2.  KnotBook shows a list of persons
+3.  User requests to link a vendor to a client by their indices
+4.  KnotBook confirms the link and updates both records
 
     Use case ends.
 
 **Extensions**
 
-* 3a. The vendor name is not found.
+* 2a. The list is empty.
+
+  Use case ends.
+
+* 3a. The client index is invalid.
 
     * 3a1. KnotBook shows an error message.
 
       Use case resumes at step 2.
 
-* 7a. The client name is not found.
+* 3b. The vendor index is invalid.
 
-    * 7a1. KnotBook shows an error message.
+    * 3b1. KnotBook shows an error message.
 
-      Use case resumes at step 6.
+      Use case resumes at step 2.
 
-* 9a. The vendor is already linked to the client.
+* 3c. The vendor is already linked to the client.
 
-    * 9a1. KnotBook shows a warning message and asks for confirmation.
-    * 9a2. User confirms the action.
+    * 3c1. KnotBook shows an error message that link already exists.
 
-      Use case resumes at step 10.
+      Use case ends.
 
 **Use case: UC03 - Categorize a vendor by type**
 
@@ -898,10 +925,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 3b. User enters an unknown category type.
 
-    * 3b1. KnotBook shows a list of valid category types.
-    * 3b2. User selects a valid category or creates a new one.
+    * 3b1. KnotBook shows an error message for invalid category format.
 
-      Use case resumes at step 4.
+      Use case resumes at step 2.
 
 **Use case: UC04 - Update vendor quote**
 
@@ -911,11 +937,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2.  KnotBook displays the list of vendors or search results
 3.  User selects a vendor to view details
 4.  KnotBook displays vendor details including current quote
-5.  User requests to update the quote with new pricing
-6.  KnotBook prompts for the new quote amount
-7.  User enters the new quote
-8.  KnotBook validates and saves the updated quote
-9.  KnotBook displays confirmation message
+5.  User enters edit command with new range/price
+6.  KnotBook validates and saves the updated quote
+7.  KnotBook displays confirmation message
 
     Use case ends.
 
@@ -927,11 +951,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-* 7a. User enters invalid quote amount (e.g., negative number, non-numeric).
+* 5a. User enters invalid quote amount (e.g., negative number, non-numeric).
 
-    * 7a1. KnotBook shows an error message.
+    * 5a1. KnotBook shows an error message.
 
-      Use case resumes at step 6.
+      Use case resumes at step 4.
 
 **Use case: UC05 - Filter contacts by category**
 
@@ -948,7 +972,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1a. User enters an empty category.
 
-    * 1a1. KnotBook shows an error message: "Category cannot be empty."
+    * 1a1. KnotBook shows an error message: "Invalid command format!"
 
       Use case ends.
 
@@ -969,7 +993,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 5.  KnotBook validates the email format
 6.  If type is "client", KnotBook validates the wedding date and budget
 7.  If type is "vendor", KnotBook validates the category and price
-8.  KnotBook checks for duplicate contacts (same phone or email)
+8.  KnotBook checks for duplicate contacts (same phone number)
 9.  KnotBook saves the new contact
 10. KnotBook displays success message
 
@@ -1003,7 +1027,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 6a. Client added without wedding date.
 
-    * 6a1. KnotBook shows error: "Wedding date is required for clients. Example: date:2025-10-12"
+    * 6a1. KnotBook shows error: "Wedding date is required for clients. Example: w/2025-10-12"
 
       Use case ends.
 
@@ -1031,7 +1055,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-* 8a. Duplicate contact detected (same phone or email).
+* 8a. Duplicate contact detected (same phone number).
 
     * 8a1. KnotBook shows error: "This contact already exists."
 
@@ -1121,7 +1145,7 @@ testers are expected to do more *exploratory* testing.
 
 1. Launch via command line
 
-   1. Open PowerShell in the folder containing the JAR and run `java -jar tp.jar`<br>
+   1. Open PowerShell in the folder containing the JAR and run `java -jar KnotBook.jar`<br>
       Expected: App launches successfully with the same content as double‑click launch.
 
 1. Preference persistence
@@ -1136,7 +1160,7 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
    1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message.
 
    1. Test case: `delete 0`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
@@ -1166,7 +1190,7 @@ testers are expected to do more *exploratory* testing.
       Expected: Only contacts categorized as "photographer" are displayed (case-insensitive matching).
 
    1. Test case: `cat`<br>
-      Expected: Error message indicating that category cannot be empty.
+      Expected: Error message "Invalid command format!" with command usage details.
 
    1. Test case: `cat nonexistent`<br>
       Expected: Empty list displayed with message indicating no contacts found for that category.
@@ -1177,13 +1201,13 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. At least 2 persons in the list.
 
-   1. Test case: `link client/1, vendor/2`<br>
+   1. Test case: `link client/1 vendor/2`<br>
       Expected: Success message indicating the link was created.
 
-   1. Test case: `link client/0, vendor/1`<br>
+   1. Test case: `link client/0 vendor/1`<br>
       Expected: Error message indicating invalid client index.
 
-   1. Test case: `link client/1, vendor/999`<br>
+   1. Test case: `link client/1 vendor/999`<br>
       Expected: Error message indicating invalid vendor index (assuming list has fewer than 999 contacts).
 
    1. Test case: `link client/1`<br>
@@ -1195,13 +1219,13 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. At least 2 persons in the list.
 
-   1. Test case: `unlink client/1, vendor/2`<br>
+   1. Test case: `unlink client/1 vendor/2`<br>
       Expected: Success message indicating the unlink was successful.
 
-   1. Test case: `unlink client/0, vendor/1`<br>
+   1. Test case: `unlink client/0 vendor/1`<br>
       Expected: Error message indicating invalid client index.
 
-   1. Test case: `unlink client/1, vendor/999`<br>
+   1. Test case: `unlink client/1 vendor/999`<br>
       Expected: Error message indicating invalid vendor index.
 
 ### Viewing help information
@@ -1221,7 +1245,7 @@ testers are expected to do more *exploratory* testing.
 
 1. Adding a client contact
 
-   1. Test case: `add n/John Doe p/98765432 e/john@example.com a/123 Street date:12-10-2025 type/client t/friends`<br>
+   1. Test case: `add n/John Doe p/98765432 e/john@example.com a/123 Street w/12-10-2025 type/client c/friends`<br>
       Expected: New client contact is added with wedding date. Success message shows the contact details.
 
    1. Test case: `add n/Jane Smith p/87654321 e/jane@example.com a/456 Avenue type/client`<br>
@@ -1229,7 +1253,7 @@ testers are expected to do more *exploratory* testing.
 
 2. Adding a vendor contact
 
-   1. Test case: `add n/Flower Shop p/91234567 e/flowers@example.com a/789 Road type/vendor t/florist`<br>
+   1. Test case: `add n/Flower Shop p/91234567 e/flowers@example.com a/789 Road type/vendor c/florist`<br>
       Expected: New vendor contact is added. Success message shows the contact details.
 
    1. Test case: `add n/Caterer Co p/92345678 e/cater@example.com a/321 Lane type/invalid`<br>

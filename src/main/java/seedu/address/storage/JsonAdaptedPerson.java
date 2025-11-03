@@ -40,7 +40,7 @@ class JsonAdaptedPerson {
     private final String budget;
     private final List<JsonAdaptedCategory> tags = new ArrayList<>();
     private final String partner;
-    private final List<String> linkedPersonNames = new ArrayList<>();
+    private final List<String> linkedPersonPhones = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -51,7 +51,7 @@ class JsonAdaptedPerson {
             @JsonProperty("weddingDate") String weddingDate, @JsonProperty("type") String type,
             @JsonProperty("price") String price, @JsonProperty("budget") String budget,
             @JsonProperty("partner") String partner, @JsonProperty("tags") List<JsonAdaptedCategory> tags,
-            @JsonProperty("linkedPersonNames") List<String> linkedPersonNames) {
+            @JsonProperty("linkedPersonPhones") List<String> linkedPersonPhones) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -64,8 +64,8 @@ class JsonAdaptedPerson {
         if (tags != null) {
             this.tags.addAll(tags);
         }
-        if (linkedPersonNames != null) {
-            this.linkedPersonNames.addAll(linkedPersonNames);
+        if (linkedPersonPhones != null) {
+            this.linkedPersonPhones.addAll(linkedPersonPhones);
         }
     }
 
@@ -87,16 +87,16 @@ class JsonAdaptedPerson {
         tags.addAll(source.getCategories().stream()
                 .map(JsonAdaptedCategory::new)
                 .collect(Collectors.toList()));
-        linkedPersonNames.addAll(source.getLinkedPersons().stream()
-                .map(person -> person.getName().fullName)
+        linkedPersonPhones.addAll(source.getLinkedPersons().stream()
+                .map(person -> person.getPhone().value)
                 .collect(Collectors.toList()));
     }
 
     /**
-     * Returns the list of linked person names.
+     * Returns the list of linked person phone numbers.
      */
-    public List<String> getLinkedPersonNames() {
-        return new ArrayList<>(linkedPersonNames);
+    public List<String> getLinkedPersonPhones() {
+        return new ArrayList<>(linkedPersonPhones);
     }
 
     /**
