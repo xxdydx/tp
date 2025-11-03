@@ -629,7 +629,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 5.  KnotBook validates the email format
 6.  If type is "client", KnotBook validates the wedding date and budget
 7.  If type is "vendor", KnotBook validates the category and price
-8.  KnotBook checks for duplicate contacts (same phone or email)
+8.  KnotBook checks for duplicate contacts (same phone number)
 9.  KnotBook saves the new contact
 10. KnotBook displays success message
 
@@ -691,7 +691,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-* 8a. Duplicate contact detected (same phone or email).
+* 8a. Duplicate contact detected (same phone number).
 
     * 8a1. KnotBook shows error: "This contact already exists."
 
