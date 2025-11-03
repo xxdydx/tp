@@ -47,7 +47,14 @@ KnotBook needs Java 17 or newer to run. Think of Java as the engine that powers 
 ### Step 4: Start Using KnotBook
 The app window should appear in a few seconds with some sample wedding contacts to help you get started.
 
+**Figure 1: Main window**
 ![Ui](images/Ui.png)
+
+**Legend — numbered callouts in Figure 1**
+1. **Contact details panel**: The panel on the right shows the full details of the selected contact. Click any contact in the list to view their information here — including linked vendors/clients when available.
+2. **Command results**: This area displays feedback for every command you run (e.g., success messages, errors, and helpful hints). Use it to confirm what changed after each action.
+3. **Command box**: Type your commands here (like `add`, `edit`, `find`, `cat`, `link`, `unlink`, `delete`). Press Enter to run the command.
+4. <span id="contact-index"></span>**Contact index (`INDEX`)**: The numbers on the left of the contact list are the indices you use in commands such as `edit INDEX`, `delete INDEX`, `link client/CLIENT_INDEX vendor/VENDOR_INDEX`, and `unlink ...`. Indices always refer to the currently displayed list (even when the currently displayed list changes after a `find` or `cat` command).
 
 **Try these commands** by typing them in the command box at the top and pressing Enter:
 * `help` - Opens a help window showing all available commands
@@ -80,7 +87,7 @@ Action | Format, Examples
 **List All Contacts** | `list`
 **Find a Contact** | `find <keyword>`<br> e.g., `find John Blooming`
 **Filter by Category** | `cat CATEGORY`<br> e.g., `cat florist`
-**Edit Contact** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​`<br> e.g., `edit 2 p/91234567 budget/8000`
+**Edit Contact** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​` (see [INDEX](#contact-index))<br> e.g., `edit 2 p/91234567 budget/8000`
 **Delete Contact** | `delete INDEX`<br> e.g., `delete 3`
 **Link Client with Vendor** | `link client/CLIENT_INDEX vendor/VENDOR_INDEX`<br> e.g., `link client/1 vendor/3`
 **Unlink Client with Vendor** | `unlink client/CLIENT_INDEX vendor/VENDOR_INDEX`<br> e.g., `unlink client/1 vendor/3`
@@ -96,33 +103,38 @@ Action | Format, Examples
 
 **:information_source: Notes about the command format:**<br>
 
-* Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+* Replace words in `UPPER_CASE` with your own details. For example, in `add n/NAME`, you might type `add n/Jane Ong`.
 
-* Items in square brackets are optional.<br>
-  e.g `n/NAME [c/CATEGORY]` can be used as `n/The Bloom Boutique c/florist` or as `n/The Bloom Boutique`.
+* Items in square brackets `[ ]` are optional. For example, `n/NAME [c/CATEGORY]` requires a name; the category can be omitted.
 
-* For all commands, the command word is case-sensitive.
+* Commands are case-sensitive — watch your capitals.
 
-* Parameters can be in any order.<br>
-  e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+* You can enter parameters in any order. For example, `n/NAME p/PHONE` works the same as `p/PHONE n/NAME`.
 
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
-  e.g. if the command specifies `help 123`, it will be interpreted as `help`.
+* For very simple commands like `help`, `list`, `exit` and `clear`, any extra text is politely ignored.
 
-* Commands must be entered on a single line. Newlines are not supported.<br>
-  If you copy a command that appears on multiple lines, join it into one line before pressing Enter.
-  Pasting multi-line commands into the command box will fail; replace line breaks with spaces.
+* Each command must be entered on a single line. If you copy something that looks like several lines, simply join them before pressing Enter.
 
-* Dates displayed in the contacts list use the format `YYYY-MM-DD` to avoid ambiguity. Input for `w/WEDDING_DATE` accepts `DD-MM-YYYY` or `YYYY-MM-DD`.
+* Dates in the app appear as `YYYY-MM-DD`, though when typing a date you may use either `DD-MM-YYYY` or `YYYY-MM-DD`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
+</div>
+
+<div markdown="block" class="alert alert-warning">
+:exclamation: **Warning:**  
+Some commands permanently change or delete data. Read carefully before running:
+
+* `delete INDEX` (see [INDEX](#contact-index)): Deletes a contact and can’t be undone.
+* `clear`: Deletes all contacts, not just what’s filtered; saves immediately.
+* `edit`: Changes take effect right away; `c/` alone removes all categories.
+* `add`: You can’t change `type/TYPE` later with `edit` (you have to delete and re-add).
 </div>
 
 ### Viewing help : `help` 💡
 
 Opens a help window with detailed information about all available commands in an easy-to-navigate accordion interface.
 
+**Figure 2: Help window**
 ![help.png](images/help.png)
 
 Format: `help`
@@ -172,15 +184,15 @@ Format: `help`
     * Must start with an alphanumeric character
     * Example: `Jane Wang`
 * `price/PRICE` - Vendor pricing (optional, for vendors only)
-    * Must be a positive integer (whole numbers only, no cents/decimals, no commas and no fullstops)
+    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas and no fullstops)
     * Can be a single value (e.g., `1000`) or range (e.g., `1000-2000`)
     * Range values must be separated by a hyphen with no spaces
-    * Maximum value: 999,999,999
+    * Maximum value: 9,999,999,999
 * `budget/BUDGET` - Client budget (optional, for clients only)
-    * Must be a positive integer (whole numbers only, no cents/decimals, no commas and no fullstops)
+    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas and no fullstops)
     * Can be a single value (e.g., `5000`) or range (e.g., `5000-10000`)
     * Range values must be separated by a hyphen with no spaces
-    * Maximum value: 999,999,999
+    * Maximum value: 9,999,999,999
 * `c/CATEGORY` - Category tags (optional, for vendors only)
     * Must start with an alphanumeric character
     * Can contain spaces, hyphens (`-`), ampersands (`&`), periods (`.`), apostrophes (`'`), slashes (`/`), and parentheses (`()`)
@@ -220,6 +232,7 @@ Format: `list`
 **Example:**
 * `list` - Displays all your wedding contacts
 
+**Figure 3: List view**
 ![list.png](images/list.png)
 Note: Dates shown in the contacts list are formatted as `YYYY-MM-DD` (e.g., `2026-07-15`).
 
@@ -227,7 +240,7 @@ Note: Dates shown in the contacts list are formatted as `YYYY-MM-DD` (e.g., `202
 
 Made a typo? Client changed their wedding date? Vendor updated their pricing? Use this command to quickly update any contact details in KnotBook!
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​` (see [INDEX](#contact-index))
 
 **How it works:**
 * Edits the contact at the specified `INDEX` (the number shown in the contact list)
@@ -250,14 +263,15 @@ Looking for a specific client or vendor? Quickly search by name - and for client
 Format: `find <keyword>`
 
 **How it works:**
-* The search is case-insensitive (e.g., `hans` will match `Hans`)
-* The entire input is treated as one query. Spaces are not split into separate keywords (e.g., `roy b` is treated as the single query `"roy b"`).
+* The search is case-insensitive (e.g., `hans` matches `Hans`).
+* Your entire input is treated as one query; spaces are not split into separate keywords (e.g., `roy b` is treated as `"roy b"`).
 * Only the name field is searched; for clients, the partner’s name is also checked.
-* Matches the start of any word (first name, last name, etc.). It’s **prefix**, not substring (e.g., `Han` matches `Hans`, but `an` does not match `Hans`).
+* Matches the start of any word (prefix match). For example, `Han` matches `Hans`, but `an` does not match `Hans`.
 
 **Examples:**
 * `find tan` - Returns contacts like `Alex Tan`, `Tan Wei Ling`; also matches a client whose partner is Tan Jun Hao.
 * `find ch` - Returns `Charlotte K Photography`; also matches a client whose partner is `Jack Chia`.<br>
+  **Figure 4: Find results**
   ![find.png](images/find.png)
 
 <div markdown="block" class="alert alert-primary">
@@ -285,6 +299,8 @@ Format: `cat CATEGORY`
 * `cat florist` - Shows all vendors categorized as florist
 * `cat photographer` - Shows all photographers
 * `cat caterer` - Shows all catering services
+
+  **Figure 5: Category results**
   ![cat.png](images/cat.png)
 
 <div markdown="block" class="alert alert-primary">
@@ -293,7 +309,7 @@ Format: `cat CATEGORY`
 
 * **Only vendors** have categories - clients won’t show up in `cat` results.
 * Category matching is **case-insensitive**.
-* In a filtered view (after `cat` or `find`), commands like `delete INDEX` use the index from the *filtered list*.
+* In a filtered view (after `cat` or `find`), commands like `delete INDEX` use the [index](#contact-index) from the *filtered list*.
 * To reset the view, run `list`.
 
 </div>
@@ -305,23 +321,26 @@ Hired a photographer for the Johnson wedding? Use this command to connect vendor
 Format: `link client/CLIENT_INDEX vendor/VENDOR_INDEX`
 
 **How it works:**
-* Links the client at `CLIENT_INDEX` with the vendor at `VENDOR_INDEX`
-* Both indices refer to the numbers shown in the currently displayed list
+* Running the `link` command links the client at `CLIENT_INDEX` with the vendor at `VENDOR_INDEX`
+  * `CLIENT_INDEX` is the [index](#contact-index) of a **client** contact in the currently displayed list
+  * `VENDOR_INDEX` is the index of a **vendor** contact in the currently displayed list
 * Both indices **must be a positive integer** (1, 2, 3, …) and **must not exceed the total number of contacts** in the displayed list
+* The contact at `CLIENT_INDEX` must be a client, and the contact at `VENDOR_INDEX` must be a vendor
 * Helps you track which vendors are assigned to which weddings
 
 **Examples:**
-* `link client/1 vendor/3` - Links the 1st client with the 3rd vendor
-* `link client/2 vendor/5` - Links the 2nd client with the 5th vendor
+* `link client/2 vendor/3` - Links the 2nd contact (which is a client contact) with the 3rd contact (which is a vendor)
 
+**Figure 6: Linking example (view of 2nd contact which is of client type)**
 ![link1.png](images/link1.png)
+**Figure 7: Linking example (view of 3rd contact which is of vendor type)**
 ![link2.png](images/link2.png)
 
 ### Unlinking a vendor from a client : `unlink` ⛓️‍💥
 
 Client switched photographers? Vendor cancelled? Use this command to remove the connection between a client and vendor when plans change.
 
-Format: `unlink client/CLIENT_INDEX vendor/VENDOR_INDEX`
+Format: `unlink client/CLIENT_INDEX vendor/VENDOR_INDEX` (uses [INDEX](#contact-index))
 
 **How it works:**
 * Removes the link between the client at `CLIENT_INDEX` and the vendor at `VENDOR_INDEX`
@@ -355,7 +374,7 @@ Ensure the chosen indices point to a **client** and a **vendor** respectively, o
 
 Need to remove a contact? Whether a vendor is no longer available or a client cancelled, use this command to delete any contact from KnotBook.
 
-Format: `delete INDEX`
+Format: `delete INDEX` (see [INDEX](#contact-index))
 
 **How it works:**
 * Deletes the contact at the specified `INDEX`
@@ -400,11 +419,11 @@ Format: `exit`
 
 ### Saving the data
 
-KnotBook data is saved to your hard disk automatically after any command that changes the data. There is no need to save manually.
+Your data is saved automatically to your hard disk after every change — no manual saving needed.
 
 ### Editing the data file
 
-KnotBook data is saved automatically as a JSON file `[JAR file location]/data/addressbook.json`.
+KnotBook data is saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Use the app to make changes; editing the JSON directly may corrupt your data.
 
 --------------------------------------------------------------------------------------------------------------------
 
