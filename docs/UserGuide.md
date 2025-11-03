@@ -184,12 +184,12 @@ Format: `help`
     * Must start with an alphanumeric character
     * Example: `Jane Wang`
 * `price/PRICE` - Vendor pricing (optional, for vendors only)
-    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas and no fullstops)
+    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, no leading zeros)
     * Can be a single value (e.g., `1000`) or range (e.g., `1000-2000`)
     * Range values must be separated by a hyphen with no spaces
     * Maximum value: 9,999,999,999
 * `budget/BUDGET` - Client budget (optional, for clients only)
-    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas and no fullstops)
+    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, leading zeros will be trimmed)
     * Can be a single value (e.g., `5000`) or range (e.g., `5000-10000`)
     * Range values must be separated by a hyphen with no spaces
     * Maximum value: 9,999,999,999
@@ -247,6 +247,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [p
 * The index **must be a positive integer** (1, 2, 3, …) and **must not exceed the total number of contacts** in the displayed list
 * At least one optional field must be provided
 * Existing values will be replaced with the new input values
+* **Categories can only be edited for vendors** (not clients). Attempting to add, remove, or modify categories on a client will result in an error.
 * To remove a category, type `c/` without specifying any categories after it
 * When you type in an `edit` command after a `find` or `cat` command, you can only edit from the filtered contacts.
 
@@ -267,6 +268,7 @@ Format: `find <keyword>`
 * Your entire input is treated as one query; spaces are not split into separate keywords (e.g., `roy b` is treated as `"roy b"`).
 * Only the name field is searched; for clients, the partner’s name is also checked.
 * Matches the start of any word (prefix match). For example, `Han` matches `Hans`, but `an` does not match `Hans`.
+* **Valid characters:** Letters (a-z, A-Z), numbers (0-9), spaces, apostrophes (`'`), periods (`.`), ampersands (`&`), and hyphens (`-`). Invalid characters (such as brackets, parentheses, or special symbols) are not allowed.
 
 **Examples:**
 * `find tan` - Returns contacts like `Alex Tan`, `Tan Wei Ling`; also matches a client whose partner is Tan Jun Hao.
@@ -379,7 +381,7 @@ Format: `delete INDEX` (see [INDEX](#contact-index))
 **How it works:**
 * Deletes the contact at the specified `INDEX`
 * The index refers to the number shown in the currently displayed contact list
-* The index **must be a positive integer** (1, 2, 3, …) and **must not exceed the total number of contacts** in the displayed list
+* The index **must be a positive integer** (1, 2, 3, …) consisting of **digits only** and **must not exceed the total number of contacts** in the displayed list
 
 <div markdown="block" class="alert alert-warning">
 
