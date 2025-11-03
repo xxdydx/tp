@@ -306,12 +306,21 @@ The Link and Unlink features allow wedding planners to create and remove associa
 * `LinkCommand` - Creates a link between a client and vendor
 * `UnlinkCommand` - Removes a link between a client and vendor
 * `LinkCommandParser` / `UnlinkCommandParser` - Parse client and vendor indices
+* `JsonAdaptedPerson` - Serializes links using phone numbers for persistence
+* `JsonSerializableAddressBook` - Resolves links by phone number when loading from JSON
 
 **Usage:**
 ```
 link client/1, vendor/3
 unlink client/1, vendor/3
 ```
+
+**Link Persistence:**
+
+Links are stored and resolved using **phone numbers** (not names) to ensure uniqueness and prevent incorrect associations when multiple persons share the same name. When the application saves data:
+* `JsonAdaptedPerson` stores a list of `linkedPersonPhones` for each person
+* When loading data, `JsonSerializableAddressBook` uses a phone-based lookup map to resolve links
+* This ensures that even if two vendors have identical names (e.g., "Bloom Co"), links are correctly resolved to the intended person by their unique phone number
 
 **Sequence Diagram (Link Command):**
 
@@ -331,7 +340,11 @@ unlink client/1, vendor/3
   * Pros: More stable references
   * Cons: Requires users to remember/type full names or IDs
 
-Index-based linking was chosen for consistency with other commands (delete, edit) and ease of use.
+* **Alternative 3 (Current choice for persistence):** Store links by phone number instead of name
+  * Pros: Phone numbers are unique, prevents incorrect associations when names are duplicated
+  * Cons: Breaks compatibility with old JSON files using name-based links (requires data migration)
+
+Index-based linking was chosen for consistency with other commands (delete, edit) and ease of use. Phone-based persistence was chosen to ensure correct link resolution even when multiple persons share the same name.
 
 ### Person Details Panel Rendering
 
