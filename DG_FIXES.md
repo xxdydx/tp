@@ -159,6 +159,234 @@ The parser expects the link/unlink command format without spaces: `client/INDEX,
 
 ---
 
+## Fix #5: JAR Filename in Launch Instructions
+
+**Date**: 3 November 2025  
+**Issue**: DG shows `java -jar tp.jar` but the actual JAR file is named `KnotBook.jar`.  
+**Reference**: GitHub Issues #275, #303 - `type.DocumentationBug` - Opened 2 days ago
+
+### Changes Made
+
+**File**: `docs/DeveloperGuide.md`
+
+**Location - Launch via Command Line Section (Line 788)**
+- **Before**: "Open PowerShell in the folder containing the JAR and run `java -jar tp.jar`"
+- **After**: "Open PowerShell in the folder containing the JAR and run `java -jar KnotBook.jar`"
+
+### Status
+
+✅ **FIXED** - Updated jar filename to match actual product name.
+
+### Rationale
+
+The application is named KnotBook, and the generated JAR file is `KnotBook.jar`. The DG should use the correct filename in all examples and instructions.
+
+### Verification
+
+- Build status: ✅ PASSING
+- Tests affected: None (documentation only)
+- Code changes required: None
+
+---
+
+## Fix #6: Acknowledgements Section Placeholder
+
+**Date**: 3 November 2025  
+**Issue**: Acknowledgements section contains placeholder text instead of actual acknowledgements.  
+**Reference**: GitHub Issue #293 - `type.DocumentationBug` - Opened 2 days ago
+
+### Changes Made
+
+**File**: `docs/DeveloperGuide.md`
+
+**Location - Acknowledgements Section (Line ~51)**
+- **Before**: "{list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}"
+- **After**: 
+  * This project is based on the AddressBook-Level3 project created by the SE-EDU initiative.
+  * Libraries used: JavaFX, Jackson, JUnit5, Apache Commons Validator
+
+### Status
+
+✅ **FIXED** - Replaced placeholder with actual acknowledgements.
+
+### Rationale
+
+The DG should properly acknowledge the SE-EDU AddressBook-Level3 base project and list the libraries used.
+
+### Verification
+
+- Build status: ✅ PASSING
+- Tests affected: None (documentation only)
+- Code changes required: None
+
+---
+
+## Fix #7: Timestamp Reference in Delete Test Case
+
+**Date**: 3 November 2025  
+**Issue**: Delete test case mentions "Timestamp in the status bar is updated" but no timestamp is shown in the app.  
+**Reference**: GitHub Issue #305 - `type.DocumentationBug` - Opened 2 days ago
+
+### Changes Made
+
+**File**: `docs/DeveloperGuide.md`
+
+**Location - Delete Test Case (Line 804)**
+- **Before**: "Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated."
+- **After**: "Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message."
+
+### Status
+
+✅ **FIXED** - Removed timestamp reference.
+
+### Rationale
+
+The application does not display a timestamp in the status bar when contacts are deleted. The test case expected output should match actual application behavior.
+
+### Verification
+
+- Build status: ✅ PASSING
+- Tests affected: None (documentation only)
+- Code changes required: None
+
+---
+
+## Fix #8: UC03 Extension 3b Category List
+
+**Date**: 3 November 2025  
+**Issue**: UC03 extension says app "shows a list of valid category types" but app only shows an error message.  
+**Reference**: GitHub Issue #310 - `type.DocumentationBug` - Opened 2 days ago
+
+### Changes Made
+
+**File**: `docs/DeveloperGuide.md`
+
+**Location - Use Case UC03 Extension 3b (Line ~567)**
+- **Before**: 
+  * 3b1. KnotBook shows a list of valid category types.
+  * 3b2. User selects a valid category or creates a new one.
+  * Use case resumes at step 4.
+- **After**: 
+  * 3b1. KnotBook shows an error message for invalid category format.
+  * Use case resumes at step 2.
+
+### Status
+
+✅ **FIXED** - Updated to match actual application behavior.
+
+### Rationale
+
+The application only allows one category per vendor and shows an error message for invalid category formats. It does not display a list of valid categories or prompt the user to select from a list.
+
+### Verification
+
+- Build status: ✅ PASSING
+- Tests affected: None (documentation only)
+- Code changes required: None
+
+---
+
+## Fix #9: Duplicate Phone Numbers User Story Contradiction
+
+**Date**: 3 November 2025  
+**Issue**: User story says app should "allow duplicate phone numbers" but DG clearly states app prevents duplicate phone numbers.  
+**Reference**: GitHub Issue #315 - `type.FunctionalityBug` - Opened 2 days ago
+
+### Changes Made
+
+**File**: `docs/DeveloperGuide.md`
+
+**Location - User Stories Table (Line 475)**
+- **Before**: Row with user story "allow duplicate phone numbers and prices | accommodate cases where vendors share numbers or have similar pricing"
+- **After**: (Removed entire row)
+
+### Status
+
+✅ **FIXED** - Removed contradictory user story.
+
+### Rationale
+
+The application intentionally prevents duplicate phone numbers as a core feature (duplicate detection uses phone number as unique identifier). This user story contradicts the actual implementation and design decisions documented throughout the DG.
+
+### Verification
+
+- Build status: ✅ PASSING
+- Tests affected: None (documentation only)
+- Code changes required: None
+
+---
+
+## Fix #10: UC02 Unnecessary Steps
+
+**Date**: 3 November 2025  
+**Issue**: UC02 includes steps 3-8 for searching/viewing vendor and client details, but link command only requires indices.  
+**Reference**: GitHub Issue (from tester) - `type.DocumentationBug` - Opened 2 days ago
+
+### Changes Made
+
+**File**: `docs/DeveloperGuide.md`
+
+**Location - Use Case UC02 (Line ~503)**
+- **Before**: 10-step MSS including vendor/client search and details viewing
+- **After**: Simplified 4-step MSS:
+  1. User requests to list persons
+  2. KnotBook shows a list of persons
+  3. User requests to link a vendor to a client by their indices
+  4. KnotBook confirms the link and updates both records
+
+### Status
+
+✅ **FIXED** - Simplified MSS to match actual link command workflow.
+
+### Rationale
+
+The link command works with indices from the displayed list (`link client/1 vendor/2`). Users don't need to search for or view vendor/client details individually - they just need the list and the indices.
+
+### Verification
+
+- Build status: ✅ PASSING
+- Tests affected: None (documentation only)
+- Code changes required: None
+
+---
+
+## Fix #11: UC04 Incorrect MSS Steps
+
+**Date**: 3 November 2025  
+**Issue**: UC04 separates "request update", "prompt for amount", and "enter amount" into steps 5-7, but edit command takes all parameters at once.  
+**Reference**: GitHub Issue #323 - `type.DocumentationBug` - Opened 2 days ago
+
+### Changes Made
+
+**File**: `docs/DeveloperGuide.md`
+
+**Location - Use Case UC04 (Line ~573)**
+- **Before**: 
+  5. User requests to update the quote with new pricing
+  6. KnotBook prompts for the new quote amount
+  7. User enters the new quote
+  8. KnotBook validates and saves...
+- **After**: 
+  5. User enters edit command with new quote/price
+  6. KnotBook validates and saves the updated quote
+  7. KnotBook displays confirmation message
+
+### Status
+
+✅ **FIXED** - Updated MSS to reflect one-step edit command.
+
+### Rationale
+
+The edit command takes all parameters in one command (e.g., `edit 1 pr/2000`). The system doesn't prompt for each field separately - it's a single-step command execution.
+
+### Verification
+
+- Build status: ✅ PASSING
+- Tests affected: None (documentation only)
+- Code changes required: None
+
+---
+
 ## Summary Table
 
 | # | Issue | Status | File(s) | Lines | Description |
@@ -167,6 +395,13 @@ The parser expects the link/unlink command format without spaces: `client/INDEX,
 | 2 | Wedding date prefix | ✅ FIXED | DeveloperGuide.md | 247, 666, 884 | Updated `date:` notation to `w/` across all examples |
 | 3 | Category prefix notation | ✅ FIXED | DeveloperGuide.md | 884, 892 | Changed `t/` prefix to `c/` in test case examples |
 | 4 | Link/unlink formatting | ✅ FIXED | DeveloperGuide.md | 312, 313, 840, 843, 846, 858, 861, 864 | Removed space after comma in link/unlink commands |
+| 5 | JAR filename | ✅ FIXED | DeveloperGuide.md | 788 | Changed `tp.jar` to `KnotBook.jar` |
+| 6 | Acknowledgements placeholder | ✅ FIXED | DeveloperGuide.md | ~51 | Replaced placeholder with actual acknowledgements |
+| 7 | Timestamp reference | ✅ FIXED | DeveloperGuide.md | 804 | Removed non-existent timestamp from delete test |
+| 8 | UC03 category list | ✅ FIXED | DeveloperGuide.md | ~567 | Removed mention of showing category list |
+| 9 | Duplicate phone story | ✅ FIXED | DeveloperGuide.md | 475 | Removed contradictory user story |
+| 10 | UC02 unnecessary steps | ✅ FIXED | DeveloperGuide.md | ~503 | Simplified MSS to match link command |
+| 11 | UC04 incorrect MSS | ✅ FIXED | DeveloperGuide.md | ~573 | Updated MSS to reflect one-step edit command |
 
 ---
 
