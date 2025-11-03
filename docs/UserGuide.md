@@ -160,7 +160,8 @@ Format: `help`
     * *Technical details:* KnotBook uses [Apache Commons Validator EmailValidator](https://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/EmailValidator.html)
 * `a/ADDRESS` - Physical address (required)
     * Can contain any characters
-    * Example: `123 Orchard Road, #05-01`
+    * For clients, this can be the wedding venue or a general location if you prefer not to store personal home addresses
+    * Example: `123 Orchard Road, #05-01`, `Grand Hyatt Singapore`, `Singapore (TBD venue)`
 * `type/TYPE` - Either `client` or `vendor` (required, case-insensitive)
 * `w/WEDDING_DATE` - Wedding date (required, for clients only)
     * Accepts formats: `DD-MM-YYYY` or `YYYY-MM-DD`
