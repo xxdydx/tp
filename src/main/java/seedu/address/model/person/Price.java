@@ -37,7 +37,7 @@ public class Price {
         checkArgument(isValidPrice(trimmed), MESSAGE_CONSTRAINTS);
         value = trimmed;
     }
-    
+
     /**
      * Strips leading zeros from single or range prices.
      */
@@ -51,7 +51,7 @@ public class Price {
             return input.replaceFirst("^0+(?!$)", "");
         }
     }
-    
+
 
     /**
      * Returns true if a given string is a valid price.
@@ -116,14 +116,14 @@ public class Price {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof Price)) {
             return false;
         }
 
         Price otherPrice = (Price) other;
-        return value.equals(otherPrice.value);
+        return java.util.Objects.equals(this.value, otherPrice.value);
     }
+
 
     @Override
     public int hashCode() {

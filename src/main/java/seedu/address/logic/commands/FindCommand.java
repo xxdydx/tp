@@ -21,7 +21,8 @@ public class FindCommand extends Command {
      */
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain a word "
             + "that starts with the given query (case-insensitive). Also matches a CLIENT's partner name. "
-            + "Query must contain only letters, numbers, spaces, apostrophes ('), hyphens (-), periods (.), and ampersands (&).\n"
+            + "Query must contain only letters, numbers, spaces, apostrophes ('), "
+            + "hyphens (-), periods (.), and ampersands (&).\n"
             + "Parameters: QUERY\n"
             + "Examples:\n"
             + "  " + COMMAND_WORD + " ma  (matches Maria Chen)\n"

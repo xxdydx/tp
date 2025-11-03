@@ -57,8 +57,7 @@ public class StringUtil {
      */
     public static boolean isNonZeroUnsignedInteger(String s) {
         requireNonNull(s);
-        // Enforce ASCII digits only: non-zero unsigned integer pattern
-        if (!s.matches("^[1-9][0-9]*$")) {
+        if (!s.matches("^0*[1-9][0-9]*$")) {
             return false;
         }
         try {
