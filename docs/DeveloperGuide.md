@@ -244,7 +244,7 @@ The Wedding Date feature stores the date of a client's wedding event. This is im
 **Key Components:**
 * `WeddingDate` class - Validates and stores wedding dates
 * `Person` class - Contains a `WeddingDate` field
-* `AddCommandParser` - Parses the `date:` prefix to extract wedding dates
+* `AddCommandParser` - Parses the `w/` prefix to extract wedding dates
 
 **Design Considerations:**
 
@@ -663,7 +663,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 6a. Client added without wedding date.
 
-    * 6a1. KnotBook shows error: "Wedding date is required for clients. Example: date:2025-10-12"
+    * 6a1. KnotBook shows error: "Wedding date is required for clients. Example: w/2025-10-12"
 
       Use case ends.
 
@@ -881,7 +881,7 @@ testers are expected to do more *exploratory* testing.
 
 1. Adding a client contact
 
-   1. Test case: `add n/John Doe p/98765432 e/john@example.com a/123 Street date:12-10-2025 type/client t/friends`<br>
+   1. Test case: `add n/John Doe p/98765432 e/john@example.com a/123 Street w/12-10-2025 type/client t/friends`<br>
       Expected: New client contact is added with wedding date. Success message shows the contact details.
 
    1. Test case: `add n/Jane Smith p/87654321 e/jane@example.com a/456 Avenue type/client`<br>
