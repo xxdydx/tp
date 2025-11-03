@@ -607,7 +607,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1a. User enters an empty category.
 
-    * 1a1. KnotBook shows an error message: "Category cannot be empty."
+    * 1a1. KnotBook shows an error message: "Invalid command format!"
 
       Use case ends.
 
@@ -825,7 +825,7 @@ testers are expected to do more *exploratory* testing.
       Expected: Only contacts categorized as "photographer" are displayed (case-insensitive matching).
 
    1. Test case: `cat`<br>
-      Expected: Error message indicating that category cannot be empty.
+      Expected: Error message "Invalid command format!" with command usage details.
 
    1. Test case: `cat nonexistent`<br>
       Expected: Empty list displayed with message indicating no contacts found for that category.
