@@ -148,7 +148,7 @@ Format: `help`
     * Must start with an alphanumeric character
     * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
 * `p/PHONE` - Phone number (required)
-    * Must be exactly 8 digits
+    * Singapore context: must be exactly 8 digits (no `+65`, spaces, or symbols)
     * No letters, spaces, hyphens, or other special characters allowed
     * Example: `91234567`, `98765432`
 * `e/EMAIL` - Email address (required)
