@@ -881,7 +881,7 @@ testers are expected to do more *exploratory* testing.
 
 1. Adding a client contact
 
-   1. Test case: `add n/John Doe p/98765432 e/john@example.com a/123 Street w/12-10-2025 type/client t/friends`<br>
+   1. Test case: `add n/John Doe p/98765432 e/john@example.com a/123 Street w/12-10-2025 type/client c/friends`<br>
       Expected: New client contact is added with wedding date. Success message shows the contact details.
 
    1. Test case: `add n/Jane Smith p/87654321 e/jane@example.com a/456 Avenue type/client`<br>
@@ -889,7 +889,7 @@ testers are expected to do more *exploratory* testing.
 
 2. Adding a vendor contact
 
-   1. Test case: `add n/Flower Shop p/91234567 e/flowers@example.com a/789 Road type/vendor t/florist`<br>
+   1. Test case: `add n/Flower Shop p/91234567 e/flowers@example.com a/789 Road type/vendor c/florist`<br>
       Expected: New vendor contact is added. Success message shows the contact details.
 
    1. Test case: `add n/Caterer Co p/92345678 e/cater@example.com a/321 Lane type/invalid`<br>
