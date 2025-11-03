@@ -135,6 +135,9 @@ public class EditCommand extends Command {
         WeddingDate updatedWeddingDate = editPersonDescriptor.getWeddingDate()
                 .orElse(personToEdit.getWeddingDate().orElse(null));
         PersonType unchangedType = personToEdit.getType();
+        if (unchangedType == PersonType.CLIENT && editPersonDescriptor.getCategories().isPresent()) {
+            throw new CommandException(Person.MSG_TAGS_FORBIDDEN_FOR_CLIENT);
+        }
         Set<Category> updatedCategories = editPersonDescriptor.getCategories()
                 .orElse(personToEdit.getCategories());
         Price updatedPrice = editPersonDescriptor.getPrice().orElse(personToEdit.getPrice().orElse(null));

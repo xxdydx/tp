@@ -12,7 +12,8 @@ public class Price {
     public static final String MESSAGE_CONSTRAINTS =
             "Invalid amount. Enter a number (e.g., 1200) or a range (e.g., 800-1500).\n"
                     + "Only digits and a single hyphen are allowed (no spaces, commas, or $).\n"
-                    + "For ranges, the left value must be strictly less than the right value.";
+                    + "For ranges, the left value must be strictly less than the right value.\n"
+                    + "Length limit is 10 digits (i.e. $9,999,999,999).";
 
     /*
      * Accepts:
@@ -32,9 +33,25 @@ public class Price {
     public Price(String price) {
         requireNonNull(price);
         String trimmed = price.trim();
+        trimmed = stripLeadingZeros(trimmed);
         checkArgument(isValidPrice(trimmed), MESSAGE_CONSTRAINTS);
         value = trimmed;
     }
+    
+    /**
+     * Strips leading zeros from single or range prices.
+     */
+    private static String stripLeadingZeros(String input) {
+        if (input.contains("-")) {
+            String[] parts = input.split("-");
+            String left = parts[0].replaceFirst("^0+(?!$)", "");
+            String right = parts[1].replaceFirst("^0+(?!$)", "");
+            return left + "-" + right;
+        } else {
+            return input.replaceFirst("^0+(?!$)", "");
+        }
+    }
+    
 
     /**
      * Returns true if a given string is a valid price.

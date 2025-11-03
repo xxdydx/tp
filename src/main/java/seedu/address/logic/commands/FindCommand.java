@@ -20,7 +20,8 @@ public class FindCommand extends Command {
      * Usage message shown when the command format is invalid.
      */
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain a word "
-            + "that starts with the given query (case-insensitive). Also matches a CLIENT's partner name.\n"
+            + "that starts with the given query (case-insensitive). Also matches a CLIENT's partner name. "
+            + "Query must contain only letters, numbers, spaces, apostrophes ('), hyphens (-), periods (.), and ampersands (&).\n"
             + "Parameters: QUERY\n"
             + "Examples:\n"
             + "  " + COMMAND_WORD + " ma  (matches Maria Chen)\n"
