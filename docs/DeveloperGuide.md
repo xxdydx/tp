@@ -236,10 +236,6 @@ The Person Type feature allows KnotBook to distinguish between clients and vendo
 
 The enum approach was chosen for better type safety and to ensure data consistency across the application.
 
-#### Sequence Diagram (Add Command)
-
-<img src="images/AddSequenceDiagram.png" width="700" />
-
 ### Wedding Date Feature
 
 #### Implementation
@@ -263,27 +259,212 @@ The Wedding Date feature stores the date of a client's wedding event. This is im
 
 The dedicated class approach provides better encapsulation and allows for custom validation rules specific to wedding planning.
 
-#### Sequence Diagram (Edit Command)
+### Add Person Feature
+
+#### Command Feature
+
+`add n/NAME p/PHONE e/EMAIL a/ADDRESS type/(client|vendor) [w/WEDDING_DATE] [pr/PARTNER] [budget/BUDGET] [price/PRICE] [c/CATEGORY]`
+
+Where:
+* Required fields: `n/`, `p/`, `e/`, `a/`, `type/`
+* For clients: `w/WEDDING_DATE` and `pr/PARTNER` are required; `budget/BUDGET` is optional
+* For vendors: `price/PRICE` and `c/CATEGORY` are optional
+
+#### Command Feature Purpose
+
+The add command allows users to add a Person (client or vendor) to KnotBook with their contact details and type-specific information.
+
+#### Key Components
+
+* `AddCommand`: Executes the addition operation based on the user's input.
+* `AddCommandParser`: Parses user input to create an `AddCommand` object.
+* `LogicManager`: Invokes the `AddCommand` to execute the addition operation.
+* `ModelManager`: Implements the `Model` interface and contains the internal list of persons.
+* `Person`: Represents a person in KnotBook, encapsulating their personal information and type (client or vendor).
+* `AddressBookParser`: Creates an `AddCommand` object based on the user input.
+
+#### Sequence of action
+
+To help you understand how the add command works, here is a list of steps illustrating what occurs when `LogicManager#execute()` is invoked:
+
+We will be using the user input `add n/John Doe p/98765432 e/johnd@example.com a/311, Clementi Ave 2, #02-25 type/client w/15-06-2020 pr/Jane Doe budget/5000-10000` as an example.
+
+1. The user inputs the command `add n/John Doe p/98765432 e/johnd@example.com a/311, Clementi Ave 2, #02-25 type/client w/15-06-2020 pr/Jane Doe budget/5000-10000`, intending to add a client with the specified details.
+
+2. The `AddCommandParser` interprets the input, validating that required fields are present and type-specific constraints are met (e.g., wedding date is provided for clients).
+
+3. An `AddCommand` object is created with the parsed `Person` object.
+
+4. The `LogicManager` invokes the `execute` method of `AddCommand`.
+
+5. The `execute` method of `AddCommand` invokes the `addPerson` method in `Model` to create a new contact with the new `Person` object.
+
+6. The `execute` method of `AddCommand` returns a `CommandResult` object which stores the data regarding the completion of the `AddCommand`.
+
+7. The UI reflects this new list with the added `Person`.
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** For step 2, if the user does not have required arguments or violates type-specific constraints (e.g., missing wedding date for a client), the `AddCommand` object will NOT be created and an error message will be shown!
+</div>
+
+#### AddCommand Implementation Sequence Diagram
+
+The sequence diagram below illustrates the above process of adding a person into KnotBook.
+
+<img src="images/AddSequenceDiagram.png" width="700" />
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The sequence diagram for `AddCommand` is very similar to the sequence diagrams for the following commands: `DeleteCommand`, `EditCommand`, `FindCommand`, `CatCommand`, as its implementation follows the same pattern.
+</div>
+
+### Edit Person Feature
+
+#### Command Feature
+
+`edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [pr/PARTNER] [budget/BUDGET] [price/PRICE] [c/CATEGORY]`
+
+Where:
+* `INDEX` is a positive integer representing the position of the person in the displayed list
+* At least one optional field must be provided
+* Type-specific field constraints apply (e.g., clients cannot have price; vendors cannot have wedding date)
+
+#### Command Feature Purpose
+
+The edit command allows users to modify existing contact information in KnotBook without having to delete and re-add the person.
+
+#### Key Components
+
+* `EditCommand`: Executes the edit operation based on the user's input.
+* `EditCommandParser`: Parses user input to create an `EditCommand` object with an `EditPersonDescriptor`.
+* `LogicManager`: Invokes the `EditCommand` to execute the edit operation.
+* `ModelManager`: Implements the `Model` interface and manages the internal list of persons.
+* `Person`: Represents a person in KnotBook, which will be updated with the edited information.
+* `AddressBookParser`: Creates an `EditCommand` object based on the user input.
+
+#### Sequence of action
+
+To help you understand how the edit command works, here is a list of steps illustrating what occurs when `LogicManager#execute()` is invoked:
+
+We will be using the user input `edit 2 n/Jane Smith p/87654321` as an example.
+
+1. The user inputs the command `edit 2 n/Jane Smith p/87654321`, intending to edit the name and phone of the person at index 2.
+
+2. The `EditCommandParser` interprets the input, validating that at least one field is provided and the index is valid.
+
+3. An `EditCommand` object is created with the index and an `EditPersonDescriptor` containing the fields to update.
+
+4. The `LogicManager` invokes the `execute` method of `EditCommand`.
+
+5. The `execute` method of `EditCommand` retrieves the person at the specified index from the filtered list in `Model`.
+
+6. The `execute` method creates an edited `Person` by applying the descriptor to the existing person.
+
+7. The `execute` method of `EditCommand` invokes the `setPerson` method in `Model` to update the contact with the edited `Person` object.
+
+8. The `execute` method of `EditCommand` returns a `CommandResult` object which stores the data regarding the completion of the `EditCommand`.
+
+9. The UI reflects the updated list with the edited `Person`.
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** For step 2, if the user does not provide any fields to edit or the index is invalid, the `EditCommand` object will NOT be created and an error message will be shown!
+</div>
+
+#### EditCommand Implementation Sequence Diagram
+
+The sequence diagram below illustrates the above process of editing a person in KnotBook.
 
 <img src="images/EditSequenceDiagram.png" width="700" />
 
+### Find Person Feature
+
+#### Command Feature
+
+`find KEYWORD`
+
+Where `KEYWORD` is a string that will be matched against person names (case-insensitive).
+
+#### Command Feature Purpose
+
+The find command allows users to search for contacts by name in KnotBook, filtering the displayed list to show only matching contacts.
+
+#### Key Components
+
+* `FindCommand`: Executes the search operation based on the user's input.
+* `FindCommandParser`: Parses user input to create a `FindCommand` object with a `NameContainsSubstringPredicate`.
+* `LogicManager`: Invokes the `FindCommand` to execute the search operation.
+* `ModelManager`: Implements the `Model` interface and updates the filtered person list.
+* `Person`: Represents a person in KnotBook, whose name will be matched against the keyword.
+* `AddressBookParser`: Creates a `FindCommand` object based on the user input.
+
+#### Sequence of action
+
+To help you understand how the find command works, here is a list of steps illustrating what occurs when `LogicManager#execute()` is invoked:
+
+We will be using the user input `find alex` as an example.
+
+1. The user inputs the command `find alex`, intending to find all contacts whose names contain "alex".
+
+2. The `FindCommandParser` interprets the input and creates a `NameContainsSubstringPredicate` with the keyword "alex".
+
+3. A `FindCommand` object is created with the predicate.
+
+4. The `LogicManager` invokes the `execute` method of `FindCommand`.
+
+5. The `execute` method of `FindCommand` invokes the `updateFilteredPersonList` method in `Model` to filter the list based on the predicate.
+
+6. The `execute` method of `FindCommand` returns a `CommandResult` object which stores the data regarding the completion of the `FindCommand`.
+
+7. The UI reflects the filtered list showing only contacts whose names contain "alex".
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** For step 2, if the user does not provide a keyword, the `FindCommand` object will NOT be created and an error message will be shown!
+</div>
+
+#### FindCommand Implementation Sequence Diagram
+
+The sequence diagram below illustrates the above process of finding persons in KnotBook.
+
+<img src="images/FindSequenceDiagram.png" width="700" />
+
 ### Category Filter (Cat Command) Feature
 
-#### Implementation
+#### Command Feature
 
-The Cat Command allows users to filter contacts by their category/type. This is implemented through the `CatCommand` class.
+`cat CATEGORY`
 
-**Key Components:**
-* `CatCommand` - Executes the category filtering
-* `CatCommandParser` - Parses the category parameter
-* `Model` - Updates the filtered person list based on category
+Where `CATEGORY` is a string that will be matched against vendor categories (case-insensitive).
 
-**Usage:**
-```
-cat florist
-```
+#### Command Feature Purpose
 
-This command filters and displays all contacts categorized as "florist".
+The cat command allows users to filter contacts by their category/type in KnotBook, displaying only vendors that match the specified category.
+
+#### Key Components
+
+* `CatCommand`: Executes the category filtering operation based on the user's input.
+* `CatCommandParser`: Parses the category parameter and creates a `CatCommand` object with a `CategoryPredicate`.
+* `LogicManager`: Invokes the `CatCommand` to execute the filtering operation.
+* `ModelManager`: Implements the `Model` interface and updates the filtered person list.
+* `Person`: Represents a person in KnotBook, whose categories will be matched against the filter.
+* `AddressBookParser`: Creates a `CatCommand` object based on the user input.
+
+#### Sequence of action
+
+To help you understand how the cat command works, here is a list of steps illustrating what occurs when `LogicManager#execute()` is invoked:
+
+We will be using the user input `cat florist` as an example.
+
+1. The user inputs the command `cat florist`, intending to filter contacts to show only vendors categorized as "florist".
+
+2. The `CatCommandParser` interprets the input and creates a `CategoryPredicate` with the category "florist".
+
+3. A `CatCommand` object is created with the predicate.
+
+4. The `LogicManager` invokes the `execute` method of `CatCommand`.
+
+5. The `execute` method of `CatCommand` invokes the `updateFilteredPersonList` method in `Model` to filter the list based on the category predicate.
+
+6. The `execute` method of `CatCommand` returns a `CommandResult` object which stores the data regarding the completion of the `CatCommand`.
+
+7. The UI reflects the filtered list showing only vendors with the "florist" category.
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** For step 2, if the user does not provide a category, the `CatCommand` object will NOT be created and an error message will be shown!
+</div>
 
 **Design Considerations:**
 
@@ -297,16 +478,23 @@ This command filters and displays all contacts categorized as "florist".
 
 Case-insensitive matching was chosen to improve user experience and reduce input errors.
 
-#### Sequence Diagram (Cat Command)
+#### CatCommand Implementation Sequence Diagram
+
+The sequence diagram below illustrates the above process of filtering contacts by category in KnotBook.
 
 <img src="images/CatSequenceDiagram.png" width="700" />
 
-### Link/Unlink Feature
+### Delete Person Feature
 
-#### Implementation
+#### Command Feature
 
-The Link and Unlink features allow wedding planners to create and remove associations between clients and vendors.
+`delete INDEX`
 
+Where `INDEX` is a positive integer representing the position of the person in the displayed list.
+
+#### Command Feature Purpose
+
+The delete command allows users to remove a contact from KnotBook permanently.
 **Key Components:**
 * `LinkCommand` - Creates a link between a client and vendor
 * `UnlinkCommand` - Removes a link between a client and vendor
@@ -329,11 +517,93 @@ Links are stored and resolved using **phone numbers** (not names) to ensure uniq
 
 **Sequence Diagram (Link Command):**
 
-<img src="images/LinkSequenceDiagram.png" width="700" />
+#### Key Components
 
-**Sequence Diagram (Unlink Command):**
+* `DeleteCommand`: Executes the deletion operation based on the user's input.
+* `DeleteCommandParser`: Parses user input to create a `DeleteCommand` object.
+* `LogicManager`: Invokes the `DeleteCommand` to execute the deletion operation.
+* `ModelManager`: Implements the `Model` interface and manages the internal list of persons.
+* `Person`: Represents a person in KnotBook, which will be removed from the list.
+* `AddressBookParser`: Creates a `DeleteCommand` object based on the user input.
 
-<img src="images/UnlinkSequenceDiagram.png" width="700" />
+#### Sequence of action
+
+To help you understand how the delete command works, here is a list of steps illustrating what occurs when `LogicManager#execute()` is invoked:
+
+We will be using the user input `delete 1` as an example.
+
+1. The user inputs the command `delete 1`, intending to delete the person at index 1.
+
+2. The `DeleteCommandParser` interprets the input, validating that the index is a valid non-zero unsigned integer.
+
+3. A `DeleteCommand` object is created with the index.
+
+4. The `LogicManager` invokes the `execute` method of `DeleteCommand`.
+
+5. The `execute` method of `DeleteCommand` retrieves the person at the specified index from the filtered list in `Model`.
+
+6. The `execute` method of `DeleteCommand` invokes the `deletePerson` method in `Model` to remove the contact from the list.
+
+7. The `execute` method of `DeleteCommand` returns a `CommandResult` object which stores the data regarding the completion of the `DeleteCommand`.
+
+8. The UI reflects the updated list with the deleted `Person` removed.
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** For step 2, if the user provides an invalid index (negative, zero, or larger than the list size), the `DeleteCommand` object will NOT be created and an error message will be shown!
+</div>
+
+#### DeleteCommand Implementation Sequence Diagram
+
+The sequence diagram below illustrates the above process of deleting a person in KnotBook.
+
+<img src="images/DeleteSequenceDiagram.png" width="700" />
+
+### Link Person Feature
+
+#### Command Feature
+
+`link client/CLIENT_INDEX vendor/VENDOR_INDEX`
+
+Where:
+* `CLIENT_INDEX` is a positive integer representing the position of the client in the displayed list
+* `VENDOR_INDEX` is a positive integer representing the position of the vendor in the displayed list
+
+#### Command Feature Purpose
+
+The link command allows users to create an association between a client and a vendor in KnotBook, enabling wedding planners to track which vendors are assigned to which weddings.
+
+#### Key Components
+
+* `LinkCommand`: Executes the linking operation based on the user's input.
+* `LinkCommandParser`: Parses user input to create a `LinkCommand` object with client and vendor indices.
+* `LogicManager`: Invokes the `LinkCommand` to execute the linking operation.
+* `ModelManager`: Implements the `Model` interface and manages the relationships between clients and vendors.
+* `Person`: Represents a person in KnotBook, which will be linked to another person.
+* `AddressBookParser`: Creates a `LinkCommand` object based on the user input.
+
+#### Sequence of action
+
+To help you understand how the link command works, here is a list of steps illustrating what occurs when `LogicManager#execute()` is invoked:
+
+We will be using the user input `link client/1 vendor/3` as an example.
+
+1. The user inputs the command `link client/1 vendor/3`, intending to link the client at index 1 with the vendor at index 3.
+
+2. The `LinkCommandParser` interprets the input, validating that both indices are valid non-zero unsigned integers and that both prefixes are present.
+
+3. A `LinkCommand` object is created with the client and vendor indices.
+
+4. The `LogicManager` invokes the `execute` method of `LinkCommand`.
+
+5. The `execute` method of `LinkCommand` retrieves the client and vendor from the filtered list in `Model`.
+
+6. The `execute` method of `LinkCommand` invokes the `link` method in `Model` to create the association between the client and vendor.
+
+7. The `execute` method of `LinkCommand` returns a `CommandResult` object which stores the data regarding the completion of the `LinkCommand`.
+
+8. The UI reflects the updated relationships in the linked persons section.
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** For step 2, if the user does not provide both indices or provides invalid indices, the `LinkCommand` object will NOT be created and an error message will be shown!
+</div>
 
 **Design Considerations:**
 
@@ -350,6 +620,66 @@ Links are stored and resolved using **phone numbers** (not names) to ensure uniq
   * Cons: Breaks compatibility with old JSON files using name-based links (requires data migration)
 
 Index-based linking was chosen for consistency with other commands (delete, edit) and ease of use. Phone-based persistence was chosen to ensure correct link resolution even when multiple persons share the same name.
+
+#### LinkCommand Implementation Sequence Diagram
+
+The sequence diagram below illustrates the above process of linking a client to a vendor in KnotBook.
+
+<img src="images/LinkSequenceDiagram.png" width="700" />
+
+### Unlink Person Feature
+
+#### Command Feature
+
+`unlink client/CLIENT_INDEX vendor/VENDOR_INDEX`
+
+Where:
+* `CLIENT_INDEX` is a positive integer representing the position of the client in the displayed list
+* `VENDOR_INDEX` is a positive integer representing the position of the vendor in the displayed list
+
+#### Command Feature Purpose
+
+The unlink command allows users to remove an association between a client and a vendor in KnotBook, useful when vendors are changed or services are cancelled.
+
+#### Key Components
+
+* `UnlinkCommand`: Executes the unlinking operation based on the user's input.
+* `UnlinkCommandParser`: Parses user input to create an `UnlinkCommand` object with client and vendor indices.
+* `LogicManager`: Invokes the `UnlinkCommand` to execute the unlinking operation.
+* `ModelManager`: Implements the `Model` interface and manages the relationships between clients and vendors.
+* `Person`: Represents a person in KnotBook, which will be unlinked from another person.
+* `AddressBookParser`: Creates an `UnlinkCommand` object based on the user input.
+
+#### Sequence of action
+
+To help you understand how the unlink command works, here is a list of steps illustrating what occurs when `LogicManager#execute()` is invoked:
+
+We will be using the user input `unlink client/1 vendor/3` as an example.
+
+1. The user inputs the command `unlink client/1 vendor/3`, intending to remove the link between the client at index 1 and the vendor at index 3.
+
+2. The `UnlinkCommandParser` interprets the input, validating that both indices are valid non-zero unsigned integers and that both prefixes are present.
+
+3. An `UnlinkCommand` object is created with the client and vendor indices.
+
+4. The `LogicManager` invokes the `execute` method of `UnlinkCommand`.
+
+5. The `execute` method of `UnlinkCommand` retrieves the client and vendor from the filtered list in `Model`.
+
+6. The `execute` method of `UnlinkCommand` invokes the `unlink` method in `Model` to remove the association between the client and vendor.
+
+7. The `execute` method of `UnlinkCommand` returns a `CommandResult` object which stores the data regarding the completion of the `UnlinkCommand`.
+
+8. The UI reflects the updated relationships in the linked persons section.
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** For step 2, if the user does not provide both indices or provides invalid indices, the `UnlinkCommand` object will NOT be created and an error message will be shown!
+</div>
+
+#### UnlinkCommand Implementation Sequence Diagram
+
+The sequence diagram below illustrates the above process of unlinking a client from a vendor in KnotBook.
+
+<img src="images/UnlinkSequenceDiagram.png" width="700" />
 
 ### Person Details Panel Rendering
 
@@ -394,22 +724,42 @@ Error messages were standardized across commands that accept indices (`edit`, `d
 * Provides consistent feedback to users regardless of command, reducing confusion.
 * Separates syntactic errors (format) from semantic errors (invalid index values).
 
-### Enhanced Help Window Feature
+### Help Command Feature
 
-#### Implementation
+#### Command Feature
 
-The Help Window has been enhanced to display all command formats in an accordion-style interface with collapsible dropdowns.
+`help`
 
-**Key Components:**
-* `HelpWindow` - JavaFX controller for the help window
-* `HelpWindow.fxml` - FXML layout with ScrollPane and VBox
-* `Accordion` and `TitledPane` - JavaFX components for collapsible sections
+No parameters required.
 
-**Key Changes:**
-1. Removed hardcoded help URL and copy button
-2. Added dynamic help message builder that pulls from each command's `MESSAGE_USAGE` constant
-3. Implemented accordion UI with one `TitledPane` per command
-4. Made window resizable with scrollable content
+#### Command Feature Purpose
+
+The help command allows users to view detailed information about all available commands in KnotBook through an accordion-style help window interface.
+
+#### Key Components
+
+* `HelpCommand`: Executes the help operation to display the help window.
+* `LogicManager`: Invokes the `HelpCommand` to execute the help operation.
+* `HelpWindow`: JavaFX controller that displays the help window with collapsible sections.
+* `AddressBookParser`: Creates a `HelpCommand` object based on the user input.
+
+#### Sequence of action
+
+To help you understand how the help command works, here is a list of steps illustrating what occurs when `LogicManager#execute()` is invoked:
+
+We will be using the user input `help` as an example.
+
+1. The user inputs the command `help`, intending to view help information for all commands.
+
+2. The `AddressBookParser` creates a `HelpCommand` object directly (no parser is needed as the command has no parameters).
+
+3. The `LogicManager` invokes the `execute` method of `HelpCommand`.
+
+4. The `execute` method of `HelpCommand` opens the help window, which displays all commands in an accordion-style interface with collapsible sections.
+
+5. The `execute` method of `HelpCommand` returns a `CommandResult` object indicating that the help window has been opened.
+
+6. The UI displays the help window with all available commands organized in expandable panels.
 
 **Design Considerations:**
 
@@ -423,7 +773,9 @@ The Help Window has been enhanced to display all command formats in an accordion
 
 The accordion approach was chosen to reduce visual clutter and improve user experience, especially for new users who may be overwhelmed by seeing all commands at once.
 
-#### Sequence Diagram (Help Command)
+#### HelpCommand Implementation Sequence Diagram
+
+The sequence diagram below illustrates the above process of opening the help window in KnotBook.
 
 <img src="images/HelpSequenceDiagram.png" width="700" />
 
