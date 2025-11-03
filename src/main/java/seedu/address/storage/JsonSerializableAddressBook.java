@@ -56,8 +56,8 @@ class JsonSerializableAddressBook {
         AddressBook addressBook = new AddressBook();
 
         // First pass: Load all persons without links
-        Map<String, Person> personByName = new HashMap<>();
-        Map<Person, List<String>> personToLinkedNames = new HashMap<>();
+        Map<String, Person> personByPhone = new HashMap<>();
+        Map<Person, List<String>> personToLinkedPhones = new HashMap<>();
 
         for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
             Person person = jsonAdaptedPerson.toModelType();
@@ -65,19 +65,19 @@ class JsonSerializableAddressBook {
                 throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
             }
             addressBook.addPerson(person);
-            personByName.put(person.getName().fullName, person);
-            personToLinkedNames.put(person, jsonAdaptedPerson.getLinkedPersonNames());
+            personByPhone.put(person.getPhone().value, person);
+            personToLinkedPhones.put(person, jsonAdaptedPerson.getLinkedPersonPhones());
         }
 
         // Second pass: Resolve and add links
-        for (Map.Entry<Person, List<String>> entry : personToLinkedNames.entrySet()) {
+        for (Map.Entry<Person, List<String>> entry : personToLinkedPhones.entrySet()) {
             Person person = entry.getKey();
-            List<String> linkedNames = entry.getValue();
+            List<String> linkedPhones = entry.getValue();
 
-            if (!linkedNames.isEmpty()) {
+            if (!linkedPhones.isEmpty()) {
                 Set<Person> linkedPersons = new HashSet<>();
-                for (String linkedName : linkedNames) {
-                    Person linkedPerson = personByName.get(linkedName);
+                for (String linkedPhone : linkedPhones) {
+                    Person linkedPerson = personByPhone.get(linkedPhone);
                     if (linkedPerson != null) {
                         linkedPersons.add(linkedPerson);
                     }
