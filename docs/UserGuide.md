@@ -141,24 +141,14 @@ Format: `help`
 
 **Tip:** Click on any command name in the help window to expand and see detailed usage instructions and examples.
 
-### Adding a contact: `add` 👯‍♀️
+### Parameter reference
 
-* Clients: When a new couple signs with you, use this to create their client profile in KnotBook!
-* Vendors: When you onboard a vendor (e.g., photographer, florist, venue), use this command to add their vendor profile!
-
-**Format for adding a client:**
-`add n/NAME p/PHONE e/EMAIL a/ADDRESS type/client w/WEDDING_DATE pr/PARTNER [budget/BUDGET]​`
-
-**Format for adding a vendor:**
-`add n/NAME p/PHONE e/EMAIL a/ADDRESS type/vendor [price/PRICE] [c/CATEGORY]​`
-
-**Parameters:**
 * `n/NAME` - Contact name (required)
     * Can contain alphanumeric characters, spaces, and special characters like commas (`,`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
     * Must start with an alphanumeric character
     * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
 * `p/PHONE` - Phone number (required)
-    * Must be exactly 8 digits
+    * Singapore context: must be exactly 8 digits (no `+65`, spaces, or symbols)
     * No letters, spaces, hyphens, or other special characters allowed
     * Example: `91234567`, `98765432`
 * `e/EMAIL` - Email address (required)
@@ -170,7 +160,8 @@ Format: `help`
     * *Technical details:* KnotBook uses [Apache Commons Validator EmailValidator](https://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/EmailValidator.html)
 * `a/ADDRESS` - Physical address (required)
     * Can contain any characters
-    * Example: `123 Orchard Road, #05-01`
+    * For clients, this can be the wedding venue or a general location if you prefer not to store personal home addresses
+    * Example: `123 Orchard Road, #05-01`, `Grand Hyatt Singapore`, `Singapore (TBD venue)`
 * `type/TYPE` - Either `client` or `vendor` (required, case-insensitive)
 * `w/WEDDING_DATE` - Wedding date (required, for clients only)
     * Accepts formats: `DD-MM-YYYY` or `YYYY-MM-DD`
@@ -198,6 +189,29 @@ Format: `help`
     * Can contain spaces, hyphens (`-`), ampersands (`&`), periods (`.`), apostrophes (`'`), slashes (`/`), and parentheses (`()`)
     * Limit of 30 characters and a minimum of 2 characters
     * Example: `makeup artist`, `photographer`
+
+<div markdown="block" class="alert alert-primary">
+
+:bulb: **Used by these commands:**
+
+* **add, edit**: Use fields as defined in the [Parameter reference](#parameter-reference).
+* **cat**: Category matches follow `c/CATEGORY` rules.
+* **find**: Matches `NAME` and client `PARTNER` (see `n/NAME`, `pr/PARTNER`).
+
+</div>
+
+### Adding a contact: `add` 👯‍♀️
+
+* Clients: When a new couple signs with you, use this to create their client profile in KnotBook!
+* Vendors: When you onboard a vendor (e.g., photographer, florist, venue), use this command to add their vendor profile!
+
+**Format for adding a client:**
+`add n/NAME p/PHONE e/EMAIL a/ADDRESS type/client w/WEDDING_DATE pr/PARTNER [budget/BUDGET]​`
+
+**Format for adding a vendor:**
+`add n/NAME p/PHONE e/EMAIL a/ADDRESS type/vendor [price/PRICE] [c/CATEGORY]​`
+
+**Parameters:** See [Parameter reference](#parameter-reference)
 
 **Note:**
 * The name of the contact is case-sensitive so Blooming Bouquets and BLOOMING Bouquets are treated as 2 different contacts; Be careful in inputting names!
@@ -242,6 +256,8 @@ Made a typo? Client changed their wedding date? Vendor updated their pricing? Us
 
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​` (see [INDEX](#contact-index))
 
+See [Parameter reference](#parameter-reference) for detailed field rules.
+
 **How it works:**
 * Edits the contact at the specified `INDEX` (the number shown in the contact list)
 * The index **must be a positive integer** (1, 2, 3, …) and **must not exceed the total number of contacts** in the displayed list
@@ -261,6 +277,8 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [p
 Looking for a specific client or vendor? Quickly search by name - and for clients, the search also checks the partner’s name - with this handy command!
 
 Format: `find <keyword>`
+
+See [Parameter reference](#parameter-reference) for name and partner field rules.
 
 **How it works:**
 * The search is case-insensitive (e.g., `hans` matches `Hans`).
@@ -289,6 +307,8 @@ Format: `find <keyword>`
 Need to find a photographer for an upcoming wedding? Want to see all your caterers at once? Filter contacts by category to instantly view all vendors of a specific type!
 
 Format: `cat CATEGORY`
+
+See [Parameter reference](#parameter-reference) for category rules.
 
 **How it works:**
 * Shows only vendors with categories matching the specified category
