@@ -57,10 +57,12 @@ public class StringUtil {
      */
     public static boolean isNonZeroUnsignedInteger(String s) {
         requireNonNull(s);
-
+        if (!s.matches("^0*[1-9][0-9]*$")) {
+            return false;
+        }
         try {
             int value = Integer.parseInt(s);
-            return value > 0 && !s.startsWith("+"); // "+1" is successfully parsed by Integer#parseInt(String)
+            return value > 0;
         } catch (NumberFormatException nfe) {
             return false;
         }
