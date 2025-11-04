@@ -9,8 +9,34 @@ KnotBook is a desktop app designed exclusively for **wedding planners** to manag
 **Figure 1: Illustration of KnotBook’s Client-Vendor Management Feature**
 ![LinkedUI.png](images/LinkedUI.png)
 
-* Table of Contents
-{:toc}
+
+## Quick Navigation
+
+1. [Quick start](#quick-start)
+   - [Step 1: Install Java](#step-1-install-java)
+   - [Step 2: Download KnotBook](#step-2-download-knotbook)
+   - [Step 3: Run KnotBook](#step-3-run-knotbook)
+   - [Step 4: Start Using KnotBook](#step-4-start-using-knotbook)
+   - [Step 5: Understanding Your Data](#step-5-understanding-your-data)
+2. [Command summary](#command-summary)
+3. [Features](#features)
+   - [Viewing help](#viewing-help--help-)
+   - [Parameter reference](#parameter-reference)
+   - [Adding a contact](#adding-a-contact-add-)
+   - [Listing all contacts](#listing-all-contacts--list-)
+   - [Editing a contact](#editing-a-contact--edit-)
+   - [Finding contacts by name](#finding-contacts-by-name-find-)
+   - [Filtering by category](#filtering-by-category--cat-)
+   - [Linking a vendor to a client](#linking-a-vendor-to-a-client--link-)
+   - [Unlinking a vendor from a client](#unlinking-a-vendor-from-a-client--unlink-)
+   - [Deleting a contact](#deleting-a-contact--delete-)
+   - [Clearing all entries](#clearing-all-entries--clear-)
+   - [Exiting the program](#exiting-the-program--exit-)
+   - [Saving the data](#saving-the-data)
+   - [Editing the data file](#editing-the-data-file)
+4. [FAQ](#faq)
+5. [Known issues](#known-issues)
+
 --------------------------------------------------------------------------------------------------------------------
 ## Quick start
 
@@ -148,7 +174,7 @@ Format: `help`
 ### Parameter reference
 
 * `n/NAME` - Contact name (required)
-    * Can contain alphanumeric characters, spaces, and special characters like periods (`.`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
+    * Can contain alphanumeric characters, spaces, and special characters like apostrophes (`'`), hyphens (`-`), periods (`.`), and ampersands (`&`)
     * Must start with an alphanumeric character
     * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
 * `p/PHONE` - Phone number (required)
@@ -175,16 +201,16 @@ Format: `help`
         * `YYYY` ranges from `0000` to `9999` (only four-digit years supported)
     * Example: `15-06-2026` or `2026-06-15`
 * `pr/PARTNER` - Partner name (required, for clients only)
-    * Can contain alphanumeric characters and spaces
+    * Can contain alphanumeric characters, spaces, and special characters like apostrophes (`'`), hyphens (`-`), periods (`.`), and ampersands (`&`)
     * Must start with an alphanumeric character
-    * Example: `Jane Wang`
+    * Example: `Jane Wang`, `O'Brien`
 * `price/PRICE` - Vendor pricing (optional, for vendors only)
     * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, and leading zeros will be trimmed)
     * Can be a single value (e.g., `1000`) or range (e.g., `1000-2000`)
     * Range values must be separated by a hyphen with no spaces
     * Maximum value: 9,999,999,999
 * `budget/BUDGET` - Client budget (optional, for clients only)
-    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, and leading zeros will be trimmed)
+    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, leading zeros will be trimmed)
     * Can be a single value (e.g., `5000`) or range (e.g., `5000-10000`)
     * Range values must be separated by a hyphen with no spaces
     * Maximum value: 9,999,999,999
@@ -221,6 +247,7 @@ Format: `help`
 **Note:**
 * The name of the contact is case-sensitive so Blooming Bouquets and BLOOMING Bouquets are treated as 2 different contacts; Be careful in inputting names!
 * When you type in an `add` command after a `find` command, the displayed list will reset from the filtered results.
+* **Workaround for "s/o" notation:** If you need to include "s/o" (son of) or "d/o" (daughter of) notation in names, use hyphens instead of slashes. For example, use `John Smith s-o Jane Doe` instead of `John Smith s/o Jane Doe`, as forward slashes are not currently supported in the name field.
 
 **Duplicate contacts:**
 * If a new contact has a phone that already exists in KnotBook, the add will be rejected. This is because we assume each person has a unique phone number.
@@ -304,6 +331,7 @@ See [Parameter reference](#parameter-reference) for name and partner field rules
 * `find ch` - Returns `Charlotte K Photography`; also matches a client whose partner is `Jack Chia`.<br>
   **Figure 5: Find results for `find ch`**
   ![find.png](images/find.png)
+* `find &` - Returns contacts whose names start with `&`, such as `Ben & Jerry`.
 
 <div markdown="block" class="alert alert-primary">
 
