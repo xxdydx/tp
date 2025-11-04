@@ -1074,8 +1074,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 7.  **Usability**: Error messages should be clear and informative, guiding users on how to correct their input.
 8.  **Compatibility**: Should work without requiring an internet connection (offline-first design).
 
-### Glossary
-
 ## KnotBook Glossary
 
 ### Application Components
