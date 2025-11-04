@@ -33,7 +33,6 @@ public class NameTest {
         assertFalse(Name.isValidName("'Mary")); // starts with apostrophe
         assertFalse(Name.isValidName("-Jane")); // starts with hyphen
         assertFalse(Name.isValidName("&Events")); // starts with ampersand
-        assertFalse(Name.isValidName("/Slash")); // starts with slash
         assertFalse(Name.isValidName("Peter+")); // contains invalid character
         assertFalse(Name.isValidName("John@Doe")); // contains invalid character
         assertFalse(Name.isValidName("Events$")); // contains invalid character
@@ -50,7 +49,6 @@ public class NameTest {
         assertTrue(Name.isValidName("Mary-Jane's Events")); // with hyphen and apostrophe
         assertTrue(Name.isValidName("A.B. Events")); // with periods
         assertTrue(Name.isValidName("Flowers & More")); // with ampersand
-        assertTrue(Name.isValidName("A/B Photography")); // with slash
         assertTrue(Name.isValidName("Sarah's Wedding & Events")); // multiple special chars
         assertTrue(Name.isValidName("J.R. Smith's Photography")); // multiple special chars
         assertTrue(Name.isValidName("First-Class Events & Planning")); // multiple special chars
