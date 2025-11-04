@@ -2,48 +2,50 @@
 layout: page
 title: Developer Guide
 ---
-* Table of Contents
-  - [Acknowledgements](#acknowledgements)
-  - [Setting up, getting started](#setting-up-getting-started)
-  - [About KnotBook](#about-knotbook)
-  - [Purpose of this Developer Guide](#purpose-of-this-developer-guide)
-  - [Design](#design)
-    - [A**Usage:**
-```
-link client/1 vendor/3
-unlink client/1 vendor/3
-```ecture](#architecture)
-    - [UI component](#ui-component)
-    - [Logic component](#logic-component)
-    - [Model component](#model-component)
-    - [Storage component](#storage-component)
-    - [Common classes](#common-classes)
-  - [Implementation](#implementation)
-    - [Person Type Feature](#person-type-feature)
-    - [Wedding Date Feature](#wedding-date-feature)
-    - [Category Filter (Cat Command) Feature](#category-filter-cat-command-feature)
-    - [Link/Unlink Feature](#linkunlink-feature)
-    - [Enhanced Help Window Feature](#enhanced-help-window-feature)
-    - [Person Details Panel Rendering](#person-details-panel-rendering)
-    - [Error Handling for Indices and Command Format](#error-handling-for-indices-and-command-format)
-    - [Proposed Undo/redo feature](#proposed-undoredo-feature)
-    - [Proposed Data archiving](#proposed-data-archiving)
-  - [Documentation, logging, testing, configuration, dev-ops](#documentation-logging-testing-configuration-dev-ops)
-  - [Appendix: Requirements](#appendix-requirements)
-    - [Product scope](#product-scope)
-    - [User stories](#user-stories)
-    - [Use cases](#use-cases)
-    - [Non-Functional Requirements](#non-functional-requirements)
-    - [Glossary](#glossary)
-  - [Appendix: Instructions for manual testing](#appendix-instructions-for-manual-testing)
-    - [Launch and shutdown](#launch-and-shutdown)
-    - [Deleting a person](#deleting-a-person)
-    - [Filtering contacts by category](#filtering-contacts-by-category)
-    - [Linking a client to a vendor](#linking-a-client-to-a-vendor)
-    - [Unlinking a client from a vendor](#unlinking-a-client-from-a-vendor)
-    - [Viewing help information](#viewing-help-information)
-    - [Adding a contact with person type](#adding-a-contact-with-person-type)
-    - [Saving data](#saving-data)
+
+## Quick Navigation
+
+1. [Acknowledgements](#acknowledgements)
+2. [Setting up, getting started](#setting-up-getting-started)
+3. [About KnotBook](#about-knotbook)
+4. [Purpose of this Developer Guide](#purpose-of-this-developer-guide)
+5. [Design](#design)
+   - [Architecture](#architecture)
+   - [UI component](#ui-component)
+   - [Logic component](#logic-component)
+   - [Model component](#model-component)
+   - [Storage component](#storage-component)
+   - [Common classes](#common-classes)
+6. [Implementation](#implementation)
+   - [Person Type Feature](#person-type-feature)
+   - [Wedding Date Feature](#wedding-date-feature)
+   - [Add Person Feature](#add-person-feature)
+   - [Edit Person Feature](#edit-person-feature)
+   - [Find Person Feature](#find-person-feature)
+   - [Category Filter (Cat Command) Feature](#category-filter-cat-command-feature)
+   - [Delete Person Feature](#delete-person-feature)
+   - [Link Person Feature](#link-person-feature)
+   - [Unlink Person Feature](#unlink-person-feature)
+   - [Person Details Panel Rendering](#person-details-panel-rendering)
+   - [Error Handling for Indices and Command Format](#error-handling-for-indices-and-command-format)
+   - [Help Command Feature](#help-command-feature)
+7. [Documentation, logging, testing, configuration, dev-ops](#documentation-logging-testing-configuration-dev-ops)
+8. [Appendix: Requirements](#appendix-requirements)
+   - [Product scope](#product-scope)
+   - [User stories](#user-stories)
+   - [Use cases](#use-cases)
+   - [Non-Functional Requirements](#non-functional-requirements)
+   - [Glossary](#glossary)
+   - [KnotBook Glossary](#knotbook-glossary)
+9. [Appendix: Instructions for manual testing](#appendix-instructions-for-manual-testing)
+   - [Launch and shutdown](#launch-and-shutdown)
+   - [Deleting a person](#deleting-a-person)
+   - [Filtering contacts by category](#filtering-contacts-by-category)
+   - [Linking a client to a vendor](#linking-a-client-to-a-vendor)
+   - [Unlinking a client from a vendor](#unlinking-a-client-from-a-vendor)
+   - [Viewing help information](#viewing-help-information)
+   - [Adding a contact with person type](#adding-a-contact-with-person-type)
+10. [Appendix: Planned Enhancements](#appendix-planned-enhancements)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -1287,3 +1289,7 @@ testers are expected to do more *exploratory* testing.
    ○ Increase the size of the command box or make it expandable to accommodate longer commands more comfortably. Currently, the command box has limited width, making it difficult for users to read and write lengthy commands (such as `add` commands with multiple fields) at a glance. Users must scroll horizontally within the box to view the entire command, which can lead to errors and reduced efficiency. This enhancement will improve usability by either increasing the default width of the command box, making it multi-line, or allowing users to resize it, enabling better visibility of long commands and reducing input errors for complex operations.
 6. **Enhanced Partner Name Validation Enhancement:**
    ○ Improve validation and error handling for the partner field to accept special characters commonly found in names and provide clear error messages for invalid input. Currently, the partner field only accepts alphanumeric characters and spaces, which is too restrictive for real-world names that may contain apostrophes (e.g., "O'Brien"), hyphens (e.g., "Mary-Anne"), or other special characters. Additionally, when users enter invalid characters, no specific error message is displayed to guide them on the correct format. This enhancement will expand the allowed character set for partner names to match the flexibility of the main name field (including apostrophes, hyphens, periods, and ampersands) and implement proper error messages that clearly inform users of the partner field's format requirements when invalid input is detected.
+7. **Name Field Support for "s/o" Notation Enhancement:**
+   ○ Extend the name field validation to explicitly support the forward slash (/) character for "s/o" (son of) or "d/o" (daughter of) notation commonly used in certain naming conventions. Currently, while the name field may accept some special characters, explicit support and clear documentation for this use case would improve usability for users who need to record names in formats such as "John Smith s/o Jane Doe" or "Mary Tan d/o Peter Tan". This enhancement will ensure that names containing slash notation are properly validated and stored, making the application more accessible to users from cultures where this naming convention is standard.
+8. **Category Command Slash Character Confusion Prevention Enhancement:**
+   ○ Address potential user confusion when using the `cat` command with category names that contain forward slashes (/). Currently, category names can include slashes (e.g., "photography/videography"), which may cause confusion as users might interpret the slash as a command separator or path delimiter rather than part of the category name. This enhancement will either restrict slashes in category names to prevent confusion, provide clearer documentation about how slashes are handled in category names, or implement a quoting mechanism to make it explicit when a slash is part of the category name versus a command syntax element, thereby reducing user errors and improving the clarity of category-based filtering operations.

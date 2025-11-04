@@ -248,6 +248,7 @@ Format: `help`
 **Note:**
 * The name of the contact is case-sensitive so Blooming Bouquets and BLOOMING Bouquets are treated as 2 different contacts; Be careful in inputting names!
 * When you type in an `add` command after a `find` command, the displayed list will reset from the filtered results.
+* **Workaround for "s/o" notation:** If you need to include "s/o" (son of) or "d/o" (daughter of) notation in names, use hyphens instead of slashes. For example, use `John Smith s-o Jane Doe` instead of `John Smith s/o Jane Doe`, as forward slashes are not currently supported in the name field.
 
 **Duplicate contacts:**
 * If a new contact has a phone that already exists in KnotBook, the add will be rejected. This is because we assume each person has a unique phone number.
