@@ -4,7 +4,7 @@ title: KnotBook User Guide
 pageNav: 3
 ---
 
-KnotBook is a desktop app designed exclusively for **wedding planners** to manage client and vendor contacts, keeping track of every wedding and connection you coordinate throughout your planning journey. As a wedding planner, you can add new clients and vendors to the app via a simple to use **Command Line Interface (CLI)**. Furthermore, you can link vendors to clients, edit contact details, and organize everything in one centralized place. You will never lose track of which florist is working on which wedding or miss important client details after using KnotBook!
+KnotBook is a desktop app designed exclusively for **wedding planners** to manage client and vendor contacts, keeping track of every wedding and connection you coordinate throughout your planning journey. As a wedding planner, you can add new clients and vendors to the app via a simple-to-use **Command Line Interface (CLI)**. Furthermore, you can link vendors to clients, edit contact details, and organize everything in one centralized place. You will never lose track of which florist is working on which wedding or miss important client details after using KnotBook!
 
 **Figure 1: Illustration of KnotBook’s Client-Vendor Management Feature**
 ![LinkedUI.png](images/LinkedUI.png)
@@ -82,9 +82,9 @@ The app window should appear in a few seconds with some sample wedding contacts 
 **Legend - numbered callouts in Figure 2**
 1. **Contact Details Panel**: The panel on the right shows the full details of the selected contact. Click any contact in the list to view their information here - including linked vendors/clients when available.
 2. **Command Result Display**: This area displays feedback for every command you run (e.g., success messages, errors, and helpful hints). Use it to confirm what changed after each action.
-3. **Input Command Box**: Type your commands here (like `add`, `edit`, `find`, `cat`, `link`, `unlink`, `delete`). Press Enter to run the command.
-4. **Contact List Panel**: This area displays all your contacts currently shown in KnotBook - including both clients and vendors. The list automatically updates after commands like `add`, `edit`, `delete`, `find`, `cat`, `list`, or `clear`.
-5. <span id="contact-index"></span>**Contact index (`INDEX`)**: The numbers on the left of the contact card are the indices you use in commands such as `edit INDEX`, `delete INDEX`, `link client/CLIENT_INDEX vendor/VENDOR_INDEX`, and `unlink ...`. Indices always refer to the currently displayed list (even when the currently displayed list changes after a `find` or `cat` command).
+3. **Input Command Box**: Type your commands here. Press Enter to run the command.
+4. **Contact List Panel**: This area displays all your contacts currently shown in KnotBook - including both clients and vendors.
+5. <span id="contact-index"></span>**Contact index (`INDEX`)**: The numbers on the left of the contact name are the indices you will be using in the commands. Indices always refer to the currently displayed list (even when the currently displayed list changes after a `find` or `cat` command).
 
 **Try these commands** by typing them in the command box at the bottom right and pressing Enter:
 * `help` - Opens a help window showing all available commands
@@ -133,7 +133,7 @@ Action | Format, Examples
 
 **:information_source: Notes about the command format:**<br>
 
-* Replace words in `UPPER_CASE` with your own details. For example, in `add n/NAME`, you might type `add n/Jane Ong`.
+* Replace words in `UPPER_CASE` with your own details. For example, in `n/NAME`, you might type `n/Jane Ong`.
 
 * Items in square brackets `[ ]` are optional. For example, `n/NAME [c/CATEGORY]` requires a name; the category can be omitted.
 
@@ -144,8 +144,6 @@ Action | Format, Examples
 * For very simple commands like `help`, `list`, `exit` and `clear`, any extra text is politely ignored.
 
 * Each command must be entered on a single line. If you copy something that looks like several lines, simply join them before pressing Enter.
-
-* Dates in the app appear as `YYYY-MM-DD`, though when typing a date you may use either `DD-MM-YYYY` or `YYYY-MM-DD`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </div>
@@ -178,6 +176,7 @@ Format: `help`
     * Must start with an alphanumeric character
     * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
 * `p/PHONE` - Phone number (required)
+    * Each contact has to have unique phone numbers
     * Singapore context: must be exactly 8 digits (no `+65`, spaces, or symbols)
     * No letters, spaces, hyphens, or other special characters allowed
     * Example: `91234567`, `98765432`
@@ -208,12 +207,12 @@ Format: `help`
     * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, and leading zeros will be trimmed)
     * Can be a single value (e.g., `1000`) or range (e.g., `1000-2000`)
     * Range values must be separated by a hyphen with no spaces
-    * Maximum value: 9,999,999,999
+    * Maximum length is 10 digits
 * `budget/BUDGET` - Client budget (optional, for clients only)
     * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, leading zeros will be trimmed)
     * Can be a single value (e.g., `5000`) or range (e.g., `5000-10000`)
     * Range values must be separated by a hyphen with no spaces
-    * Maximum value: 9,999,999,999
+    * Maximum length is 10 digits
 * `c/CATEGORY` - Category tag (optional, for vendors only)
     * Each vendor can have only one category
     * Must start with an alphanumeric character
@@ -225,9 +224,9 @@ Format: `help`
 
 :bulb: **Used by these commands:**
 
-* **add, edit**: Use fields as defined in the [Parameter reference](#parameter-reference).
-* **cat**: Category matches follow `c/CATEGORY` rules.
-* **find**: Matches `NAME` and client `PARTNER` (see `n/NAME`, `pr/PARTNER`).
+* **[add](#adding-a-contact-add-), [edit](#editing-a-contact--edit-)**: Use fields as defined in the [Parameter reference](#parameter-reference).
+* **[cat](#filtering-by-category--cat-)**: Category matches follow `c/CATEGORY` rules.
+* **[find](#finding-contacts-by-name-find-)**: Matches `NAME` and client `PARTNER` (see `n/NAME`, `pr/PARTNER`).
 
 </div>
 
@@ -250,7 +249,7 @@ Format: `help`
 * **Workaround for "s/o" notation:** If you need to include "s/o" (son of) or "d/o" (daughter of) notation in names, use hyphens instead of slashes. For example, use `John Smith s-o Jane Doe` instead of `John Smith s/o Jane Doe`, as forward slashes are not currently supported in the name field.
 
 **Duplicate contacts:**
-* If a new contact has a phone that already exists in KnotBook, the add will be rejected. This is because we assume each person has a unique phone number.
+* If a new contact has a phone number that already exists in KnotBook, the add will be rejected. This is because we assume each person has a unique phone number.
 * Clients and vendors share the same pool. You can’t have a client and a vendor with the same phone number.
 
 <div markdown="block" class="alert alert-primary">
@@ -324,7 +323,7 @@ See [Parameter reference](#parameter-reference) for name and partner field rules
 * Your entire input is treated as one query; spaces are not split into separate keywords (e.g., `roy b` is treated as `"roy b"`).
 * Only the name field is searched; for clients, the partner’s name is also checked.
 * Matches the start of any word (prefix match). For example, `Han` matches `Hans`, but `an` does not match `Hans`.
-* **Valid characters:** Letters (a-z, A-Z), numbers (0-9), spaces, apostrophes (`'`), periods (`.`), ampersands (`&`), and hyphens (`-`). Invalid characters (such as brackets, parentheses, or special symbols) are not allowed.
+* **Valid characters:** Letters (a-z, A-Z), numbers (0-9), spaces, apostrophes (`'`), periods (`.`), ampersands (`&`), and hyphens (`-`). Invalid characters (such as brackets or special symbols) are not allowed.
 
 **Examples:**
 * `find tan` - Returns contacts like `Alex Tan`, `Tan Wei Ling`; also matches a client whose partner is Tan Jun Hao.
@@ -339,6 +338,7 @@ See [Parameter reference](#parameter-reference) for name and partner field rules
 
 * After using `find`, run `list` to show all contacts again.
 * `link`/`unlink` use the currently displayed list - if unsure, `list` first.
+* In a filtered view (after `cat` or `find`), commands like `delete INDEX` use the [index](#contact-index) from the *filtered list*.
 
 </div>
 
@@ -385,13 +385,21 @@ Format: `link client/CLIENT_INDEX vendor/VENDOR_INDEX`
 **How it works:**
 * Running the `link` command links the client at `CLIENT_INDEX` with the vendor at `VENDOR_INDEX`
   * `CLIENT_INDEX` is the [index](#contact-index) of a **client** contact in the currently displayed list
-  * `VENDOR_INDEX` is the index of a **vendor** contact in the currently displayed list
+  * `VENDOR_INDEX` is the [index](#contact-index) of a **vendor** contact in the currently displayed list
 * Both indices **must be a positive integer** (1, 2, 3, …) and **must not exceed the total number of contacts** in the displayed list
 * The contact at `CLIENT_INDEX` must be a client, and the contact at `VENDOR_INDEX` must be a vendor
 * Helps you track which vendors are assigned to which weddings
 
 **Examples:**
 * `link client/2 vendor/3` - Links the 2nd contact (who is a client) with the 3rd contact (who is a vendor)
+
+<div markdown="block" class="alert alert-warning">
+
+:exclamation: **Warning:**  
+Both `CLIENT_INDEX` and `VENDOR_INDEX` refer to the **currently displayed** list (including after `find` or `cat`).  
+Ensure the chosen indices point to a **client** and a **vendor** respectively, or the command will fail.
+
+</div>
 
 **Figure 7: Linking example (view of 2nd contact which is of client type)**
 ![link1.png](images/link1.png)
