@@ -1125,9 +1125,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **PlantUML**: A tool for creating UML diagrams from text descriptions
 * **Sequence Diagram**: A UML diagram showing how objects interact in a particular sequence
 * **Class Diagram**: A UML diagram showing the structure of classes and their relationships
-
-### User Roles
-* **Wedding planner**: The target user of this application; a professional who manages and coordinates weddings for clients
+* 
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
