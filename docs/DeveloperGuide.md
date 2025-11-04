@@ -1123,7 +1123,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **PlantUML**: A tool for creating UML diagrams from text descriptions
 * **Sequence Diagram**: A UML diagram showing how objects interact in a particular sequence
 * **Class Diagram**: A UML diagram showing the structure of classes and their relationships
-* 
+  
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
