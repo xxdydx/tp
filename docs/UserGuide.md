@@ -144,9 +144,9 @@ Format: `help`
 ### Parameter reference
 
 * `n/NAME` - Contact name (required)
-    * Can contain alphanumeric characters, spaces, and special characters like apostrophes (`'`), hyphens (`-`), periods (`.`), ampersands (`&`), and slashes (`/`)
+    * Can contain alphanumeric characters, spaces, and special characters like commas (`,`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
     * Must start with an alphanumeric character
-    * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`, `A/B Photography`
+    * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
 * `p/PHONE` - Phone number (required)
     * Singapore context: must be exactly 8 digits (no `+65`, spaces, or symbols)
     * No letters, spaces, hyphens, or other special characters allowed
@@ -171,9 +171,9 @@ Format: `help`
         * `YYYY` ranges from `0000` to `9999` (only four-digit years supported)
     * Example: `15-06-2026` or `2026-06-15`
 * `pr/PARTNER` - Partner name (required, for clients only)
-    * Can contain alphanumeric characters, spaces, and special characters like apostrophes (`'`), hyphens (`-`), periods (`.`), ampersands (`&`), and slashes (`/`)
+    * Can contain alphanumeric characters, spaces, and special characters like commas (`,`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
     * Must start with an alphanumeric character
-    * Example: `Jane Wang`, `O'Brien`
+    * Example: `Jane Wang`
 * `price/PRICE` - Vendor pricing (optional, for vendors only)
     * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, no leading zeros)
     * Can be a single value (e.g., `1000`) or range (e.g., `1000-2000`)
