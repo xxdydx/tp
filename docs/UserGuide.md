@@ -6,6 +6,9 @@ pageNav: 3
 
 KnotBook is a desktop app designed exclusively for **wedding planners** to manage client and vendor contacts, keeping track of every wedding and connection you coordinate throughout your planning journey. As a wedding planner, you can add new clients and vendors to the app via a simple to use **Command Line Interface (CLI)**. Furthermore, you can link vendors to clients, edit contact details, and organize everything in one centralized place. You will never lose track of which florist is working on which wedding or miss important client details after using KnotBook!
 
+**Figure 1: Illustration of KnotBook’s Client-Vendor Management Feature**
+![LinkedUI.png](images/LinkedUI.png)
+
 * Table of Contents
 {:toc}
 --------------------------------------------------------------------------------------------------------------------
@@ -47,16 +50,17 @@ KnotBook needs Java 17 or newer to run. Think of Java as the engine that powers 
 ### Step 4: Start Using KnotBook
 The app window should appear in a few seconds with some sample wedding contacts to help you get started.
 
-**Figure 1: Main window**
-![Ui](images/Ui.png)
+**Figure 2: Main window**
+![AnnotatedUi.png](images/AnnotatedUi.png)
 
-**Legend — numbered callouts in Figure 1**
-1. **Contact details panel**: The panel on the right shows the full details of the selected contact. Click any contact in the list to view their information here — including linked vendors/clients when available.
-2. **Command results**: This area displays feedback for every command you run (e.g., success messages, errors, and helpful hints). Use it to confirm what changed after each action.
-3. **Command box**: Type your commands here (like `add`, `edit`, `find`, `cat`, `link`, `unlink`, `delete`). Press Enter to run the command.
-4. <span id="contact-index"></span>**Contact index (`INDEX`)**: The numbers on the left of the contact list are the indices you use in commands such as `edit INDEX`, `delete INDEX`, `link client/CLIENT_INDEX vendor/VENDOR_INDEX`, and `unlink ...`. Indices always refer to the currently displayed list (even when the currently displayed list changes after a `find` or `cat` command).
+**Legend - numbered callouts in Figure 2**
+1. **Contact Details Panel**: The panel on the right shows the full details of the selected contact. Click any contact in the list to view their information here - including linked vendors/clients when available.
+2. **Command Result Display**: This area displays feedback for every command you run (e.g., success messages, errors, and helpful hints). Use it to confirm what changed after each action.
+3. **Input Command Box**: Type your commands here (like `add`, `edit`, `find`, `cat`, `link`, `unlink`, `delete`). Press Enter to run the command.
+4. **Contact List Panel**: This area displays all your contacts currently shown in KnotBook - including both clients and vendors. The list automatically updates after commands like `add`, `edit`, `delete`, `find`, `cat`, `list`, or `clear`.
+5. <span id="contact-index"></span>**Contact index (`INDEX`)**: The numbers on the left of the contact card are the indices you use in commands such as `edit INDEX`, `delete INDEX`, `link client/CLIENT_INDEX vendor/VENDOR_INDEX`, and `unlink ...`. Indices always refer to the currently displayed list (even when the currently displayed list changes after a `find` or `cat` command).
 
-**Try these commands** by typing them in the command box at the top and pressing Enter:
+**Try these commands** by typing them in the command box at the bottom right and pressing Enter:
 * `help` - Opens a help window showing all available commands
 * `list` - Shows all your contacts (clients and vendors)
 * `cat florist` - Shows only vendors categorized as florist
@@ -85,7 +89,7 @@ Action | Format, Examples
 **Add Client** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS type/client w/WEDDING_DATE pr/PARTNER [budget/BUDGET]​` <br> e.g., `add n/John Doe p/98765432 e/johnd@example.com a/311 Clementi Ave type/client w/15-06-2026 pr/Jane Doe budget/10000`
 **Add Vendor** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS type/vendor [price/PRICE] [c/CATEGORY]​` <br> e.g., `add n/Blooming Flowers p/91234567 e/contact@blooming.com a/123 Orchard Rd type/vendor price/1500 c/florist`
 **List All Contacts** | `list`
-**Find a Contact** | `find <keyword>`<br> e.g., `find John Blooming`
+**Find a Contact** | `find <keyword>`<br> e.g., `find Ch`
 **Filter by Category** | `cat CATEGORY`<br> e.g., `cat florist`
 **Edit Contact** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [w/WEDDING_DATE] [pr/PARTNER] [price/PRICE] [budget/BUDGET] [c/CATEGORY]​` (see [INDEX](#contact-index))<br> e.g., `edit 2 p/91234567 budget/8000`
 **Delete Contact** | `delete INDEX`<br> e.g., `delete 3`
@@ -107,7 +111,7 @@ Action | Format, Examples
 
 * Items in square brackets `[ ]` are optional. For example, `n/NAME [c/CATEGORY]` requires a name; the category can be omitted.
 
-* Commands are case-sensitive — watch your capitals.
+* Commands are case-sensitive - watch your capitals.
 
 * You can enter parameters in any order. For example, `n/NAME p/PHONE` works the same as `p/PHONE n/NAME`.
 
@@ -134,7 +138,7 @@ Some commands permanently change or delete data. Read carefully before running:
 
 Opens a help window with detailed information about all available commands in an easy-to-navigate accordion interface.
 
-**Figure 2: Help window**
+**Figure 3: Help window**
 ![help.png](images/help.png)
 
 Format: `help`
@@ -175,16 +179,17 @@ Format: `help`
     * Must start with an alphanumeric character
     * Example: `Jane Wang`
 * `price/PRICE` - Vendor pricing (optional, for vendors only)
-    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, no leading zeros)
+    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, and leading zeros will be trimmed)
     * Can be a single value (e.g., `1000`) or range (e.g., `1000-2000`)
     * Range values must be separated by a hyphen with no spaces
     * Maximum value: 9,999,999,999
 * `budget/BUDGET` - Client budget (optional, for clients only)
-    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, leading zeros will be trimmed)
+    * Must be a non-negative integer (whole numbers only, no cents/decimals, no commas, no fullstops, and leading zeros will be trimmed)
     * Can be a single value (e.g., `5000`) or range (e.g., `5000-10000`)
     * Range values must be separated by a hyphen with no spaces
     * Maximum value: 9,999,999,999
-* `c/CATEGORY` - Category tags (optional, for vendors only)
+* `c/CATEGORY` - Category tag (optional, for vendors only)
+    * Each vendor can have only one category
     * Must start with an alphanumeric character
     * Can contain spaces, hyphens (`-`), ampersands (`&`), periods (`.`), apostrophes (`'`), slashes (`/`), and parentheses (`()`)
     * Limit of 30 characters and a minimum of 2 characters
@@ -246,7 +251,7 @@ Format: `list`
 **Example:**
 * `list` - Displays all your wedding contacts
 
-**Figure 3: List view**
+**Figure 4: List view**
 ![list.png](images/list.png)
 Note: Dates shown in the contacts list are formatted as `YYYY-MM-DD` (e.g., `2026-07-15`).
 
@@ -261,10 +266,9 @@ See [Parameter reference](#parameter-reference) for detailed field rules.
 **How it works:**
 * Edits the contact at the specified `INDEX` (the number shown in the contact list)
 * The index **must be a positive integer** (1, 2, 3, …) and **must not exceed the total number of contacts** in the displayed list
-* At least one optional field must be provided
-* Existing values will be replaced with the new input values
-* **Categories can only be edited for vendors** (not clients). Attempting to add, remove, or modify categories on a client will result in an error.
+* **Categories can only be edited for vendors** (not clients). Attempting to add, remove, or modify categories on a client will result in an error. 
 * To remove a category, type `c/` without specifying any categories after it
+* At least one optional field must be provided
 * When you type in an `edit` command after a `find` or `cat` command, you can only edit from the filtered contacts.
 
 **Examples:**
@@ -272,6 +276,13 @@ See [Parameter reference](#parameter-reference) for detailed field rules.
 * `edit 2 n/Blooming Flowers Studio c/florist` - Updates the name and category of the 2nd contact
 * `edit 3 price/1500-2500` - Updates the pricing for a vendor
 * `edit 4 budget/8000` - Updates the budget for a client
+
+<div markdown="block" class="alert alert-warning">
+
+:exclamation: **Warning:**  
+Existing values will be replaced with the new input values.
+
+</div>
 
 ### Finding contacts by name: `find` 🔍
 
@@ -291,7 +302,7 @@ See [Parameter reference](#parameter-reference) for name and partner field rules
 **Examples:**
 * `find tan` - Returns contacts like `Alex Tan`, `Tan Wei Ling`; also matches a client whose partner is Tan Jun Hao.
 * `find ch` - Returns `Charlotte K Photography`; also matches a client whose partner is `Jack Chia`.<br>
-  **Figure 4: Find results**
+  **Figure 5: Find results for `find ch`**
   ![find.png](images/find.png)
 
 <div markdown="block" class="alert alert-primary">
@@ -322,7 +333,7 @@ See [Parameter reference](#parameter-reference) for category rules.
 * `cat photographer` - Shows all photographers
 * `cat caterer` - Shows all catering services
 
-  **Figure 5: Category results**
+  **Figure 6: Category results**
   ![cat.png](images/cat.png)
 
 <div markdown="block" class="alert alert-primary">
@@ -351,11 +362,11 @@ Format: `link client/CLIENT_INDEX vendor/VENDOR_INDEX`
 * Helps you track which vendors are assigned to which weddings
 
 **Examples:**
-* `link client/2 vendor/3` - Links the 2nd contact (which is a client contact) with the 3rd contact (which is a vendor)
+* `link client/2 vendor/3` - Links the 2nd contact (who is a client) with the 3rd contact (who is a vendor)
 
-**Figure 6: Linking example (view of 2nd contact which is of client type)**
+**Figure 7: Linking example (view of 2nd contact which is of client type)**
 ![link1.png](images/link1.png)
-**Figure 7: Linking example (view of 3rd contact which is of vendor type)**
+**Figure 8: Linking example (view of 3rd contact which is of vendor type)**
 ![link2.png](images/link2.png)
 
 ### Unlinking a vendor from a client : `unlink` ⛓️‍💥
@@ -441,7 +452,7 @@ Format: `exit`
 
 ### Saving the data
 
-Your data is saved automatically to your hard disk after every change — no manual saving needed.
+Your data is saved automatically to your hard disk after every change - no manual saving needed.
 
 ### Editing the data file
 

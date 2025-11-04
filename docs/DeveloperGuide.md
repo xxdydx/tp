@@ -693,7 +693,7 @@ The details panel shows a richer view of a selected `Person` with logic that ada
   * Linked persons section lists their vendors.
 * Vendors
   * Show: name, phone, email, address, and price (if present)
-  * Show categories line when there are categories: `Categories : florist, delivery, ...`
+  * Show category line when there is a category: `Category : florist`
   * Linked persons section lists their clients. When a vendor is selected and linked to a client, the prefix shown before each linked name is the client's wedding date. Otherwise, we show the first available category of the linked person.
 
 **Casing policy:** Category names are displayed with their original casing throughout the UI. No auto-capitalization is applied in the linked persons section. This ensures consistency with category chips shown in lists.
@@ -1067,56 +1067,65 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2.  **Performance**: Should be able to hold up to 1000 contacts without noticeable sluggishness in performance for typical usage.
 3.  **Usability**: A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 4.  **Reliability**: The system should not lose data in case of unexpected application crashes.
-5.  **Data Integrity**: The system should prevent duplicate entries (contacts with the same phone number OR email) from being added.
+5.  **Data Integrity**: The system should prevent duplicate entries (contacts with the same phone number) from being added.
 6.  **Privacy**: Client and vendor information should be stored locally on the user's machine and not transmitted over any network.
 7.  **Usability**: Error messages should be clear and informative, guiding users on how to correct their input.
 8.  **Compatibility**: Should work without requiring an internet connection (offline-first design).
 
 ### Glossary
 
+## KnotBook Glossary
+
+### Application Components
 * **KnotBook**: The name of this wedding planner contact management application
-* **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
 * **AddressBook**: The main application for managing contacts
-* **Command**: An instruction from the user to perform a specific operation (e.g., add, delete, find)
-* **Parser**: A component that interprets user input and converts it into executable commands
-* **Model**: The component that holds the application's data in memory
 * **UI (User Interface)**: The visual component of the application that users interact with
 * **Logic**: The component responsible for executing commands and coordinating between UI and Model
+* **Model**: The component that holds the application's data in memory
 * **Storage**: The component that handles reading from and writing to persistent storage (JSON files)
-* **Person**: An entity representing a contact with attributes like name, phone, email, address, and tags
-* **Tag**: A label that can be attached to a Person for categorization
-* **ObservableList**: A list that notifies observers when its contents change, used for UI updates
-* **JavaFX**: The UI framework used to build the graphical interface
-* **FXML**: A markup language used to define JavaFX UI layouts
-* **JSON**: JavaScript Object Notation – the file format used for data persistence
-* **Gradle**: The build automation tool used for compiling, testing, and packaging the application
-* **PlantUML**: A tool for creating UML diagrams from text descriptions
-* **JAR (Java Archive)**: A package file format used to distribute Java applications
-* **CheckStyle**: A development tool to help ensure Java code adheres to a coding standard
-* **Sequence Diagram**: A UML diagram showing how objects interact in a particular sequence
-* **Class Diagram**: A UML diagram showing the structure of classes and their relationships
-* **Vendor**: A service provider for weddings (e.g., florist, caterer, photographer, venue, DJ, makeup artist, musician)
-* **Client**: A person or couple who is planning a wedding and has hired the wedding planner
+* **Parser**: A component that interprets user input and converts it into executable commands
+
+### Core Entities
+* **Person**: An entity representing a contact with attributes like name, phone, email, address, category, etc
 * **Contact**: A general term referring to either a vendor or a client in the system
-* **Quote/Price**: A pricing estimate provided by a vendor for their services; can be a single value or a range (e.g., 1000-3000)
-* **Wedding planner**: The target user of this application; a professional who manages and coordinates weddings for clients
-* **Category/Type**: A classification for contacts based on their role (client) or service they provide (florist, caterer, photographer, musician, venue, etc.)
-* **PersonType**: An enum that categorizes each contact as either CLIENT or VENDOR
-* **Link**: An association between a vendor and a client, indicating that the vendor has been hired for that client's wedding. Both clients and vendors can have multiple links.
-* **Unlink**: The action of removing an existing association between a vendor and a client
-* **Cat Command**: A command to filter and display contacts by their category (e.g., "cat florist" shows all florists)
-* **Accordion**: A UI component that displays collapsible sections, used in the Help Window to organize command information
+* **Client**: A person or couple who is planning a wedding and has hired the wedding planner
+* **Vendor**: A service provider for weddings (e.g., florist, caterer, photographer, venue, DJ, makeup artist, musician)
+
+### Contact Attributes
+* **Type**: Specifies whether a contact is a client or vendor
+* **Category**: A classification for contacts based on the service they provide (florist, caterer, photographer, musician, venue, etc.)
+* **Price**: A pricing estimate provided by a vendor for their services; can be a single value or a range (e.g., 1000-3000)
 * **Budget**: The total amount of money allocated by a client for their wedding; can be a single value or a range
-* **Index**: A positive integer representing the position of a contact in the currently displayed list
 * **Wedding Date**: The date when a client's wedding is scheduled to take place; required for all client contacts
-* **Task**: A to-do item or milestone in the wedding planning process (e.g., "venue booked", "deposit paid")
-* **Note**: Additional information or preferences recorded for a client or vendor
-* **Wedding status**: The current state of a wedding (e.g., upcoming, in-progress, completed)
+
+### Relationships & Actions
+* **Link**: An association between a vendor and a client, indicating that the vendor has been hired for that client's wedding. Both clients and vendors can have multiple links
+* **Unlink**: The action of removing an existing association between a vendor and a client
+* **Index**: A positive integer representing the position of a contact in the currently displayed list
+* **Duplicate Contact**: A contact with the same phone number as an existing contact in the system
+
+### Commands & Interface
+* **Command**: An instruction from the user to perform a specific operation (e.g., add, delete, find)
+* **Cat Command**: A command to filter and display contacts by their category (e.g., "cat florist" shows all florists)
 * **CLI**: Command Line Interface - a text-based interface where users type commands to interact with the application
 * **MSS**: Main Success Scenario - the primary flow of events in a use case when everything proceeds normally
-* **Duplicate Contact**: A contact with the same phone number OR email as an existing contact in the system
 
+### Technical Terms
+* **Mainstream OS**: Windows, Linux, Unix, MacOS
+* **JavaFX**: The UI framework used to build the graphical interface
+* **FXML**: A markup language used to define JavaFX UI layouts
+* **ObservableList**: A list that notifies observers when its contents change, used for UI updates
+* **Accordion**: A UI component that displays collapsible sections, used in the Help Window to organize command information
+* **JSON**: JavaScript Object Notation – the file format used for data persistence
+* **JAR (Java Archive)**: A package file format used to distribute Java applications
+* **Gradle**: The build automation tool used for compiling, testing, and packaging the application
+* **CheckStyle**: A development tool to help ensure Java code adheres to a coding standard
+* **PlantUML**: A tool for creating UML diagrams from text descriptions
+* **Sequence Diagram**: A UML diagram showing how objects interact in a particular sequence
+* **Class Diagram**: A UML diagram showing the structure of classes and their relationships
+
+### User Roles
+* **Wedding planner**: The target user of this application; a professional who manages and coordinates weddings for clients
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
@@ -1125,6 +1134,10 @@ Given below are instructions to test the app manually.
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** These instructions only provide a starting point for testers to work on;
 testers are expected to do more *exploratory* testing.
+
+</div>
+
+<div markdown="span" class="alert alert-warning">:exclamation: **Important:** All commands are case-sensitive and must be entered in lowercase (e.g., `add`, `delete`, `list`, not `ADD`, `Delete`, `LIST`).
 
 </div>
 
@@ -1259,17 +1272,10 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `add n/Caterer Co p/92345678 e/cater@example.com a/321 Lane type/invalid`<br>
       Expected: Error message indicating type must be either 'client' or 'vendor'.
 
-### Saving data
+## **Appendix: Planned Enhancements**
+**Team size:** 5
 
-1. Dealing with missing/corrupted data files
-
-   1. Close the app. Navigate to the data folder `data/` and open `addressbook.json` in a text editor. Delete a closing brace or add random text to corrupt the JSON. Relaunch the app.<br>
-      Expected: App starts with an empty dataset and shows an error about failing to read storage. A new valid file will be created on exit.
-
-   1. Delete `addressbook.json` entirely and relaunch.<br>
-      Expected: App recreates the file with sample or empty data without crashing.
-
-1. Persistence across sessions
-
-   1. Add a new contact, close the app, relaunch.<br>
-      Expected: The newly added contact is still present (data saved to disk).
+1. **Multiple Categories for Vendors Enhancement:**
+   ○ Extend the system to allow vendors to have multiple categories instead of being limited to a single category. This change will improve flexibility by enabling vendors who offer multiple services (e.g., a vendor who is both a photographer and videographer) to be properly categorized and searchable under all their relevant service types.
+2. **Extended Name Character Support Enhancement:**
+   ○ Expand the allowed character set for names to include special characters commonly found in business names, such as at symbols (@), parentheses (), etc. Currently, names can only contain alphanumeric characters, spaces, apostrophes ('), hyphens (-), slashes (/), periods (.), and ampersands (&). This enhancement will accommodate vendors with business names like "Flowers & Co. (@Orchard)" or "John's Photography/Videography Services", improving the accuracy of contact information storage and reducing the need for workarounds when entering legitimate business names.
