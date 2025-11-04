@@ -177,7 +177,6 @@ Format: `help`
     * Can contain alphanumeric characters, spaces, and special characters like apostrophes (`'`), hyphens (`-`), periods (`.`), and ampersands (`&`)
     * Must start with an alphanumeric character
     * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
-    * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
 * `p/PHONE` - Phone number (required)
     * Singapore context: must be exactly 8 digits (no `+65`, spaces, or symbols)
     * No letters, spaces, hyphens, or other special characters allowed
