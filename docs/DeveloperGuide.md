@@ -839,7 +839,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | wedding planner managing multiple events   | store wedding dates for clients                                   | keep track of when each wedding is scheduled                                         |
 | `* *`    | budget-conscious wedding planner           | view the price of each vendor                                     | compare costs and stay within the wedding budget                                     |
 | `* *`    | detail-oriented wedding planner            | store phone numbers for each contact                              | easily reach out to vendors and clients when needed                                  |
-| `*`      | experienced wedding planner                | prevent duplicate contact names                                   | avoid confusion between different vendors or clients                                 |
+| `*`      | experienced wedding planner                | prevent duplicate contact numbers                                   | avoid confusion between different vendors or clients                                 |
 | `*`      | wedding planner managing multiple events   | allow duplicate prices                          | accommodate cases where vendors have similar pricing                |
 
 ### Use cases
