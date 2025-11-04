@@ -113,7 +113,7 @@ Action | Format, Examples
 
 * Commands are case-sensitive - watch your capitals.
 
-* You can enter parameters in any order. For example, `n/NAME p/PHONE` works the same as `p/PHONE n/NAME`.
+* You can enter parameters in any order. For example, `link client/1 vendor/2` works the same as `link vendor/2 client/1`.
 
 * For very simple commands like `help`, `list`, `exit` and `clear`, any extra text is politely ignored.
 
@@ -148,7 +148,7 @@ Format: `help`
 ### Parameter reference
 
 * `n/NAME` - Contact name (required)
-    * Can contain alphanumeric characters, spaces, and special characters like commas (`,`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
+    * Can contain alphanumeric characters, spaces, and special characters like periods (`.`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
     * Must start with an alphanumeric character
     * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
 * `p/PHONE` - Phone number (required)
@@ -175,7 +175,7 @@ Format: `help`
         * `YYYY` ranges from `0000` to `9999` (only four-digit years supported)
     * Example: `15-06-2026` or `2026-06-15`
 * `pr/PARTNER` - Partner name (required, for clients only)
-    * Can contain alphanumeric characters, spaces, and special characters like commas (`,`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
+    * Can contain alphanumeric characters and spaces
     * Must start with an alphanumeric character
     * Example: `Jane Wang`
 * `price/PRICE` - Vendor pricing (optional, for vendors only)
@@ -324,7 +324,8 @@ Format: `cat CATEGORY`
 See [Parameter reference](#parameter-reference) for category rules.
 
 **How it works:**
-* Shows only vendors with categories matching the specified category
+* Shows only vendors with categories matching the specified category exactly
+* The search requires the full category name (e.g., `florist` will not match `fl` or `flor`)
 * The search is case-insensitive (e.g., `florist` matches `Florist`)
 * Useful for quickly viewing all vendors of a specific type
 
