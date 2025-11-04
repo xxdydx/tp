@@ -148,7 +148,7 @@ Format: `help`
 ### Parameter reference
 
 * `n/NAME` - Contact name (required)
-    * Can contain alphanumeric characters, spaces, and special characters like periods (`.`), slashes (`/`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
+    * Can contain alphanumeric characters, spaces, and periods (`.`), ampersands (`&`), hyphens (`-`), and apostrophes (`'`)
     * Must start with an alphanumeric character
     * Example: `John Chia`, `O'Brien Catering`, `Bloom & Co.`
 * `p/PHONE` - Phone number (required)
