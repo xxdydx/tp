@@ -304,6 +304,7 @@ See [Parameter reference](#parameter-reference) for name and partner field rules
 * `find ch` - Returns `Charlotte K Photography`; also matches a client whose partner is `Jack Chia`.<br>
   **Figure 5: Find results for `find ch`**
   ![find.png](images/find.png)
+* `find &` - Returns contacts whose names start with `&`, such as `Ben & Jerry`.
 
 <div markdown="block" class="alert alert-primary">
 
